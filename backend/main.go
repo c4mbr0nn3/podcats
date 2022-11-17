@@ -14,8 +14,8 @@ func main() {
 		fmt.Println("Usage: server -e {mode}")
 		os.Exit(1)
 	}
-	fmt.Println("Environment: " + *env)
 	flag.Parse()
+	fmt.Println("Environment: " + *env)
 	config.Init(*env)
 	//db.Init()
 	server.Init()

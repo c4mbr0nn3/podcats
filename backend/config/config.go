@@ -14,15 +14,14 @@ var config *viper.Viper
 func Init(env string) {
 	var err error
 	config = viper.New()
+	config.AddConfigPath("./config")
 	config.SetConfigType("yaml")
 	config.SetConfigName(env)
-	config.AddConfigPath("../config")
-	config.AddConfigPath(".")
-	fmt.Printf("Using config: %s\n", viper.ConfigFileUsed())
-	err = viper.ReadInConfig()
+	err = config.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
+	fmt.Printf("Using config: %s\n", config.ConfigFileUsed())
 }
 
 func RelativePath(basedir string, path *string) {
