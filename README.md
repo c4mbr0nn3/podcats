@@ -5,4 +5,4 @@ Podcast player built using:
 - VueJS 3
 - Vuetify 3
 - SQLite
-- AmplitudeJS
+- Howler.js
