@@ -19,5 +19,6 @@ func main() {
 	fmt.Println("Environment: " + *env)
 	config.Init(*env)
 	db.Init()
+	db.Migrate()
 	server.Init()
 }

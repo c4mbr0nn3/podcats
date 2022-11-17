@@ -12,7 +12,7 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 
 	v1 := router.Group("/api/v1")
-	routes.AddPing(v1)
+	routes.AddUsersRoutes(v1)
 
 	return router
 }
