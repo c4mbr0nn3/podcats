@@ -1,0 +1,57 @@
+Project podcast_player {
+  Note: 'Podcast Player'
+}
+
+Table users {
+  id uuid [pk, not null, increment]
+  created_at datetime [not null]
+  updated_at datetime
+  deleted_at datetime
+  name varchar [not null]
+  surname varchar [not null]
+  email varchar [unique, not null]
+}
+
+Table podcasts {
+  id uuid [pk, not null, increment]
+  created_at datetime [not null]
+  updated_at datetime
+  deleted_at datetime
+  title varchar
+  summary varchar
+  author varchar
+  image varchar
+  url varchar
+  last_episode datetime
+  is_paused boolean
+  user_id uuid
+}
+Ref:podcasts.user_id > users.id
+
+Table podcast_items {
+  id uuid [pk, not null, increment]
+  created_at datetime [not null]
+  updated_at datetime
+  deleted_at datetime
+  title varchar
+  summary varchar
+  episode_type varchar
+  duration integer
+  pubblication_date datetime
+  file_url varchar
+  guid varchar
+  image varchar
+  is_played boolean
+  bookmark_date datetime
+  podcast_id uuid
+}
+Ref:podcast_items.podcast_id > podcasts.id
+
+Table migrations {
+  id uuid [pk, not null, increment]
+  created_at datetime [not null]
+  updated_at datetime
+  deleted_at datetime
+  date datetime
+  name varchar
+}
