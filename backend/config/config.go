@@ -1,7 +1,7 @@
 package config
 
 import (
-	"log"
+	"fmt"
 	"path/filepath"
 
 	"github.com/spf13/viper"
@@ -17,10 +17,11 @@ func Init(env string) {
 	config.SetConfigType("yaml")
 	config.SetConfigName(env)
 	config.AddConfigPath("../config")
-	config.AddConfigPath("config/")
+	config.AddConfigPath(".")
+	fmt.Printf("Using config: %s\n", viper.ConfigFileUsed())
 	err = viper.ReadInConfig()
 	if err != nil {
-		log.Fatal("error on parsing configuration file")
+		panic(fmt.Errorf("fatal error config file: %w", err))
 	}
 }
 
