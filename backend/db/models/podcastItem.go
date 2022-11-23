@@ -19,5 +19,4 @@ type PodcastItem struct {
 	IsPlayed        bool `gorm:"default:false"`
 	BookmarkDate    time.Time
 	PodcastID       int
-	Podcast         Podcast
 }
