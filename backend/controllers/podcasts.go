@@ -3,7 +3,6 @@ package controllers
 import (
 	"example/hello/db"
 	"example/hello/db/models"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,11 +11,15 @@ import (
 
 type PodcastsController struct{}
 
+type PodcastImportDto struct {
+	PodcastUrl string `json:"podcastUrl"`
+}
+
 func (c PodcastsController) GetAllPodcasts(ctx *gin.Context) {
 	var podcasts []models.Podcast
 	result := db.GetDb().Find(&podcasts)
 	if result.Error != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"pippo": "culo"})
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": podcasts})
 }
@@ -26,14 +29,21 @@ func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
 	var podcast models.Podcast
 	result := db.GetDb().Preload("PodcastItems").First(&podcast, podcastId)
 	if result.Error != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"pippo": "culo"})
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": podcast})
 }
 
 func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
+	body := PodcastImportDto{}
+
+	if err := ctx.BindJSON(&body); err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
 	fp := gofeed.NewParser()
-	feed, _ := fp.ParseURL("https://www.spreaker.com/show/3262415/episodes/feed")
+	feed, _ := fp.ParseURL(body.PodcastUrl)
 	podcast := models.Podcast{
 		Title:   feed.Title,
 		Summary: feed.Description,
@@ -55,7 +65,9 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 	}
 	podcast.PodcastItems = podcastItemsArray
 	tx := db.GetDb().Create(&podcast)
-	fmt.Println(tx.Error)
+	if tx.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, tx.Error)
+	}
 	ctx.Status(http.StatusOK)
 }
 
