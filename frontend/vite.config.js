@@ -4,6 +4,7 @@ import vuetify from "vite-plugin-vuetify";
 
 // Utilities
 import { defineConfig } from "vite";
+import eslintPlugin from "vite-plugin-eslint";
 import { fileURLToPath, URL } from "node:url";
 
 // https://vitejs.dev/config/
