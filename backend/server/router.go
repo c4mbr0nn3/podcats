@@ -3,11 +3,13 @@ package server
 import (
 	"example/hello/server/routes"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
+	router.Use(static.Serve("/", static.LocalFile("./dist", false)))
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 

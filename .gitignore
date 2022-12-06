@@ -22,3 +22,5 @@ go.work
 
 # Custom file or folder
 temp/
+
+dist/
