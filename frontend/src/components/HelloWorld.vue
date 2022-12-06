@@ -1,8 +1,7 @@
 <template>
   <v-container class="fill-height">
     <v-responsive class="d-flex align-center text-center fill-height">
-      <v-img contain height="300" src="@/assets/logo.svg" />
-
+      <vuetify-logo-vue />
       <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
 
       <h1 class="text-h2 font-weight-bold">Vuetify</h1>
@@ -20,7 +19,7 @@
           >
             <v-icon icon="mdi-view-dashboard" size="large" start />
 
-            Componentssssss
+            Components
           </v-btn>
         </v-col>
 
@@ -59,5 +58,5 @@
 </template>
 
 <script setup>
-//
+import VuetifyLogoVue from "./svg/VuetifyLogo.vue";
 </script>
