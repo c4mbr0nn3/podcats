@@ -3,6 +3,7 @@ module example/hello
 go 1.18
 
 require (
+	github.com/JohannesKaufmann/html-to-markdown v1.3.6
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.8.1
 	github.com/mmcdole/gofeed v1.1.3
@@ -12,8 +13,8 @@ require (
 )
 
 require (
-	github.com/PuerkitoBio/goquery v1.5.1 // indirect
-	github.com/andybalholm/cascadia v1.1.0 // indirect
+	github.com/PuerkitoBio/goquery v1.8.0 // indirect
+	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
