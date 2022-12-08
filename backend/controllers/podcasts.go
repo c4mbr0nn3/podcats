@@ -5,6 +5,7 @@ import (
 	"example/hello/db/models"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mmcdole/gofeed"
@@ -37,6 +38,20 @@ func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": podcast})
+}
+
+func (c PodcastsController) GetPodcastItemById(ctx *gin.Context) {
+	podcastId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+	}
+	itemId := ctx.Param("itemId")
+	var podcastItem models.PodcastItem
+	result := db.GetDb().Where(&models.PodcastItem{PodcastID: podcastId}).First(&podcastItem, itemId)
+	if result.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": podcastItem})
 }
 
 func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
