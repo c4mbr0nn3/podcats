@@ -14,6 +14,7 @@
             v-for="(podcast, index) in podcastData"
             :key="index"
             class="mt-3"
+            :to="{ name: 'single-podcast', params: { id: podcast.ID } }"
           >
             <v-card-title> {{ podcast.Title }} </v-card-title>
             <v-card-text>
@@ -26,7 +27,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { importPodcast, getAllPodcasts } from "@/api";
 import Markdown from "vue3-markdown-it";
 export default {
   components: {
@@ -41,15 +42,14 @@ export default {
   },
   methods: {
     async fetchData() {
-      await axios
-        .get("api/v1/podcasts/")
-        .then((response) => (this.podcastData = response.data.data));
+      await getAllPodcasts().then(
+        (response) => (this.podcastData = response.data.data)
+      );
     },
     async importPodcast() {
       let payload = { podcastUrl: this.podcastUrl };
-      await axios.post("api/v1/podcasts/import", payload).then(() => {
+      await importPodcast(payload).then(() => {
         this.podcastUrl = null;
-        alert("bellali importato");
         this.fetchData();
       });
     },
