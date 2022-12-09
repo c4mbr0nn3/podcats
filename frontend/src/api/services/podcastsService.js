@@ -12,5 +12,5 @@ export function getPodcastItemById(podcastId, itemId) {
   return axiosClient.get(`/podcasts/${podcastId}/item/${itemId}`);
 }
 export function importPodcast(payload) {
-  return axiosClient.post("/podcasts/podcasts/import", payload);
+  return axiosClient.post("/podcasts/import", payload);
 }
