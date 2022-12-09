@@ -11,12 +11,22 @@
         }"
       >
         <div class="d-flex flex-no-wrap justify-space-between">
-          <div>
-            <v-card-title>{{ podcast.Title }}</v-card-title>
-          </div>
-          <v-avatar class="ma-3" size="125" rounded="0">
-            <v-img :src="podcast.Image"></v-img>
-          </v-avatar>
+          <v-col cols="10">
+            <v-card-title class="text-truncate">{{
+              podcast.Title
+            }}</v-card-title>
+            <v-card-text
+              ><Markdown
+                class="overflow-hidden fade"
+                :source="podcastData ? podcastData.Summary : ''"
+              />
+            </v-card-text>
+          </v-col>
+          <v-col cols="2" class="d-flex justify-end">
+            <v-avatar class="ma-3" size="125" rounded="0">
+              <v-img :src="podcast.Image"></v-img>
+            </v-avatar>
+          </v-col>
         </div>
       </v-card>
     </v-col>
@@ -25,7 +35,12 @@
 
 <script>
 import { getPodcastById } from "@/api";
+import Markdown from "vue3-markdown-it";
+
 export default {
+  components: {
+    Markdown,
+  },
   data: () => ({
     podcastData: null,
   }),
@@ -46,3 +61,25 @@ export default {
   },
 };
 </script>
+
+<style>
+/* https://css-tricks.com/line-clampin/ */
+.fade {
+  position: relative;
+  height: 6em; /* exactly four lines with line height = 1.5*/
+}
+.fade:after {
+  content: "";
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 70%;
+  height: 1.5em;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1) 50%
+  );
+}
+</style>

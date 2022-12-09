@@ -4,7 +4,7 @@
       <v-card
         ><v-card-title>{{ getPodcastItemTitle }}</v-card-title>
         <div class="d-flex flex-no-wrap justify-space-between">
-          <div>
+          <v-col cols="10">
             <v-card-text
               ><Markdown :source="podcastData ? podcastData.Summary : ''" />
             </v-card-text>
@@ -20,10 +20,12 @@
                 @click="muteTrack"
               ></v-btn
             ></v-card-actions>
-          </div>
-          <v-avatar class="ma-3" size="125" rounded="0">
-            <v-img :src="podcastData ? podcastData.Image : ''"></v-img>
-          </v-avatar>
+          </v-col>
+          <v-col cols="2" class="d-flex justify-end">
+            <v-avatar class="ma-3" size="125" rounded="0">
+              <v-img :src="podcastData ? podcastData.Image : ''"></v-img>
+            </v-avatar>
+          </v-col>
         </div>
       </v-card>
     </v-col>
@@ -51,6 +53,9 @@ export default {
   },
   async created() {
     await this.fetchData();
+  },
+  unmounted() {
+    Howler.unload();
   },
   methods: {
     async fetchData() {
