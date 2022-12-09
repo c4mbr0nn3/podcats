@@ -12,7 +12,7 @@ type PodcastItem struct {
 	Summary         string `gorm:"type:text"`
 	EpisodeType     string
 	Duration        int
-	PubblicatonDate time.Time
+	PublicationDate time.Time
 	FileURL         string
 	GUID            string
 	Image           string

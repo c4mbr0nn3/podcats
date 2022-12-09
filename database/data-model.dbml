@@ -37,7 +37,7 @@ Table podcast_items {
   summary varchar
   episode_type varchar
   duration integer
-  pubblication_date datetime
+  publication_date datetime
   file_url varchar
   guid varchar
   image varchar

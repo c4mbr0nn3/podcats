@@ -33,7 +33,7 @@ func (c PodcastsController) GetAllPodcasts(ctx *gin.Context) {
 func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
 	podcastId := ctx.Param("id")
 	var podcast models.Podcast
-	result := db.GetDb().Preload("PodcastItems").First(&podcast, podcastId)
+	result := db.GetDb().Preload("PodcastItems").Find(&podcast, podcastId)
 	if result.Error != nil {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 	}
@@ -41,13 +41,9 @@ func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
 }
 
 func (c PodcastsController) GetPodcastItemById(ctx *gin.Context) {
-	podcastId, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		ctx.AbortWithError(http.StatusBadRequest, err)
-	}
 	itemId := ctx.Param("itemId")
 	var podcastItem models.PodcastItem
-	result := db.GetDb().Where(&models.PodcastItem{PodcastID: podcastId}).First(&podcastItem, itemId)
+	result := db.GetDb().Find(&podcastItem, itemId)
 	if result.Error != nil {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 	}
@@ -66,7 +62,7 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 	feed, _ := fp.ParseURL(body.PodcastUrl)
 	podcast := models.Podcast{
 		Title:   feed.Title,
-		Summary: convertHtmlToMarkdown(feed.Description),
+		Summary: convertHtmlToMarkdown(ctx, feed.Description),
 		Author:  feed.Author.Name,
 		Image:   feed.Image.URL,
 		URL:     feed.FeedLink,
@@ -76,9 +72,10 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 	for _, item := range feed.Items {
 		podcastItemsArray = append(podcastItemsArray, models.PodcastItem{
 			Title:           item.Title,
-			Summary:         convertHtmlToMarkdown(item.Description),
-			PubblicatonDate: *item.PublishedParsed,
+			Summary:         convertHtmlToMarkdown(ctx, item.Description),
+			PublicationDate: *item.PublishedParsed,
 			FileURL:         item.Enclosures[0].URL,
+			Duration:        convertStringToInt(ctx, item.ITunesExt.Duration),
 			GUID:            item.GUID,
 			Image:           getSafeImageURL(item),
 		})
@@ -93,7 +90,7 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 
 func (c PodcastsController) GetPodcastFake(ctx *gin.Context) {
 	fp := gofeed.NewParser()
-	feed, _ := fp.ParseURL("https://www.spreaker.com/show/3262415/episodes/feed")
+	feed, _ := fp.ParseURL("https://www.spreaker.com/show/2952600/episodes/feed")
 	ctx.JSON(http.StatusOK, gin.H{"data": feed})
 }
 
@@ -104,11 +101,20 @@ func getSafeImageURL(item *gofeed.Item) string {
 	return item.Image.URL
 }
 
-func convertHtmlToMarkdown(htmlString string) string {
-	markdown, err := Converter.ConvertString(htmlString)
+func convertHtmlToMarkdown(ctx *gin.Context, toConvert string) string {
+	markdown, err := Converter.ConvertString(toConvert)
 	if err != nil {
 		log.Fatal(err)
-		return ""
+		ctx.AbortWithError(http.StatusBadRequest, err)
 	}
 	return markdown
+}
+
+func convertStringToInt(ctx *gin.Context, toConvert string) int {
+	converted, err := strconv.Atoi(toConvert)
+	if err != nil {
+		log.Fatal(err)
+		ctx.AbortWithError(http.StatusBadRequest, err)
+	}
+	return converted
 }
