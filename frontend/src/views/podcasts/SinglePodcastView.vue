@@ -22,7 +22,7 @@
               />
             </v-card-text>
           </v-col>
-          <v-col cols="2" class="d-flex justify-end">
+          <v-col cols="2" class="d-flex justify-end ml-2">
             <v-avatar class="ma-3" size="125" rounded="0">
               <v-img :src="podcast.Image"></v-img>
             </v-avatar>
@@ -78,8 +78,8 @@ export default {
   height: 1.5em;
   background: linear-gradient(
     to right,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 1) 50%
+    rgba(var(--v-theme-surface), 0),
+    rgba(var(--v-theme-surface), 1) 50%
   );
 }
 </style>

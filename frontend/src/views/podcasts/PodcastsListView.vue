@@ -7,8 +7,9 @@
           ><v-text-field
             v-model="podcastUrl"
             label="Import Podcast"
-            append-icon="mdi-plus"
-            @click:append="importPodcast"
+            append-inner-icon="mdi-plus"
+            color="primary"
+            @click:append-inner="importPodcast"
           ></v-text-field
           ><v-card
             v-for="(podcast, index) in podcastData"

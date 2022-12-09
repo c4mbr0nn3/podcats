@@ -1,26 +1,29 @@
-/**
- * plugins/vuetify.js
- *
- * Framework documentation: https://vuetifyjs.com`
- */
-
-// Styles
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 
-// Composables
 import { createVuetify } from "vuetify";
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
+const podcatsDarkTheme = {
+  dark: true,
+  colors: {
+    background: "#1F1F23",
+    surface: "#3F3E41",
+    primary: "#F8EF12",
+    "primary-darken-1": "#3700B3",
+    secondary: "#FFFFFF",
+    "secondary-darken-1": "#A5AC8C",
+    error: "#B00020",
+    info: "#2196F3",
+    success: "#4CAF50",
+    warning: "#FB8C00",
+  },
+};
+
 export default createVuetify({
   theme: {
+    defaultTheme: "podcatsDarkTheme",
     themes: {
-      light: {
-        colors: {
-          primary: "#1867C0",
-          secondary: "#5CBBF6",
-        },
-      },
+      podcatsDarkTheme,
     },
   },
 });

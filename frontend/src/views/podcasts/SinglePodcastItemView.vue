@@ -11,10 +11,10 @@
             <v-card-actions
               ><v-btn
                 :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
-                :color="isPlaying ? 'accent' : 'primary'"
+                :color="isPlaying ? 'secondary' : 'primary'"
                 @click="switchTrackStatus"
               ></v-btn
-              ><v-btn icon="mdi-stop" color="amber" @click="stopTrack"></v-btn
+              ><v-btn icon="mdi-stop" color="surface" @click="stopTrack"></v-btn
               ><v-btn
                 :icon="isMuted ? 'mdi-volume-mute' : 'mdi-volume-high'"
                 @click="muteTrack"

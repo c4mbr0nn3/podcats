@@ -1,11 +1,12 @@
 <template>
-  <v-app-bar flat color="info">
+  <v-app-bar flat>
     <v-row justify="center"
       ><v-btn
         v-for="(item, index) in menuList"
         :key="index"
         :to="item.route"
         variant="text"
+        color="primary"
         >{{ item.label }}
       </v-btn></v-row
     >
