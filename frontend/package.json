@@ -9,7 +9,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
-    "@mdi/font": "5.9.55",
+    "@mdi/font": "^7.0.0",
     "axios": "^1.2.0",
     "date-fns": "^2.29.3",
     "howler": "^2.2.3",
