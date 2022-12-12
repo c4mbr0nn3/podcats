@@ -6,7 +6,6 @@ RUN apk update && apk add build-base
 RUN mkdir -p /go/src/podcats
 WORKDIR /go/src/podcats
 COPY backend/ .
-
 RUN go mod download
 RUN go mod verify
 RUN go build -o podcats
@@ -20,7 +19,7 @@ COPY frontend/ .
 RUN npm ci
 RUN npm run build
 
-FROM golang:${GO_VERSION}-alpine 
+FROM golang:${GO_VERSION}-alpine
 RUN mkdir -p /go/src/podcats
 WORKDIR /go/src/podcats
 COPY backend/config config/
