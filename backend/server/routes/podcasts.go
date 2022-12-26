@@ -11,6 +11,7 @@ func AddPodcastsRoutes(rg *gin.RouterGroup) {
 	usersRouter := rg.Group("/podcasts")
 	{
 		usersRouter.GET("/", controller.GetAllPodcasts)
+		usersRouter.GET("/latest-items", controller.GetLatestPodcastItems)
 		usersRouter.GET("/:id", controller.GetPodcastById)
 		usersRouter.GET("/:id/item/:itemId", controller.GetPodcastItemById)
 		usersRouter.POST("/import", controller.ImportPodcast)

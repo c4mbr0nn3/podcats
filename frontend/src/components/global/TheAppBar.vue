@@ -19,6 +19,7 @@ export default {
     menuList: [
       { label: "Home", route: { name: "home" } },
       { label: "Podcasts", route: { name: "podcasts" } },
+      { label: "Latest", route: { name: "latest-podcasts" } },
     ],
   }),
 };
