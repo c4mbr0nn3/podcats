@@ -1,6 +1,6 @@
 <template>
   <v-row align="center" justify="center">
-    <v-col cols="8">
+    <v-col cols="9">
       <v-card
         v-for="(podcast, index) in getPodcastItemsList"
         :key="index"
@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* https://css-tricks.com/line-clampin/ */
 .fade {
   position: relative;

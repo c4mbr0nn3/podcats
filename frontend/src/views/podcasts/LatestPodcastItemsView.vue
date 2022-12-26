@@ -82,7 +82,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* https://css-tricks.com/line-clampin/ */
 .fade {
   position: relative;
