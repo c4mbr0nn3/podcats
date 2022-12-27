@@ -1,5 +1,6 @@
 ARG GO_VERSION=1.18
 ARG NODE_VERSION=18
+ARG ALPINE_VERSION=3.16
 
 FROM golang:${GO_VERSION}-alpine AS go-builder
 RUN apk update && apk add build-base
@@ -19,7 +20,7 @@ COPY frontend/ .
 RUN npm ci
 RUN npm run build
 
-FROM golang:${GO_VERSION}-alpine
+FROM alpine:${ALPINE_VERSION}
 RUN mkdir -p /go/src/podcats
 WORKDIR /go/src/podcats
 COPY backend/config config/
