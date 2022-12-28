@@ -31,7 +31,18 @@
               </v-col>
               <v-col cols="2" class="d-flex justify-end ml-2">
                 <v-avatar class="ma-3" size="125" rounded="0">
-                  <v-img :src="podcastItem.Image"></v-img>
+                  <v-img
+                    :src="podcastItem.Image ? podcastItem.Image : missingImage"
+                  >
+                    <template #placeholder>
+                      <div
+                        class="d-flex align-center justify-center fill-height"
+                      >
+                        <v-progress-circular
+                          indeterminate
+                          color="primary"
+                        ></v-progress-circular></div></template
+                  ></v-img>
                 </v-avatar>
               </v-col></div></v-card
           ><v-card v-intersect="onIntersect"></v-card
@@ -42,6 +53,7 @@
 </template>
 
 <script>
+import missingImage from "@/assets/missing_image.png";
 import { getLatestPodcastItems } from "@/api";
 import { formatDate } from "@/utils/date";
 import Markdown from "vue3-markdown-it";
@@ -54,6 +66,7 @@ export default {
     currentPage: 1,
     nextPage: null,
     pageCount: null,
+    missingImage: missingImage,
 
     formatDate,
   }),

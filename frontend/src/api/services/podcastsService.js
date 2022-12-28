@@ -12,13 +12,17 @@ export function getPodcastById(podcastId) {
   return axiosClient.get(`/podcasts/${podcastId}`);
 }
 
+export function getPodcastItemsByPodcastId(podcastId, pageId) {
+  return axiosClient.get(`/podcasts/${podcastId}/items?page=${pageId}`);
+}
+
 export function getPodcastItemById(podcastId, itemId) {
-  return axiosClient.get(`/podcasts/${podcastId}/item/${itemId}`);
+  return axiosClient.get(`/podcasts/${podcastId}/items/${itemId}`);
 }
 
 export function updatePodcastItemPlayedTime(podcastId, itemId, timePlayed) {
   return axiosClient.post(
-    `/podcasts/${podcastId}/item/${itemId}/update-played-time?time=${timePlayed}`
+    `/podcasts/${podcastId}/items/${itemId}/update-played-time?time=${timePlayed}`
   );
 }
 

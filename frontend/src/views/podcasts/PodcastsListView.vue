@@ -35,7 +35,16 @@
               </v-col>
               <v-col cols="2" class="d-flex justify-end ml-2">
                 <v-avatar class="ma-3" size="125" rounded="0">
-                  <v-img :src="podcast.Image"></v-img>
+                  <v-img :src="podcast.Image ? podcast.Image : missingImage">
+                    <template #placeholder>
+                      <div
+                        class="d-flex align-center justify-center fill-height"
+                      >
+                        <v-progress-circular
+                          indeterminate
+                          color="primary"
+                        ></v-progress-circular></div></template
+                  ></v-img>
                 </v-avatar>
               </v-col></div></v-card
         ></v-card-text>
@@ -45,6 +54,7 @@
 </template>
 
 <script>
+import missingImage from "@/assets/missing_image.png";
 import { importPodcast, getAllPodcasts } from "@/api";
 import Markdown from "vue3-markdown-it";
 export default {
@@ -54,6 +64,7 @@ export default {
   data: () => ({
     podcastData: null,
     podcastUrl: "",
+    missingImage: missingImage,
   }),
   async created() {
     await this.fetchData();

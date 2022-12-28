@@ -1,104 +1,123 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="8">
-      <v-card :loading="!isTrackLoaded">
+      <v-card v-if="podcastData" :loading="!isTrackLoaded">
+        <template #loader="{ isActive }">
+          <v-progress-linear
+            :active="isActive"
+            color="primary"
+            height="4"
+            indeterminate
+          ></v-progress-linear>
+        </template>
         <div class="d-flex flex-no-wrap justify-space-between">
           <v-col cols="10">
             <v-card-title class="text-truncate">{{
               getPodcastItemTitle
             }}</v-card-title>
             <v-card-text
-              ><Markdown :source="podcastData ? podcastData.Summary : ''" />
+              ><Markdown :source="podcastData.Summary" />
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
             <v-avatar class="ma-3" size="125" rounded="0">
-              <v-img :src="podcastData ? podcastData.Image : ''"></v-img>
+              <v-img
+                :src="podcastData.Image ? podcastData.Image : missingImage"
+              >
+                <template #placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular
+                      indeterminate
+                      color="primary"
+                    ></v-progress-circular></div></template
+              ></v-img>
             </v-avatar>
           </v-col>
         </div>
         <div v-if="isTrackLoaded">
           <v-col cols="12">
             <!--qui mettiamo tutti i controlli del player da spostare in component-->
-            <v-row no-gutters
-              >{{ timePlayed }} <v-spacer></v-spacer> {{ totalTime }}</v-row
-            >
-            <v-row no-gutters class="mt-1">
-              <v-slider
-                v-model="podcastProgress"
-                min="0"
-                :max="getPodcastDuration"
-                color="primary"
-                thumb-size="15"
-                hide-details
-                @update:model-value="onPodcastProgressUpdate()"
-                ><template #prepend>
-                  <v-icon
-                    icon="mdi-timer-outline"
-                    color="primary"
-                  ></v-icon> </template></v-slider
-            ></v-row>
-            <v-row no-gutters justify="center" class="mt-2">
-              <v-col cols="3" class="d-flex justify-center align-center">
-                <v-menu location="bottom">
-                  <template #activator="{ props }">
-                    <v-btn
-                      variant="text"
-                      prepend-icon="mdi-speedometer"
-                      v-bind="props"
-                      color="primary"
-                      >{{ getTrackSpeed }}</v-btn
-                    >
-                  </template>
-                  <v-list>
-                    <v-list-item
-                      v-for="(item, index) in availableSpeed"
-                      :key="index"
-                      @click="setTrackSpeed(item)"
-                    >
-                      <v-list-item-title>{{ item }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </v-col>
-              <v-col cols="6" class="d-flex justify-center align-center">
-                <v-card-actions>
-                  <v-btn
-                    :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
-                    :color="isPlaying ? 'info' : 'primary'"
-                    @click="switchTrackStatus"
-                  ></v-btn
-                  ><v-btn
-                    icon="mdi-stop"
-                    color="secondary"
-                    class="mx-1"
-                    @click="stopTrack"
-                  ></v-btn>
-                </v-card-actions>
-              </v-col>
-              <!-- TODO: aggiungere tasti skip avanti / indietro di 15 sec -->
-              <v-col cols="3" class="d-flex justify-center align-center">
+            <v-card-text>
+              <v-row no-gutters
+                >{{ timePlayed }} <v-spacer></v-spacer> {{ totalTime }}</v-row
+              >
+              <v-row no-gutters class="mt-1">
                 <v-slider
-                  v-model="podcastVolume"
+                  v-model="podcastProgress"
                   min="0"
-                  max="1"
-                  :step="0.01"
+                  :max="getPodcastDuration"
                   color="primary"
                   thumb-size="15"
-                  track-size="2"
                   hide-details
-                  @update:model-value="setTrackVolume()"
-                >
-                  <template #prepend>
-                    <v-btn
-                      variant="text"
-                      :icon="getVolumeIcon"
+                  @update:model-value="onPodcastProgressUpdate()"
+                  ><template #prepend>
+                    <v-icon
+                      icon="mdi-timer-outline"
                       color="primary"
-                      @click="muteTrack"
-                    ></v-btn> </template
-                ></v-slider>
-              </v-col>
-            </v-row>
+                    ></v-icon> </template></v-slider
+              ></v-row>
+              <v-row no-gutters justify="center" class="mt-2">
+                <v-col cols="3" class="d-flex justify-center align-center">
+                  <v-menu location="bottom">
+                    <template #activator="{ props }">
+                      <v-btn
+                        variant="text"
+                        prepend-icon="mdi-speedometer"
+                        v-bind="props"
+                        color="primary"
+                        >{{ getTrackSpeed }}</v-btn
+                      >
+                    </template>
+                    <v-list>
+                      <v-list-item
+                        v-for="(item, index) in availableSpeed"
+                        :key="index"
+                        @click="setTrackSpeed(item)"
+                      >
+                        <v-list-item-title>{{ item }}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </v-col>
+                <v-col cols="6" class="d-flex justify-center align-center">
+                  <v-card-actions>
+                    <v-btn
+                      :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
+                      :color="isPlaying ? 'info' : 'primary'"
+                      @click="switchTrackStatus"
+                    ></v-btn
+                    ><v-btn
+                      icon="mdi-stop"
+                      color="secondary"
+                      class="mx-1"
+                      @click="stopTrack"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-col>
+                <!-- TODO: aggiungere tasti skip avanti / indietro di 15 sec -->
+                <v-col cols="3" class="d-flex justify-center align-center">
+                  <v-slider
+                    v-model="podcastVolume"
+                    min="0"
+                    max="1"
+                    :step="0.01"
+                    color="primary"
+                    thumb-size="15"
+                    track-size="2"
+                    hide-details
+                    @update:model-value="setTrackVolume()"
+                  >
+                    <template #prepend>
+                      <v-btn
+                        variant="text"
+                        :icon="getVolumeIcon"
+                        color="primary"
+                        @click="muteTrack"
+                      ></v-btn> </template
+                  ></v-slider>
+                </v-col>
+              </v-row>
+            </v-card-text>
           </v-col>
         </div>
       </v-card>
@@ -107,6 +126,7 @@
 </template>
 
 <script>
+import missingImage from "@/assets/missing_image.png";
 import { getPodcastItemById, updatePodcastItemPlayedTime } from "@/api";
 import { Howl, Howler } from "howler";
 import { intervalToDuration, formatDuration } from "date-fns";
@@ -126,6 +146,7 @@ export default {
     timeTrackerId: null,
     trackSpeed: 1,
     availableSpeed: [0.8, 1, 1.2, 1.8, 2.5, 3.5],
+    missingImage: missingImage,
   }),
   computed: {
     getPodcastItemTitle() {

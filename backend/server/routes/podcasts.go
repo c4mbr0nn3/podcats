@@ -13,8 +13,9 @@ func AddPodcastsRoutes(rg *gin.RouterGroup) {
 		usersRouter.GET("/", controller.GetAllPodcasts)
 		usersRouter.GET("/latest-items", controller.GetLatestPodcastItems)
 		usersRouter.GET("/:id", controller.GetPodcastById)
-		usersRouter.GET("/:id/item/:itemId", controller.GetPodcastItemById)
-		usersRouter.POST("/:id/item/:itemId/update-played-time", controller.UpdatePodcastItemPlayedTime)
+		usersRouter.GET("/:id/items", controller.GetPodcastItemsByPodcastId)
+		usersRouter.GET("/:id/items/:itemId", controller.GetPodcastItemById)
+		usersRouter.POST("/:id/items/:itemId/update-played-time", controller.UpdatePodcastItemPlayedTime)
 		usersRouter.POST("/import", controller.ImportPodcast)
 		usersRouter.GET("/test", controller.GetPodcastFake)
 	}

@@ -101,18 +101,73 @@ func (c PodcastsController) GetLatestPodcastItems(ctx *gin.Context) {
 func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
 	podcastId := ctx.Param("id")
 	var podcast models.Podcast
-	result := db.GetDb().Preload("PodcastItems").Find(&podcast, podcastId)
+	result := db.GetDb().Find(&podcast, podcastId)
 	if result.Error != nil {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 		return
 	}
 
-	podcastItems := podcast.PodcastItems
+	ctx.JSON(http.StatusOK, podcast)
+}
+
+func (c PodcastsController) GetPodcastItemsByPodcastId(ctx *gin.Context) {
+	podcastId := ctx.Param("id")
+
+	pageString := ctx.DefaultQuery("page", "1")
+	page, err := strconv.Atoi(pageString)
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	var podcastItemsCount int64
+	countQuery := db.GetDb().
+		Table("podcast_items").
+		Where("podcast_id = ?", podcastId).
+		Count(&podcastItemsCount)
+	if countQuery.Error != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, countQuery.Error)
+		return
+	}
+
+	const podcastItemsPerPage = 10
+	pageCount := int(math.Ceil(float64(podcastItemsCount) / float64(podcastItemsPerPage)))
+	if pageCount == 0 {
+		pageCount = 1
+	}
+	if page < 1 || page > pageCount {
+		ctx.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	offset := (page - 1) * podcastItemsPerPage
+	var podcastItems []models.PodcastItem
+	podcastItemsQuery := db.GetDb().
+		Limit(podcastItemsPerPage).
+		Offset(offset).
+		Order("publication_date desc").
+		Where("podcast_id = ?", podcastId).
+		Find(&podcastItems)
+	if podcastItemsQuery.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, podcastItemsQuery.Error)
+		return
+	}
+
+	var nextPage int
+	if page < pageCount {
+		nextPage = page + 1
+	}
+
 	sort.Slice(podcastItems[:], func(i, j int) bool {
 		return podcastItems[i].PublicationDate.After(podcastItems[j].PublicationDate)
 	})
 
-	ctx.JSON(http.StatusOK, podcast)
+	ctx.JSON(http.StatusOK, gin.H{
+		"podcastItems": podcastItems,
+		"pageCount":    pageCount,
+		"thisPage":     page,
+		"nextPage":     nextPage,
+	})
 }
 
 func (c PodcastsController) GetPodcastItemById(ctx *gin.Context) {
