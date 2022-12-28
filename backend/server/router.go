@@ -9,6 +9,7 @@ import (
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
+	router.SetTrustedProxies([]string{"127.0.0.1"})
 	router.Use(static.Serve("/", static.LocalFile("./dist", false)))
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
