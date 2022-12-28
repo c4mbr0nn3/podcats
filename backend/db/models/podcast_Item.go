@@ -11,7 +11,6 @@ type PodcastItem struct {
 	Title            string
 	Summary          string `gorm:"type:text"`
 	EpisodeType      string
-	Duration         int
 	LastPlayPosition int `gorm:"default:0"`
 	PublicationDate  time.Time
 	FileURL          string

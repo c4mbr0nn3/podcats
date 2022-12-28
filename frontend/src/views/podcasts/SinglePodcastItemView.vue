@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" justify="center">
     <v-col cols="8">
-      <v-card>
+      <v-card :loading="!isTrackLoaded">
         <div class="d-flex flex-no-wrap justify-space-between">
           <v-col cols="10">
             <v-card-title class="text-truncate">{{
@@ -17,7 +17,7 @@
             </v-avatar>
           </v-col>
         </div>
-        <div>
+        <div v-if="isTrackLoaded">
           <v-col cols="12">
             <!--qui mettiamo tutti i controlli del player da spostare in component-->
             <v-row no-gutters
@@ -76,6 +76,7 @@
                   ></v-btn>
                 </v-card-actions>
               </v-col>
+              <!-- TODO: aggiungere tasti skip avanti / indietro di 15 sec -->
               <v-col cols="3" class="d-flex justify-center align-center">
                 <v-slider
                   v-model="podcastVolume"
@@ -115,6 +116,7 @@ export default {
     Markdown,
   },
   data: () => ({
+    isTrackLoaded: false,
     podcastData: null,
     howlerData: null,
     isPlaying: false,
@@ -199,6 +201,10 @@ export default {
           loop: false,
           html5: true,
           preload: true,
+          onload: () => {
+            this.podcastData.Duration = this.howlerData.duration();
+            this.isTrackLoaded = true;
+          },
         };
         this.howlerData = new Howl(howlerConfig);
         this.setTrackSeek();
