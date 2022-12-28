@@ -171,7 +171,7 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 			Title:           item.Title,
 			Summary:         convertHtmlToMarkdown(ctx, item.Description),
 			PublicationDate: *item.PublishedParsed,
-			FileURL:         item.Enclosures[0].URL,
+			FileURL:         getSafeFileURL(item),
 			GUID:            item.GUID,
 			Image:           getSafeImageURL(item),
 		})
@@ -190,6 +190,13 @@ func (c PodcastsController) GetPodcastFake(ctx *gin.Context) {
 	fp := gofeed.NewParser()
 	feed, _ := fp.ParseURL(url)
 	ctx.JSON(http.StatusOK, feed)
+}
+
+func getSafeFileURL(item *gofeed.Item) string {
+	if item.Enclosures == nil || len(item.Enclosures) == 0 {
+		return ""
+	}
+	return item.Enclosures[0].URL
 }
 
 func getSafeImageURL(item *gofeed.Item) string {
