@@ -20,6 +20,10 @@
                 class="overflow-hidden fade"
                 :source="podcastData ? podcastData.Summary : ''"
               />
+              <v-chip label class="mt-2" color="primary" variant="outlined">
+                <v-icon start icon="mdi-calendar"></v-icon>
+                {{ formatDate(podcast.PublicationDate) }}
+              </v-chip>
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
@@ -35,6 +39,7 @@
 
 <script>
 import { getPodcastById } from "@/api";
+import { formatDate } from "@/utils/date";
 import Markdown from "vue3-markdown-it";
 
 export default {
@@ -43,6 +48,8 @@ export default {
   },
   data: () => ({
     podcastData: null,
+
+    formatDate,
   }),
   computed: {
     getPodcastItemsList() {
@@ -55,7 +62,7 @@ export default {
   methods: {
     async fetchData() {
       await getPodcastById(this.$route.params.id).then((response) => {
-        this.podcastData = response.data.data;
+        this.podcastData = response.data;
       });
     },
   },

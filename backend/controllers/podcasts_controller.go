@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"net/http"
+	"sort"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,17 @@ var Converter = md.NewConverter("", true, nil)
 
 type PodcastsController struct{}
 
+type PodcastStats struct {
+	PodcastID uint
+	IsPlayed  bool
+	Count     int
+}
+
+type PodcastStatsKey struct {
+	PodcastID uint
+	IsPlayed  bool
+}
+
 type PodcastImportDto struct {
 	PodcastUrl string `json:"podcastUrl" binding:"required"`
 }
@@ -29,7 +41,16 @@ func (c PodcastsController) GetAllPodcasts(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"data": podcasts})
+	statsMap := getPodcastsStats()
+
+	var toReturn []models.Podcast
+	for _, podcast := range podcasts {
+		podcast.PlayedCount = statsMap[PodcastStatsKey{podcast.ID, true}].Count
+		podcast.EpisodesCount = statsMap[PodcastStatsKey{podcast.ID, true}].Count + statsMap[PodcastStatsKey{podcast.ID, false}].Count
+		toReturn = append(toReturn, podcast)
+	}
+
+	ctx.JSON(http.StatusOK, toReturn)
 }
 
 func (c PodcastsController) GetLatestPodcastItems(ctx *gin.Context) {
@@ -70,10 +91,10 @@ func (c PodcastsController) GetLatestPodcastItems(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{
-		"data":      podcastItems,
-		"pageCount": pageCount,
-		"thisPage":  page,
-		"nextPage":  nextPage,
+		"podcastItems": podcastItems,
+		"pageCount":    pageCount,
+		"thisPage":     page,
+		"nextPage":     nextPage,
 	})
 }
 
@@ -85,7 +106,13 @@ func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"data": podcast})
+
+	podcastItems := podcast.PodcastItems
+	sort.Slice(podcastItems[:], func(i, j int) bool {
+		return podcastItems[i].PublicationDate.After(podcastItems[j].PublicationDate)
+	})
+
+	ctx.JSON(http.StatusOK, podcast)
 }
 
 func (c PodcastsController) GetPodcastItemById(ctx *gin.Context) {
@@ -96,7 +123,28 @@ func (c PodcastsController) GetPodcastItemById(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"data": podcastItem})
+	ctx.JSON(http.StatusOK, podcastItem)
+}
+
+func (c PodcastsController) UpdatePodcastItemPlayedTime(ctx *gin.Context) {
+	timePlayedString := ctx.DefaultQuery("time", "0")
+	timePlayed, err := strconv.Atoi(timePlayedString)
+	if err != nil || timePlayed < 0 {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+	itemId := ctx.Param("itemId")
+	var podcastItem models.PodcastItem
+	result := db.GetDb().Find(&podcastItem, itemId)
+	if result.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+		return
+	}
+
+	podcastItem.LastPlayPosition = timePlayed
+	db.GetDb().Save(&podcastItem)
+
+	ctx.Status(http.StatusOK)
 }
 
 func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
@@ -141,7 +189,7 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 func (c PodcastsController) GetPodcastFake(ctx *gin.Context) {
 	fp := gofeed.NewParser()
 	feed, _ := fp.ParseURL("https://www.spreaker.com/show/2952600/episodes/feed")
-	ctx.JSON(http.StatusOK, gin.H{"data": feed})
+	ctx.JSON(http.StatusOK, feed)
 }
 
 func getSafeImageURL(item *gofeed.Item) string {
@@ -168,3 +216,24 @@ func convertStringToInt(ctx *gin.Context, toConvert string) int {
 	}
 	return converted
 }
+
+func getPodcastsStats() map[PodcastStatsKey]PodcastStats {
+	var stats []PodcastStats
+	db.GetDb().Model(&models.PodcastItem{}).
+		Select("podcast_id, is_played, count(is_played) as count").
+		Group("podcast_id, is_played").
+		Find(&stats)
+
+	statsMap := map[PodcastStatsKey]PodcastStats{}
+	for _, v := range stats {
+		statsMap[PodcastStatsKey{v.PodcastID, v.IsPlayed}] = v
+	}
+	return statsMap
+}
+
+/*func getPodcastLastEpisode(statsMap map[PodcastStatsKey]PodcastStats, podcastID uint) time.Time {
+	if statsMap[PodcastStatsKey{podcastID, true}].LastPippo.After(statsMap[PodcastStatsKey{podcastID, false}].LastPippo) {
+		return statsMap[PodcastStatsKey{podcastID, true}].LastPippo
+	}
+	return statsMap[PodcastStatsKey{podcastID, false}].LastPippo
+}*/

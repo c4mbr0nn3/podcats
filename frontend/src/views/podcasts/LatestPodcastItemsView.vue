@@ -63,8 +63,8 @@ export default {
   methods: {
     async fetchData(pageId) {
       await getLatestPodcastItems(pageId).then((response) => {
-        if (response.data.data.length > 0) {
-          response.data.data.forEach((item) =>
+        if (response.data.podcastItems.length > 0) {
+          response.data.podcastItems.forEach((item) =>
             this.podcastItemsData.push(item)
           );
         }

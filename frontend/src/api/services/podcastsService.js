@@ -15,6 +15,13 @@ export function getPodcastById(podcastId) {
 export function getPodcastItemById(podcastId, itemId) {
   return axiosClient.get(`/podcasts/${podcastId}/item/${itemId}`);
 }
+
+export function updatePodcastItemPlayedTime(podcastId, itemId, timePlayed) {
+  return axiosClient.post(
+    `/podcasts/${podcastId}/item/${itemId}/update-played-time?time=${timePlayed}`
+  );
+}
+
 export function importPodcast(payload) {
   return axiosClient.post("/podcasts/import", payload);
 }

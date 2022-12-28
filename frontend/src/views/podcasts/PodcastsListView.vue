@@ -27,6 +27,10 @@
                     class="overflow-hidden fade"
                     :source="podcast.Summary"
                   />
+                  <v-chip label class="mt-2" color="primary" variant="outlined">
+                    <v-icon start icon="mdi-counter"></v-icon>
+                    {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
+                  </v-chip>
                 </v-card-text>
               </v-col>
               <v-col cols="2" class="d-flex justify-end ml-2">
@@ -57,7 +61,7 @@ export default {
   methods: {
     async fetchData() {
       await getAllPodcasts().then(
-        (response) => (this.podcastData = response.data.data)
+        (response) => (this.podcastData = response.data)
       );
     },
     async importPodcast() {

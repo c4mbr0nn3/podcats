@@ -31,7 +31,7 @@
                 color="primary"
                 thumb-size="15"
                 hide-details
-                @update:model-value="setTrackSeek()"
+                @update:model-value="onPodcastProgressUpdate()"
                 ><template #prepend>
                   <v-icon
                     icon="mdi-timer-outline"
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { getPodcastItemById } from "@/api";
+import { getPodcastItemById, updatePodcastItemPlayedTime } from "@/api";
 import { Howl, Howler } from "howler";
 import { intervalToDuration, formatDuration } from "date-fns";
 import Markdown from "vue3-markdown-it";
@@ -181,7 +181,8 @@ export default {
   async created() {
     await this.fetchData();
   },
-  unmounted() {
+  async unmounted() {
+    await this.updateTrackProgress();
     Howler.unload();
   },
   methods: {
@@ -190,7 +191,8 @@ export default {
         this.$route.params.id,
         this.$route.params.itemId
       ).then((response) => {
-        this.podcastData = response.data.data;
+        this.podcastData = response.data;
+        this.podcastProgress = this.podcastData.LastPlayPosition;
         let howlerConfig = {
           src: [this.podcastData.FileURL],
           volume: this.podcastVolume,
@@ -199,13 +201,30 @@ export default {
           preload: true,
         };
         this.howlerData = new Howl(howlerConfig);
+        this.setTrackSeek();
         this.timeTrackerId = setInterval(() => {
           this.podcastProgress = this.howlerData.seek();
         }, 1000);
       });
     },
+    async updateTrackProgress() {
+      await updatePodcastItemPlayedTime(
+        this.podcastData.PodcastID,
+        this.podcastData.ID,
+        Math.floor(this.podcastProgress)
+      );
+    },
+    onPodcastProgressUpdate() {
+      this.setTrackSeek();
+      this.updateTrackProgress();
+    },
     switchTrackStatus() {
-      this.isPlaying ? this.pauseTrack() : this.playTrack();
+      if (this.isPlaying) {
+        this.pauseTrack();
+        this.updateTrackProgress();
+      } else {
+        this.playTrack();
+      }
     },
     playTrack() {
       if (this.isPlaying) return;
