@@ -1,5 +1,5 @@
 server:
   port: :8000
 database:
-  path: ""
-  file: "sqlite.db"
+  path: "./db"
+  file: "podcats_sqlite.db"
