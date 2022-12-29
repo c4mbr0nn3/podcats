@@ -8,6 +8,10 @@ export function getLatestPodcastItems(pageId) {
   return axiosClient.get(`/podcasts/latest-items?page=${pageId}`);
 }
 
+export function getFavouritesPodcastItems(pageId) {
+  return axiosClient.get(`/podcasts/favourites-items?page=${pageId}`);
+}
+
 export function getPodcastById(podcastId) {
   return axiosClient.get(`/podcasts/${podcastId}`);
 }
@@ -35,6 +39,12 @@ export function setPodcastItemCompleted(podcastId, itemId) {
 export function switchPodcastItemPlayedStatus(podcastId, itemId) {
   return axiosClient.post(
     `/podcasts/${podcastId}/items/${itemId}/switch-status`
+  );
+}
+
+export function switchPodcastItemFavouriteStatus(podcastId, itemId) {
+  return axiosClient.post(
+    `/podcasts/${podcastId}/items/${itemId}/switch-fav-status`
   );
 }
 

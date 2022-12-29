@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mmcdole/gofeed"
@@ -82,6 +83,59 @@ func (c PodcastsController) GetLatestPodcastItems(ctx *gin.Context) {
 	result := db.GetDb().Limit(podcastItemsPerPage).Offset(offset).Order("publication_date desc").Find(&podcastItems)
 	if result.Error != nil {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+		return
+	}
+
+	var nextPage int
+	if page < pageCount {
+		nextPage = page + 1
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"podcastItems": podcastItems,
+		"pageCount":    pageCount,
+		"thisPage":     page,
+		"nextPage":     nextPage,
+	})
+}
+
+func (c PodcastsController) GetFavouritesPodcastItems(ctx *gin.Context) {
+	pageString := ctx.DefaultQuery("page", "1")
+	page, err := strconv.Atoi(pageString)
+	if err != nil {
+		ctx.AbortWithError(http.StatusBadRequest, err)
+		return
+	}
+
+	var podcastItemsCount int64
+	countQuery := db.GetDb().Table("podcast_items").
+		Where("bookmark_date IS NOT NULL").
+		Count(&podcastItemsCount)
+	if countQuery.Error != nil {
+		ctx.AbortWithError(http.StatusInternalServerError, countQuery.Error)
+		return
+	}
+
+	const podcastItemsPerPage = 10
+	pageCount := int(math.Ceil(float64(podcastItemsCount) / float64(podcastItemsPerPage)))
+	if pageCount == 0 {
+		pageCount = 1
+	}
+	if page < 1 || page > pageCount {
+		ctx.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	offset := (page - 1) * podcastItemsPerPage
+	var podcastItems []models.PodcastItem
+	podcastItemsQuery := db.GetDb().
+		Where("bookmark_date IS NOT NULL").
+		Limit(podcastItemsPerPage).
+		Offset(offset).
+		Order("bookmark_date desc").
+		Find(&podcastItems)
+	if podcastItemsQuery.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, podcastItemsQuery.Error)
 		return
 	}
 
@@ -228,6 +282,25 @@ func (c PodcastsController) SwitchPodcastItemPlayedStatus(ctx *gin.Context) {
 	podcastItem.IsPlayed = !podcastItem.IsPlayed
 	db.GetDb().Save(&podcastItem)
 	ctx.Status(http.StatusOK)
+}
+
+func (c PodcastsController) SwitchPodcastItemFavouriteStatus(ctx *gin.Context) {
+	itemId := ctx.Param("itemId")
+	var podcastItem models.PodcastItem
+	result := db.GetDb().Find(&podcastItem, itemId)
+	if result.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+		return
+	}
+
+	if podcastItem.BookmarkDate != nil {
+		podcastItem.BookmarkDate = nil
+	} else {
+		nowTime := time.Now()
+		podcastItem.BookmarkDate = &nowTime
+	}
+	db.GetDb().Save(&podcastItem)
+	ctx.JSON(http.StatusOK, podcastItem.BookmarkDate)
 }
 
 func (c PodcastsController) ImportPodcast(ctx *gin.Context) {

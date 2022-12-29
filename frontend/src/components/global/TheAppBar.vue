@@ -7,6 +7,8 @@
         :to="item.route"
         variant="text"
         color="primary"
+        :prepend-icon="item.icon ? item.icon : null"
+        class="mx-1"
         >{{ item.label }}
       </v-btn></v-row
     >
@@ -20,6 +22,11 @@ export default {
       { label: "Home", route: { name: "home" } },
       { label: "Podcasts", route: { name: "podcasts" } },
       { label: "Latest", route: { name: "latest-podcasts" } },
+      {
+        label: "Favs",
+        icon: "mdi-heart",
+        route: { name: "favourites-podcasts" },
+      },
     ],
   }),
 };

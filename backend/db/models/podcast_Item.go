@@ -17,6 +17,6 @@ type PodcastItem struct {
 	GUID             string
 	Image            string
 	IsPlayed         bool `gorm:"default:false"`
-	BookmarkDate     time.Time
+	BookmarkDate     *time.Time
 	PodcastID        int
 }

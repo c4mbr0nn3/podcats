@@ -2,10 +2,10 @@
   <v-row align="center" justify="center">
     <v-col cols="9">
       <v-card
-        ><v-card-title>Ultimi episodi</v-card-title>
+        ><v-card-title>Episodi preferiti</v-card-title>
         <v-card-text v-if="podcastItemsData.length > 0"
           ><v-card
-            v-for="(podcastItem, index) in podcastItemsData"
+            v-for="(podcastItem, index) in getFilteredFavs"
             :key="index"
             class="mt-3"
           >
@@ -128,7 +128,7 @@
 <script>
 import missingImage from "@/assets/missing_image.png";
 import {
-  getLatestPodcastItems,
+  getFavouritesPodcastItems,
   switchPodcastItemPlayedStatus,
   switchPodcastItemFavouriteStatus,
 } from "@/api";
@@ -147,12 +147,17 @@ export default {
 
     formatDate,
   }),
+  computed: {
+    getFilteredFavs() {
+      return this.podcastItemsData.filter((el) => el.BookmarkDate);
+    },
+  },
   async mounted() {
     await this.fetchData(1);
   },
   methods: {
     async fetchData(pageId) {
-      await getLatestPodcastItems(pageId).then((response) => {
+      await getFavouritesPodcastItems(pageId).then((response) => {
         if (response.data.podcastItems.length > 0) {
           response.data.podcastItems.forEach((item) =>
             this.podcastItemsData.push(item)

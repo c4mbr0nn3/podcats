@@ -43,6 +43,28 @@
                     >
                   </template>
                 </v-tooltip>
+                <v-tooltip
+                  :text="
+                    podcastItem.BookmarkDate
+                      ? 'Remove from favs'
+                      : 'Add to favs'
+                  "
+                  location="bottom"
+                >
+                  <template #activator="{ props }">
+                    <v-icon
+                      v-bind="props"
+                      class="mr-3"
+                      :color="podcastItem.BookmarkDate ? 'red' : 'primary'"
+                      @click="changeFavStatus(podcastItem)"
+                      >{{
+                        podcastItem.BookmarkDate
+                          ? "mdi-heart"
+                          : "mdi-heart-outline"
+                      }}</v-icon
+                    >
+                  </template>
+                </v-tooltip>
               </div>
             </v-card-text>
           </v-col>
@@ -98,6 +120,7 @@ import {
   getPodcastById,
   getPodcastItemsByPodcastId,
   switchPodcastItemPlayedStatus,
+  switchPodcastItemFavouriteStatus,
 } from "@/api";
 import { formatDate } from "@/utils/date";
 import Markdown from "vue3-markdown-it";
@@ -121,6 +144,7 @@ export default {
       return this.podcastItemsData ? this.podcastItemsData : [];
     },
   },
+  // TODO: perchè diavolo parte una chiamata con page=null?
   async created() {
     await this.fetchData();
   },
@@ -155,6 +179,12 @@ export default {
         this.$route.params.id,
         podcastItem.ID
       ).then(() => (podcastItem.IsPlayed = !podcastItem.IsPlayed));
+    },
+    async changeFavStatus(podcastItem) {
+      await switchPodcastItemFavouriteStatus(
+        this.$route.params.id,
+        podcastItem.ID
+      ).then((response) => (podcastItem.BookmarkDate = response.data));
     },
   },
 };

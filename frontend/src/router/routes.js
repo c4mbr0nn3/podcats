@@ -15,6 +15,11 @@ const routes = [
     component: () => import("@/views/podcasts/LatestPodcastItemsView"),
   },
   {
+    path: "/podcasts/favourites",
+    name: "favourites-podcasts",
+    component: () => import("@/views/podcasts/FavouritesPodcastItemsView"),
+  },
+  {
     path: "/podcasts/:id",
     name: "single-podcast",
     component: () => import("@/views/podcasts/SinglePodcastView"),
