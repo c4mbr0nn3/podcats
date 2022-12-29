@@ -3,7 +3,7 @@ package controllers
 import (
 	"example/hello/db"
 	"example/hello/db/models"
-	"log"
+	"example/hello/utils"
 	"math"
 	"net/http"
 	"sort"
@@ -334,7 +334,7 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 	feed, _ := fp.ParseURL(body.PodcastUrl)
 	podcast := models.Podcast{
 		Title:   feed.Title,
-		Summary: convertHtmlToMarkdown(ctx, feed.Description),
+		Summary: utils.ConvertHtmlToMarkdown(feed.Description),
 		Author:  feed.Author.Name,
 		Image:   feed.Image.URL,
 		URL:     feed.FeedLink,
@@ -344,11 +344,11 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 	for _, item := range feed.Items {
 		podcastItemsArray = append(podcastItemsArray, models.PodcastItem{
 			Title:           item.Title,
-			Summary:         convertHtmlToMarkdown(ctx, item.Description),
+			Summary:         utils.ConvertHtmlToMarkdown(item.Description),
 			PublicationDate: *item.PublishedParsed,
-			FileURL:         getSafeFileURL(item),
+			FileURL:         utils.GetSafeFileURL(item),
 			GUID:            item.GUID,
-			Image:           getSafeImageURL(item),
+			Image:           utils.GetSafeImageURL(item),
 		})
 	}
 	podcast.PodcastItems = podcastItemsArray
@@ -365,29 +365,6 @@ func (c PodcastsController) GetPodcastFake(ctx *gin.Context) {
 	fp := gofeed.NewParser()
 	feed, _ := fp.ParseURL(url)
 	ctx.JSON(http.StatusOK, feed)
-}
-
-func getSafeFileURL(item *gofeed.Item) string {
-	if item.Enclosures == nil || len(item.Enclosures) == 0 {
-		return ""
-	}
-	return item.Enclosures[0].URL
-}
-
-func getSafeImageURL(item *gofeed.Item) string {
-	if item.Image == nil {
-		return ""
-	}
-	return item.Image.URL
-}
-
-func convertHtmlToMarkdown(ctx *gin.Context, toConvert string) string {
-	markdown, err := Converter.ConvertString(toConvert)
-	if err != nil {
-		log.Fatal(err)
-		ctx.AbortWithError(http.StatusBadRequest, err)
-	}
-	return markdown
 }
 
 func getPodcastsStats() map[PodcastStatsKey]PodcastStats {

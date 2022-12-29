@@ -3,22 +3,24 @@ package main
 import (
 	"example/hello/config"
 	"example/hello/db"
+	"example/hello/jobs"
 	"example/hello/server"
 	"flag"
-	"fmt"
+	"log"
 	"os"
 )
 
 func main() {
 	env := flag.String("e", "dev", "")
 	flag.Usage = func() {
-		fmt.Println("Usage: podcats -e {mode}")
+		log.Println("Usage: podcats -e {mode}")
 		os.Exit(1)
 	}
 	flag.Parse()
-	fmt.Println("Environment: " + *env)
+	log.Println("Environment: " + *env)
 	config.Init(*env)
 	db.Init()
 	db.Migrate()
+	jobs.InitCron()
 	server.Init()
 }

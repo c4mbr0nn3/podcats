@@ -12,7 +12,6 @@ type Podcast struct {
 	Image         string
 	URL           string
 	PodcastItems  []PodcastItem
-	IsPaused      bool `gorm:"default:false"`
 	UserId        int
 	User          User
 	EpisodesCount int `gorm:"-"`

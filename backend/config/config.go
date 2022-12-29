@@ -1,7 +1,7 @@
 package config
 
 import (
-	"fmt"
+	"log"
 	"path/filepath"
 
 	"github.com/spf13/viper"
@@ -19,9 +19,9 @@ func Init(env string) {
 	config.SetConfigName(env)
 	err = config.ReadInConfig()
 	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %w", err))
+		log.Panicln("fatal error config file: %w", err)
 	}
-	fmt.Printf("Using config: %s\n", config.ConfigFileUsed())
+	log.Printf("Using config: %s\n", config.ConfigFileUsed())
 }
 
 func RelativePath(basedir string, path *string) {

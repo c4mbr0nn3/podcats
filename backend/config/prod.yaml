@@ -3,3 +3,5 @@ server:
 database:
   path: "./db"
   file: "podcats_sqlite.db"
+cron:
+  interval: "5m"

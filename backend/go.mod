@@ -7,6 +7,7 @@ require (
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.8.2
 	github.com/mmcdole/gofeed v1.1.3
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/viper v1.14.0
 	gorm.io/driver/sqlite v1.4.3
 	gorm.io/gorm v1.24.2
