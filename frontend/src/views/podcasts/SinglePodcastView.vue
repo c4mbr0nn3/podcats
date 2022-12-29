@@ -2,41 +2,68 @@
   <v-row align="center" justify="center">
     <v-col cols="9">
       <v-card
-        v-for="(podcast, index) in getPodcastItemsList"
+        v-for="(podcastItem, index) in getPodcastItemsList"
         :key="index"
         class="mt-3"
-        :to="{
-          name: 'single-item',
-          params: { id: $route.params.id, itemId: podcast.ID },
-        }"
       >
         <div class="d-flex flex-no-wrap justify-space-between">
           <v-col cols="10">
             <v-card-title class="text-truncate">{{
-              podcast.Title
+              podcastItem.Title
             }}</v-card-title>
-            <v-card-text
-              ><Markdown
+            <v-card-text>
+              <Markdown
                 class="overflow-hidden fade"
-                :source="podcast.Summary"
+                :source="podcastItem.Summary"
               />
-              <v-chip label class="mt-2" color="primary" variant="outlined">
-                <v-icon start icon="mdi-calendar"></v-icon>
-                {{ formatDate(podcast.PublicationDate) }}
-              </v-chip>
+              <div class="d-flex align-center mt-2">
+                <v-chip label color="primary" variant="outlined">
+                  <v-icon start icon="mdi-calendar"></v-icon>
+                  {{ formatDate(podcastItem.PublicationDate) }}
+                </v-chip>
+                <v-tooltip
+                  :text="
+                    podcastItem.IsPlayed
+                      ? 'Mark as not-played'
+                      : 'Mark as played'
+                  "
+                  location="bottom"
+                >
+                  <template #activator="{ props }">
+                    <v-icon
+                      v-bind="props"
+                      class="mx-3"
+                      :color="podcastItem.IsPlayed ? 'success' : 'primary'"
+                      @click="changeStatus(podcastItem)"
+                      >{{
+                        podcastItem.IsPlayed
+                          ? "mdi-checkbox-marked-circle-outline"
+                          : "mdi-checkbox-blank-circle-outline"
+                      }}</v-icon
+                    >
+                  </template>
+                </v-tooltip>
+              </div>
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
-            <v-avatar class="ma-3" size="125" rounded="0">
-              <v-img :src="podcast.Image ? podcast.Image : missingImage">
-                <template #placeholder>
-                  <div class="d-flex align-center justify-center fill-height">
-                    <v-progress-circular
-                      indeterminate
-                      color="primary"
-                    ></v-progress-circular></div></template
-              ></v-img>
-            </v-avatar>
+            <router-link
+              :to="{
+                name: 'single-item',
+                params: { id: $route.params.id, itemId: podcastItem.ID },
+              }"
+              ><v-avatar class="ma-3" size="125" rounded="0">
+                <v-img
+                  :src="podcastItem.Image ? podcastItem.Image : missingImage"
+                >
+                  <template #placeholder>
+                    <div class="d-flex align-center justify-center fill-height">
+                      <v-progress-circular
+                        indeterminate
+                        color="primary"
+                      ></v-progress-circular></div></template
+                ></v-img> </v-avatar
+            ></router-link>
           </v-col>
         </div>
       </v-card>
@@ -47,7 +74,11 @@
 
 <script>
 import missingImage from "@/assets/missing_image.png";
-import { getPodcastById, getPodcastItemsByPodcastId } from "@/api";
+import {
+  getPodcastById,
+  getPodcastItemsByPodcastId,
+  switchPodcastItemPlayedStatus,
+} from "@/api";
 import { formatDate } from "@/utils/date";
 import Markdown from "vue3-markdown-it";
 
@@ -95,6 +126,12 @@ export default {
     async onIntersect() {
       if (this.currentPage == this.pageCount) return;
       await this.fetchPodcastItems(this.nextPage);
+    },
+    async changeStatus(podcastItem) {
+      await switchPodcastItemPlayedStatus(
+        this.$route.params.id,
+        podcastItem.ID
+      ).then(() => (podcastItem.IsPlayed = !podcastItem.IsPlayed));
     },
   },
 };

@@ -216,6 +216,20 @@ func (c PodcastsController) SetPodcastItemCompleted(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
+func (c PodcastsController) SwitchPodcastItemPlayedStatus(ctx *gin.Context) {
+	itemId := ctx.Param("itemId")
+	var podcastItem models.PodcastItem
+	result := db.GetDb().Find(&podcastItem, itemId)
+	if result.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+		return
+	}
+
+	podcastItem.IsPlayed = !podcastItem.IsPlayed
+	db.GetDb().Save(&podcastItem)
+	ctx.Status(http.StatusOK)
+}
+
 func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 	body := PodcastImportDto{}
 

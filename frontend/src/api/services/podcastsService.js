@@ -32,6 +32,12 @@ export function setPodcastItemCompleted(podcastId, itemId) {
   );
 }
 
+export function switchPodcastItemPlayedStatus(podcastId, itemId) {
+  return axiosClient.post(
+    `/podcasts/${podcastId}/items/${itemId}/switch-status`
+  );
+}
+
 export function importPodcast(payload) {
   return axiosClient.post("/podcasts/import", payload);
 }
