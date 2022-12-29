@@ -54,6 +54,37 @@ func (c PodcastsController) GetAllPodcasts(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, toReturn)
 }
 
+func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
+	podcastId := ctx.Param("id")
+	var podcast models.Podcast
+	result := db.GetDb().Find(&podcast, podcastId)
+	if result.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, podcast)
+}
+
+func (c PodcastsController) DeletePodcastById(ctx *gin.Context) {
+	podcastId := ctx.Param("id")
+	var podcast models.Podcast
+	result := db.GetDb().Find(&podcast, podcastId)
+	if result.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, result.Error)
+		return
+	}
+	var podcastItems []models.PodcastItem
+	podcastItemsResult := db.GetDb().Where("podcast_id = ?", podcastId).Find(&podcastItems)
+	if podcastItemsResult.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, podcastItemsResult.Error)
+		return
+	}
+	db.GetDb().Delete(&podcast)
+	db.GetDb().Delete(&podcastItems)
+	ctx.Status(http.StatusOK)
+}
+
 func (c PodcastsController) GetLatestPodcastItems(ctx *gin.Context) {
 	pageString := ctx.DefaultQuery("page", "1")
 	page, err := strconv.Atoi(pageString)
@@ -150,18 +181,6 @@ func (c PodcastsController) GetFavouritesPodcastItems(ctx *gin.Context) {
 		"thisPage":     page,
 		"nextPage":     nextPage,
 	})
-}
-
-func (c PodcastsController) GetPodcastById(ctx *gin.Context) {
-	podcastId := ctx.Param("id")
-	var podcast models.Podcast
-	result := db.GetDb().Find(&podcast, podcastId)
-	if result.Error != nil {
-		ctx.AbortWithError(http.StatusBadRequest, result.Error)
-		return
-	}
-
-	ctx.JSON(http.StatusOK, podcast)
 }
 
 func (c PodcastsController) GetPodcastItemsByPodcastId(ctx *gin.Context) {

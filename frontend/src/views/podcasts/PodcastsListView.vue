@@ -15,7 +15,6 @@
             v-for="(podcast, index) in podcastData"
             :key="index"
             class="mt-3"
-            :to="{ name: 'single-podcast', params: { id: podcast.ID } }"
           >
             <div class="d-flex flex-no-wrap justify-space-between">
               <v-col cols="10">
@@ -27,27 +26,67 @@
                     class="overflow-hidden fade"
                     :source="podcast.Summary"
                   />
-                  <v-chip label class="mt-2" color="primary" variant="outlined">
-                    <v-icon start icon="mdi-counter"></v-icon>
-                    {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
-                  </v-chip>
+                  <div class="d-flex align-center mt-2">
+                    <v-chip label color="primary" variant="outlined">
+                      <v-icon start icon="mdi-counter"></v-icon>
+                      {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
+                    </v-chip>
+                    <v-tooltip text="Remove podcast" location="bottom">
+                      <template #activator="{ props }">
+                        <v-icon
+                          v-bind="props"
+                          class="mx-3"
+                          color="red"
+                          @click="deletePodcast(podcast)"
+                          >mdi-delete-outline
+                        </v-icon>
+                      </template>
+                    </v-tooltip>
+                  </div>
                 </v-card-text>
               </v-col>
               <v-col cols="2" class="d-flex justify-end ml-2">
-                <v-avatar class="ma-3" size="125" rounded="0">
-                  <v-img :src="podcast.Image ? podcast.Image : missingImage">
-                    <template #placeholder>
-                      <div
-                        class="d-flex align-center justify-center fill-height"
+                <v-hover v-slot="{ isHovering, props }"
+                  ><router-link
+                    :to="{ name: 'single-podcast', params: { id: podcast.ID } }"
+                  >
+                    <v-avatar
+                      class="ma-3"
+                      size="125"
+                      rounded="0"
+                      :class="{ 'on-hover': isHovering }"
+                      v-bind="props"
+                    >
+                      <v-img
+                        :src="podcast.Image ? podcast.Image : missingImage"
                       >
-                        <v-progress-circular
-                          indeterminate
-                          color="primary"
-                        ></v-progress-circular></div></template
-                  ></v-img>
-                </v-avatar>
-              </v-col></div></v-card
-        ></v-card-text>
+                        <template #placeholder>
+                          <div
+                            class="d-flex align-center justify-center fill-height"
+                          >
+                            <v-progress-circular
+                              indeterminate
+                              color="primary"
+                            ></v-progress-circular></div
+                        ></template>
+                        <div
+                          class="fill-height d-flex justify-center align-center"
+                        >
+                          <v-icon
+                            color="transparent"
+                            size="x-large"
+                            :class="{ 'show-btns': isHovering }"
+                            >mdi-play-circle</v-icon
+                          >
+                        </div></v-img
+                      >
+                    </v-avatar></router-link
+                  >
+                </v-hover>
+              </v-col>
+            </div></v-card
+          ></v-card-text
+        >
       </v-card>
     </v-col>
   </v-row>
@@ -55,7 +94,7 @@
 
 <script>
 import missingImage from "@/assets/missing_image.png";
-import { importPodcast, getAllPodcasts } from "@/api";
+import { importPodcast, getAllPodcasts, deletePodcastById } from "@/api";
 import Markdown from "vue3-markdown-it";
 export default {
   components: {
@@ -82,11 +121,26 @@ export default {
         this.fetchData();
       });
     },
+    async deletePodcast(podcast) {
+      await deletePodcastById(podcast.ID).then(() => this.fetchData());
+    },
   },
 };
 </script>
 
 <style scoped>
+.v-avatar {
+  transition: opacity 0.4s ease-in-out;
+}
+.v-avatar:not(.on-hover) {
+  opacity: 0.6;
+}
+
+.show-btns {
+  color: rgba(var(--v-theme-primary), 1) !important;
+  opacity: 1 !important;
+}
+
 /* https://css-tricks.com/line-clampin/ */
 .fade {
   position: relative;

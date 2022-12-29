@@ -4,16 +4,20 @@ export function getAllPodcasts() {
   return axiosClient.get("/podcasts");
 }
 
+export function getPodcastById(podcastId) {
+  return axiosClient.get(`/podcasts/${podcastId}`);
+}
+
+export function deletePodcastById(podcastId) {
+  return axiosClient.delete(`/podcasts/${podcastId}/remove`);
+}
+
 export function getLatestPodcastItems(pageId) {
   return axiosClient.get(`/podcasts/latest-items?page=${pageId}`);
 }
 
 export function getFavouritesPodcastItems(pageId) {
   return axiosClient.get(`/podcasts/favourites-items?page=${pageId}`);
-}
-
-export function getPodcastById(podcastId) {
-  return axiosClient.get(`/podcasts/${podcastId}`);
 }
 
 export function getPodcastItemsByPodcastId(podcastId, pageId) {
