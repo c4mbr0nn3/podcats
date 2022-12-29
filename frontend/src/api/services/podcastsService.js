@@ -26,6 +26,12 @@ export function updatePodcastItemPlayedTime(podcastId, itemId, timePlayed) {
   );
 }
 
+export function setPodcastItemCompleted(podcastId, itemId) {
+  return axiosClient.post(
+    `/podcasts/${podcastId}/items/${itemId}/set-completed`
+  );
+}
+
 export function importPodcast(payload) {
   return axiosClient.post("/podcasts/import", payload);
 }

@@ -80,21 +80,36 @@
                   </v-menu>
                 </v-col>
                 <v-col cols="6" class="d-flex justify-center align-center">
-                  <v-card-actions>
-                    <v-btn
-                      :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
-                      :color="isPlaying ? 'info' : 'primary'"
-                      @click="switchTrackStatus"
-                    ></v-btn
-                    ><v-btn
-                      icon="mdi-stop"
-                      color="secondary"
-                      class="mx-1"
-                      @click="stopTrack"
-                    ></v-btn>
-                  </v-card-actions>
+                  <v-btn
+                    icon="mdi-rewind-10"
+                    color="secondary"
+                    class="mx-1"
+                    variant="text"
+                    @click="moveTrackSeek(-10)"
+                  ></v-btn>
+                  <v-btn
+                    :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
+                    :color="isPlaying ? 'info' : 'primary'"
+                    size="large"
+                    class="mx-1"
+                    @click="switchTrackStatus"
+                  ></v-btn
+                  ><v-btn
+                    icon="mdi-stop"
+                    color="secondary"
+                    class="mx-1"
+                    size="large"
+                    variant="outlined"
+                    @click="stopTrack"
+                  ></v-btn>
+                  <v-btn
+                    icon="mdi-fast-forward-10"
+                    color="secondary"
+                    class="mx-1"
+                    variant="text"
+                    @click="moveTrackSeek(10)"
+                  ></v-btn>
                 </v-col>
-                <!-- TODO: aggiungere tasti skip avanti / indietro di 15 sec -->
                 <v-col cols="3" class="d-flex justify-center align-center">
                   <v-slider
                     v-model="podcastVolume"
@@ -127,7 +142,11 @@
 
 <script>
 import missingImage from "@/assets/missing_image.png";
-import { getPodcastItemById, updatePodcastItemPlayedTime } from "@/api";
+import {
+  getPodcastItemById,
+  updatePodcastItemPlayedTime,
+  setPodcastItemCompleted,
+} from "@/api";
 import { Howl, Howler } from "howler";
 import { intervalToDuration, formatDuration } from "date-fns";
 import Markdown from "vue3-markdown-it";
@@ -226,6 +245,13 @@ export default {
             this.podcastData.Duration = this.howlerData.duration();
             this.isTrackLoaded = true;
           },
+          onend: async () => {
+            await this.updateTrackProgress();
+            await setPodcastItemCompleted(
+              this.podcastData.PodcastID,
+              this.podcastData.ID
+            );
+          },
         };
         this.howlerData = new Howl(howlerConfig);
         this.setTrackSeek();
@@ -277,6 +303,10 @@ export default {
     },
     setTrackSeek() {
       this.howlerData.seek(this.podcastProgress);
+    },
+    moveTrackSeek(timeChunk) {
+      this.podcastProgress += timeChunk;
+      this.setTrackSeek();
     },
     setTrackSpeed(value) {
       this.trackSpeed = value;
