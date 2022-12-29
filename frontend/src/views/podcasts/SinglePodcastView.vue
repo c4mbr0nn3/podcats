@@ -47,23 +47,43 @@
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
-            <router-link
-              :to="{
-                name: 'single-item',
-                params: { id: $route.params.id, itemId: podcastItem.ID },
-              }"
-              ><v-avatar class="ma-3" size="125" rounded="0">
-                <v-img
-                  :src="podcastItem.Image ? podcastItem.Image : missingImage"
+            <v-hover v-slot="{ isHovering, props }"
+              ><router-link
+                :to="{
+                  name: 'single-item',
+                  params: { id: $route.params.id, itemId: podcastItem.ID },
+                }"
+                ><v-avatar
+                  class="ma-3"
+                  size="125"
+                  rounded="0"
+                  :class="{ 'on-hover': isHovering }"
+                  v-bind="props"
                 >
-                  <template #placeholder>
-                    <div class="d-flex align-center justify-center fill-height">
-                      <v-progress-circular
-                        indeterminate
-                        color="primary"
-                      ></v-progress-circular></div></template
-                ></v-img> </v-avatar
-            ></router-link>
+                  <v-img
+                    :src="podcastItem.Image ? podcastItem.Image : missingImage"
+                  >
+                    <template #placeholder>
+                      <div
+                        class="d-flex align-center justify-center fill-height"
+                      >
+                        <v-progress-circular
+                          indeterminate
+                          color="primary"
+                        ></v-progress-circular></div
+                    ></template>
+                    <div class="fill-height d-flex justify-center align-center">
+                      <v-icon
+                        color="transparent"
+                        size="x-large"
+                        :class="{ 'show-btns': isHovering }"
+                        >mdi-play-circle</v-icon
+                      >
+                    </div></v-img
+                  >
+                </v-avatar></router-link
+              >
+            </v-hover>
           </v-col>
         </div>
       </v-card>
@@ -89,6 +109,9 @@ export default {
   data: () => ({
     podcastData: null,
     podcastItemsData: [],
+    currentPage: 1,
+    nextPage: null,
+    pageCount: null,
     missingImage: missingImage,
 
     formatDate,
@@ -138,6 +161,18 @@ export default {
 </script>
 
 <style scoped>
+.v-avatar {
+  transition: opacity 0.4s ease-in-out;
+}
+.v-avatar:not(.on-hover) {
+  opacity: 0.6;
+}
+
+.show-btns {
+  color: rgba(var(--v-theme-primary), 1) !important;
+  opacity: 1 !important;
+}
+
 /* https://css-tricks.com/line-clampin/ */
 .fade {
   position: relative;
