@@ -27,7 +27,15 @@
                     :source="podcast.Summary"
                   />
                   <div class="d-flex align-center mt-2">
-                    <v-chip label color="primary" variant="outlined">
+                    <v-chip
+                      label
+                      :color="
+                        podcast.PlayedCount === podcast.EpisodesCount
+                          ? 'success'
+                          : 'primary'
+                      "
+                      variant="outlined"
+                    >
                       <v-icon start icon="mdi-counter"></v-icon>
                       {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
                     </v-chip>
