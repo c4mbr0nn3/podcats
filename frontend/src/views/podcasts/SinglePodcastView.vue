@@ -171,7 +171,7 @@ export default {
     },
     // TODO: fix doppia chiamata non voluta...
     async onIntersect() {
-      if (this.currentPage == this.pageCount) return;
+      if (this.currentPage == this.pageCount || !this.nextPage) return;
       await this.fetchPodcastItems(this.nextPage);
     },
     async changeStatus(podcastItem) {
