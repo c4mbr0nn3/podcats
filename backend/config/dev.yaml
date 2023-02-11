@@ -4,4 +4,4 @@ database:
   path: "./temp"
   file: "sqlite.db"
 cron:
-  interval: "5m"
+  interval: "1m"
