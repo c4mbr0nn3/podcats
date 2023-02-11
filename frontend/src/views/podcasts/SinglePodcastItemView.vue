@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row justify="center">
     <v-col cols="8">
       <v-card v-if="podcastData" :loading="!isTrackLoaded">
         <template #loader="{ isActive }">

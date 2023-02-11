@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" justify="center">
+  <v-row justify="center">
     <v-col cols="9">
       <v-card
         ><v-card-title>I miei podcasts</v-card-title>
