@@ -22,7 +22,7 @@ RUN npm run build
 
 FROM alpine:${ALPINE_VERSION}
 ENV GIN_MODE=release
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apk -U upgrade && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /go/src/podcats/db
 WORKDIR /go/src/podcats
 COPY backend/config config/
