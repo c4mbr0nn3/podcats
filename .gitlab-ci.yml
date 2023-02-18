@@ -41,10 +41,10 @@ build-backend:
   script:
     - go mod download
     - go mod verify
-    - go build -o /go/src/podcats/podcats
+    - go build -o build/podcats
   artifacts:
     paths:
-      - go/src/podcats/
+      - backend/build
   rules:
     - if: '$CI_COMMIT_TAG =~ /^[v]\d+.\d+.\d+/'
       when: on_success
