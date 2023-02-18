@@ -1,0 +1,71 @@
+stages:
+  - get-version
+  - build
+  - package
+
+get-app-version:
+  stage: get-version
+  image: alpine:3
+  script:
+    - echo -e "APP_VERSION=$(echo -e ${CI_COMMIT_TAG} | sed 's/^.//')" > build.env
+  artifacts:
+    reports:
+      dotenv: build.env
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^[v]\d+.\d+.\d+/'
+      when: on_success
+
+build-frontend:
+  stage: build
+  image: node:18-alpine3.17
+  before_script:
+    - cd frontend/
+  script:
+    - npm ci
+    - npx browserslist@latest --update-db
+    - npm run build
+  artifacts:
+    paths:
+      - backend/dist/
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^[v]\d+.\d+.\d+/'
+      when: on_success
+
+build-backend:
+  stage: build
+  image: golang:1.18-alpine3.17
+  before_script:
+    - apk update && apk add build-base && rm -rf /var/cache/apk/*
+    - mkdir -p /go/src/podcats
+    - cd backend/
+  script:
+    - go mod download
+    - go mod verify
+    - go build -o /go/src/podcats/podcats
+  artifacts:
+    paths:
+      - go/src/podcats/
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^[v]\d+.\d+.\d+/'
+      when: on_success
+
+package-and-push:
+  stage: package
+  needs:
+    - get-app-version
+    - build-backend
+    - build-frontend
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/gitlab.ci.Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${APP_VERSION}"
+      --destination "${CI_REGISTRY_IMAGE}:latest"
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^[v]\d+.\d+.\d+/'
+      when: on_success
+  environment:
+    name: push-to-docker-hub
