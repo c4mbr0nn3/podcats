@@ -28,6 +28,8 @@ WORKDIR /go/src/podcats
 COPY backend/config config/
 COPY --from=go-builder /go/src/podcats/podcats .
 COPY --from=vue-builder /backend/dist/ dist/
-
+RUN addgroup --gid 2000 podcats-group && adduser --uid 1000 -D "podcats-user" "podcats-group"
+RUN chown -R podcats-user:podcats-group  /go/src/podcats
+USER podcats-user:podcats-group
 EXPOSE 8000
 CMD ["./podcats","-e","prod"]
