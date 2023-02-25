@@ -5,7 +5,7 @@
 Heavily inspired by [Podgrab](https://github.com/akhilrex/podgrab).
 
 ### Tech Stack
-- GO
+- GoLang
 - VueJS 3
 - Vuetify 3
 - SQLite
