@@ -84,7 +84,7 @@
                     ><v-avatar
                       class="ma-3"
                       size="125"
-                      rounded="0"
+                      rounded="lg"
                       :class="{ 'on-hover': isHovering }"
                       v-bind="props"
                     >

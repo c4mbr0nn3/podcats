@@ -85,6 +85,18 @@ func (c PodcastsController) DeletePodcastById(ctx *gin.Context) {
 	ctx.Status(http.StatusOK)
 }
 
+func (c PodcastsController) SetAllPlayed(ctx *gin.Context) {
+	podcastId := ctx.Param("id")
+	podcastItemsResult := db.GetDb().
+		Where("podcast_id = ? AND is_played = ?", podcastId, false).
+		Updates(models.PodcastItem{IsPlayed: true})
+	if podcastItemsResult.Error != nil {
+		ctx.AbortWithError(http.StatusBadRequest, podcastItemsResult.Error)
+		return
+	}
+	ctx.Status(http.StatusOK)
+}
+
 func (c PodcastsController) GetLatestPodcastItems(ctx *gin.Context) {
 	pageString := ctx.DefaultQuery("page", "1")
 	page, err := strconv.Atoi(pageString)

@@ -39,11 +39,27 @@
                       <v-icon start icon="mdi-counter"></v-icon>
                       {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
                     </v-chip>
+                    <v-tooltip
+                      text="Mark all as played"
+                      location="bottom"
+                      :disabled="podcast.PlayedCount === podcast.EpisodesCount"
+                    >
+                      <template #activator="{ props }">
+                        <v-icon
+                          v-if="podcast.PlayedCount !== podcast.EpisodesCount"
+                          v-bind="props"
+                          class="ml-3"
+                          color="primary"
+                          @click="markAllPlayed(podcast)"
+                          >mdi-check-all
+                        </v-icon>
+                      </template>
+                    </v-tooltip>
                     <v-tooltip text="Remove podcast" location="bottom">
                       <template #activator="{ props }">
                         <v-icon
                           v-bind="props"
-                          class="mx-3"
+                          class="ml-3"
                           color="red"
                           @click="deletePodcast(podcast)"
                           >mdi-delete-outline
@@ -61,7 +77,7 @@
                     <v-avatar
                       class="ma-3"
                       size="125"
-                      rounded="0"
+                      rounded="lg"
                       :class="{ 'on-hover': isHovering }"
                       v-bind="props"
                     >
@@ -102,7 +118,12 @@
 
 <script>
 import missingImage from "@/assets/missing_image.png";
-import { importPodcast, getAllPodcasts, deletePodcastById } from "@/api";
+import {
+  importPodcast,
+  getAllPodcasts,
+  deletePodcastById,
+  setPodcastPlayed,
+} from "@/api";
 import Markdown from "vue3-markdown-it";
 export default {
   components: {
@@ -131,6 +152,9 @@ export default {
     },
     async deletePodcast(podcast) {
       await deletePodcastById(podcast.ID).then(() => this.fetchData());
+    },
+    async markAllPlayed(podcast) {
+      await setPodcastPlayed(podcast.ID).then(() => this.fetchData());
     },
   },
 };

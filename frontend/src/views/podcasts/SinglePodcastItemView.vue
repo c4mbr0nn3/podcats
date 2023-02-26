@@ -20,7 +20,7 @@
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
-            <v-avatar class="ma-3" size="125" rounded="0">
+            <v-avatar class="ma-3" size="125" rounded="lg">
               <v-img
                 :src="podcastData.Image ? podcastData.Image : missingImage"
               >

@@ -12,6 +12,10 @@ export function deletePodcastById(podcastId) {
   return axiosClient.delete(`/podcasts/${podcastId}/remove`);
 }
 
+export function setPodcastPlayed(podcastId) {
+  return axiosClient.post(`/podcasts/${podcastId}/set-all-played`);
+}
+
 export function getLatestPodcastItems(pageId) {
   return axiosClient.get(`/podcasts/latest-items?page=${pageId}`);
 }
