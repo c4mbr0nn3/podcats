@@ -117,7 +117,6 @@
 <script>
 import missingImage from "@/assets/missing_image.png";
 import {
-  getPodcastById,
   getPodcastItemsByPodcastId,
   switchPodcastItemPlayedStatus,
   switchPodcastItemFavouriteStatus,
@@ -150,9 +149,6 @@ export default {
   },
   methods: {
     async fetchData() {
-      await getPodcastById(this.$route.params.id).then((response) => {
-        this.podcastData = response.data;
-      });
       await this.fetchPodcastItems(1);
     },
     async fetchPodcastItems(pageId) {
