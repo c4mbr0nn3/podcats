@@ -49,7 +49,10 @@
         </v-card-text>
       </v-col>
       <v-col cols="2" class="d-flex justify-end ml-2">
-        <PodcastAvatar :image="podcast.Image" :podcast-id="podcast.ID" />
+        <PodcastAvatar
+          :image="podcast.Image"
+          :router-link="{ name: 'single-podcast', params: { id: podcast.ID } }"
+        />
       </v-col></div
   ></v-card>
 </template>

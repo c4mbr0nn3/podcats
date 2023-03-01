@@ -72,52 +72,17 @@
                 </v-card-text>
               </v-col>
               <v-col cols="2" class="d-flex justify-end ml-2">
-                <v-hover v-slot="{ isHovering, props }"
-                  ><router-link
-                    :to="{
-                      name: 'single-item',
-                      params: {
-                        id: podcastItem.PodcastID,
-                        itemId: podcastItem.ID,
-                      },
-                    }"
-                    ><v-avatar
-                      class="ma-3"
-                      size="125"
-                      rounded="lg"
-                      :class="{ 'on-hover': isHovering }"
-                      v-bind="props"
-                    >
-                      <v-img
-                        :src="
-                          podcastItem.Image ? podcastItem.Image : missingImage
-                        "
-                      >
-                        <template #placeholder>
-                          <div
-                            class="d-flex align-center justify-center fill-height"
-                          >
-                            <v-progress-circular
-                              indeterminate
-                              color="primary"
-                            ></v-progress-circular></div
-                        ></template>
-                        <div
-                          class="fill-height d-flex justify-center align-center"
-                        >
-                          <v-icon
-                            color="transparent"
-                            size="x-large"
-                            :class="{ 'show-btns': isHovering }"
-                            >mdi-play-circle</v-icon
-                          >
-                        </div></v-img
-                      >
-                    </v-avatar></router-link
-                  >
-                </v-hover>
-              </v-col>
-            </div></v-card
+                <PodcastAvatar
+                  :image="podcastItem.Image"
+                  :router-link="{
+                    name: 'single-item',
+                    params: {
+                      id: podcastItem.PodcastID,
+                      itemId: podcastItem.ID,
+                    },
+                  }"
+                />
+              </v-col></div></v-card
           ><v-card v-intersect="onIntersect"></v-card
         ></v-card-text>
       </v-card>
@@ -126,7 +91,6 @@
 </template>
 
 <script>
-import missingImage from "@/assets/missing_image.png";
 import {
   getLatestPodcastItems,
   switchPodcastItemPlayedStatus,
@@ -134,16 +98,18 @@ import {
 } from "@/api";
 import { formatDate } from "@/utils/date";
 import Markdown from "vue3-markdown-it";
+import PodcastAvatar from "@/components/global/PodcastAvatar.vue";
+
 export default {
   components: {
     Markdown,
+    PodcastAvatar,
   },
   data: () => ({
     podcastItemsData: [],
     currentPage: 1,
     nextPage: null,
     pageCount: null,
-    missingImage: missingImage,
 
     formatDate,
   }),

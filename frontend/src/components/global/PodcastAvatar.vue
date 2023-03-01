@@ -1,11 +1,11 @@
 <template>
-  <v-hover v-slot="{ isHovering, props }" :disabled="podcastId == -1"
-    ><router-link :to="{ name: 'single-podcast', params: { id: podcastId } }">
+  <v-hover v-slot="{ isHovering, props }" :disabled="!routerLink"
+    ><component :is="routerLink ? 'router-link' : 'span'" :to="routerLink">
       <v-avatar
         class="ma-3"
         size="125"
         rounded="lg"
-        :class="{ 'on-hover': isHovering }"
+        :class="{ 'on-hover': isHovering || !routerLink }"
         v-bind="props"
       >
         <v-img :src="image || missingImage">
@@ -25,7 +25,7 @@
             >
           </div></v-img
         >
-      </v-avatar></router-link
+      </v-avatar></component
     >
   </v-hover>
 </template>
@@ -35,7 +35,7 @@ import missingImage from "@/assets/missing_image.png";
 export default {
   props: {
     image: { type: String, default: "" },
-    podcastId: { type: Number, default: -1 },
+    routerLink: { type: Object, default: null },
   },
   data: () => ({
     missingImage: missingImage,

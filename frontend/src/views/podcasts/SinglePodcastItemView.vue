@@ -20,16 +20,7 @@
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
-            <v-avatar class="ma-3" size="125" rounded="lg">
-              <v-img :src="podcastData.Image || missingImage">
-                <template #placeholder>
-                  <div class="d-flex align-center justify-center fill-height">
-                    <v-progress-circular
-                      indeterminate
-                      color="primary"
-                    ></v-progress-circular></div></template
-              ></v-img>
-            </v-avatar>
+            <PodcastAvatar :image="podcastData.Image" />
           </v-col>
         </div>
         <div>
@@ -49,10 +40,13 @@ import missingImage from "@/assets/missing_image.png";
 import { getPodcastItemById } from "@/api";
 import Markdown from "vue3-markdown-it";
 import HowlerPlayer from "@/components/HowlerPlayer.vue";
+import PodcastAvatar from "@/components/global/PodcastAvatar.vue";
+
 export default {
   components: {
     Markdown,
     HowlerPlayer,
+    PodcastAvatar,
   },
   data: () => ({
     podcastData: null,
