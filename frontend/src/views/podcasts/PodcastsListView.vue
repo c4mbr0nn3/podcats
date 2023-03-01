@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import missingImage from "@/assets/missing_image.png";
 import { importPodcast, getAllPodcasts } from "@/api";
 import PodcastCard from "@/components/PodcastCard.vue";
 export default {
@@ -34,7 +33,6 @@ export default {
   data: () => ({
     podcastData: null,
     podcastUrl: "",
-    missingImage: missingImage,
   }),
   created() {
     this.triggerFetch();
