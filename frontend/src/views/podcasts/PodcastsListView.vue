@@ -14,10 +14,15 @@
           ><PodcastCard
             v-for="(podcast, index) in podcastData"
             :key="index + podcast.UpdatedAt"
-            :data="podcast"
-            @mark-all-played="triggerFetch()"
-            @delete-podcast="triggerFetch()"
-        /></v-card-text>
+            :podcast="podcast"
+            ><template #actions>
+              <SinglePodcastActions
+                :podcast="podcast"
+                @mark-all-played="triggerFetch()"
+                @delete-podcast="triggerFetch()"
+              /> </template
+          ></PodcastCard>
+        </v-card-text>
       </v-card>
     </v-col>
   </v-row>
@@ -26,9 +31,12 @@
 <script>
 import { importPodcast, getAllPodcasts } from "@/api";
 import PodcastCard from "@/components/PodcastCard.vue";
+import SinglePodcastActions from "@/components/global/SinglePodcastActions.vue";
+
 export default {
   components: {
     PodcastCard,
+    SinglePodcastActions,
   },
   data: () => ({
     podcastData: null,

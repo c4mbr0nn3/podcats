@@ -1,103 +1,39 @@
 <template>
   <v-row justify="center">
     <v-col cols="9">
-      <v-card
+      <PodcastCard
         v-for="(podcastItem, index) in getPodcastItemsList"
         :key="index"
         class="mt-3"
+        :podcast="podcastItem"
+        :router-link="{
+          name: 'single-item',
+          params: { id: $route.params.id, itemId: podcastItem.ID },
+        }"
       >
-        <div class="d-flex flex-no-wrap justify-space-between">
-          <v-col cols="10">
-            <v-card-title class="text-truncate">{{
-              podcastItem.Title
-            }}</v-card-title>
-            <v-card-text>
-              <Markdown
-                class="overflow-hidden fade"
-                :source="podcastItem.Summary"
-              />
-              <div class="d-flex align-center mt-2">
-                <v-chip label color="primary" variant="outlined">
-                  <v-icon start icon="mdi-calendar"></v-icon>
-                  {{ formatDate(podcastItem.PublicationDate) }}
-                </v-chip>
-                <v-tooltip
-                  :text="
-                    podcastItem.IsPlayed
-                      ? 'Mark as not-played'
-                      : 'Mark as played'
-                  "
-                  location="bottom"
-                >
-                  <template #activator="{ props }">
-                    <v-icon
-                      v-bind="props"
-                      class="mx-3"
-                      :color="podcastItem.IsPlayed ? 'success' : 'primary'"
-                      @click="changeStatus(podcastItem)"
-                      >{{
-                        podcastItem.IsPlayed
-                          ? "mdi-checkbox-marked-circle-outline"
-                          : "mdi-checkbox-blank-circle-outline"
-                      }}</v-icon
-                    >
-                  </template>
-                </v-tooltip>
-                <v-tooltip
-                  :text="
-                    podcastItem.BookmarkDate
-                      ? 'Remove from favs'
-                      : 'Add to favs'
-                  "
-                  location="bottom"
-                >
-                  <template #activator="{ props }">
-                    <v-icon
-                      v-bind="props"
-                      class="mr-3"
-                      :color="podcastItem.BookmarkDate ? 'red' : 'primary'"
-                      @click="changeFavStatus(podcastItem)"
-                      >{{
-                        podcastItem.BookmarkDate
-                          ? "mdi-heart"
-                          : "mdi-heart-outline"
-                      }}</v-icon
-                    >
-                  </template>
-                </v-tooltip>
-              </div>
-            </v-card-text>
-          </v-col>
-          <v-col cols="2" class="d-flex justify-end ml-2">
-            <PodcastAvatar
-              :image="podcastItem.Image"
-              :router-link="{
-                name: 'single-item',
-                params: { id: $route.params.id, itemId: podcastItem.ID },
-              }"
-            />
-          </v-col>
-        </div>
-      </v-card>
+        <template #actions>
+          <SingleEpisodeActions
+            :podcast-item="podcastItem"
+            @change-played-status="changeStatus($event)"
+            @change-fav-status="changeFavStatus($event)"
+          />
+        </template>
+      </PodcastCard>
       <v-card v-intersect="onIntersect"></v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import {
-  getPodcastItemsByPodcastId,
-  switchPodcastItemPlayedStatus,
-  switchPodcastItemFavouriteStatus,
-} from "@/api";
+import { getPodcastItemsByPodcastId } from "@/api";
 import { formatDate } from "@/utils/date";
-import Markdown from "vue3-markdown-it";
-import PodcastAvatar from "@/components/global/PodcastAvatar.vue";
+import PodcastCard from "@/components/PodcastCard.vue";
+import SingleEpisodeActions from "@/components/global/SingleEpisodeActions.vue";
 
 export default {
   components: {
-    Markdown,
-    PodcastAvatar,
+    PodcastCard,
+    SingleEpisodeActions,
   },
   data: () => ({
     podcastData: null,
@@ -140,17 +76,13 @@ export default {
       if (this.currentPage == this.pageCount || !this.nextPage) return;
       await this.fetchPodcastItems(this.nextPage);
     },
-    async changeStatus(podcastItem) {
-      await switchPodcastItemPlayedStatus(
-        this.$route.params.id,
-        podcastItem.ID
-      ).then(() => (podcastItem.IsPlayed = !podcastItem.IsPlayed));
+    changeStatus(event) {
+      let item = this.podcastItemsData.find((el) => el.ID == event);
+      item.IsPlayed = !item.IsPlayed;
     },
-    async changeFavStatus(podcastItem) {
-      await switchPodcastItemFavouriteStatus(
-        this.$route.params.id,
-        podcastItem.ID
-      ).then((response) => (podcastItem.BookmarkDate = response.data));
+    async changeFavStatus(event) {
+      let item = this.podcastItemsData.find((el) => el.ID == event.id);
+      item.BookmarkDate = event.bookmarkDate;
     },
   },
 };
