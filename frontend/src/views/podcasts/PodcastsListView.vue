@@ -2,15 +2,19 @@
   <v-row justify="center">
     <v-col cols="9">
       <v-card
-        ><v-card-title>I miei podcasts</v-card-title>
+        ><v-card-title>My Podcasts</v-card-title>
         <v-card-text
           ><v-text-field
             v-model="podcastUrl"
             label="Import Podcast"
-            append-inner-icon="mdi-plus"
             color="primary"
-            @click:append-inner="importPodcast"
-          ></v-text-field
+            variant="underlined"
+          >
+            <template #append-inner>
+              <v-icon color="primary" @click="importPodcast">
+                mdi-plus
+              </v-icon></template
+            ></v-text-field
           ><PodcastCard
             v-for="(podcast, index) in podcastData"
             :key="index + podcast.UpdatedAt"

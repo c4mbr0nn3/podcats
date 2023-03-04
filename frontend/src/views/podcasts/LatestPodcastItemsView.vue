@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col cols="9">
       <v-card
-        ><v-card-title>Ultimi episodi</v-card-title>
+        ><v-card-title>Latest Episodes</v-card-title>
         <v-card-text v-if="podcastItemsData.length > 0"
           ><v-card
             v-for="(podcastItem, index) in podcastItemsData"

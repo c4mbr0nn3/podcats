@@ -49,7 +49,6 @@ export default {
       return this.podcastItemsData ? this.podcastItemsData : [];
     },
   },
-  // TODO: perchè diavolo parte una chiamata con page=null?
   async created() {
     await this.fetchData();
   },
