@@ -19,6 +19,10 @@
             v-for="(podcast, index) in podcastData"
             :key="index + podcast.UpdatedAt"
             :podcast="podcast"
+            :router-link="{
+              name: 'single-podcast',
+              params: { id: podcast.ID },
+            }"
             ><template #actions>
               <SinglePodcastActions
                 :podcast="podcast"
