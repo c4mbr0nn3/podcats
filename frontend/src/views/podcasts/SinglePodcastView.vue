@@ -1,31 +1,38 @@
 <template>
   <v-row justify="center">
     <v-col cols="9">
-      <PodcastCard
-        v-for="(podcastItem, index) in getPodcastItemsList"
-        :key="index"
-        class="mt-3"
-        :podcast="podcastItem"
-        :router-link="{
-          name: 'single-item',
-          params: { id: $route.params.id, itemId: podcastItem.ID },
-        }"
-      >
-        <template #actions>
-          <SingleEpisodeActions
-            :podcast-item="podcastItem"
-            @change-played-status="changeStatus($event)"
-            @change-fav-status="changeFavStatus($event)"
-          />
-        </template>
-      </PodcastCard>
+      <v-card>
+        <v-card-title>
+          {{ getCardTitle }}
+        </v-card-title>
+        <v-card-text>
+          <PodcastCard
+            v-for="(podcastItem, index) in getPodcastItemsList"
+            :key="index"
+            class="mt-3"
+            :podcast="podcastItem"
+            :router-link="{
+              name: 'single-item',
+              params: { id: $route.params.id, itemId: podcastItem.ID },
+            }"
+          >
+            <template #actions>
+              <SingleEpisodeActions
+                :podcast-item="podcastItem"
+                @change-played-status="changeStatus($event)"
+                @change-fav-status="changeFavStatus($event)"
+              />
+            </template>
+          </PodcastCard>
+        </v-card-text>
+      </v-card>
       <v-card v-intersect="onIntersect"></v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { getPodcastItemsByPodcastId } from "@/api";
+import { getPodcastItemsByPodcastId, getPodcastById } from "@/api";
 import { formatDate } from "@/utils/date";
 import PodcastCard from "@/components/PodcastCard.vue";
 import SingleEpisodeActions from "@/components/global/SingleEpisodeActions.vue";
@@ -45,6 +52,9 @@ export default {
     formatDate,
   }),
   computed: {
+    getCardTitle() {
+      return this.podcastData ? this.podcastData.Title : "";
+    },
     getPodcastItemsList() {
       return this.podcastItemsData ? this.podcastItemsData : [];
     },
@@ -54,6 +64,9 @@ export default {
   },
   methods: {
     async fetchData() {
+      await getPodcastById(this.$route.params.id).then(
+        (response) => (this.podcastData = response.data)
+      );
       await this.fetchPodcastItems(1);
     },
     async fetchPodcastItems(pageId) {
