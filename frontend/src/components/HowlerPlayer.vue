@@ -105,7 +105,7 @@
 <script>
 import { updatePodcastItemPlayedTime, setPodcastItemCompleted } from "@/api";
 import { Howl, Howler } from "howler";
-import { intervalToDuration, formatDuration } from "date-fns";
+import { getTotalTime, getTimePlayed } from "@/utils/player";
 export default {
   props: {
     data: { type: Object, default: () => {} },
@@ -136,42 +136,10 @@ export default {
       return `${this.trackSpeed.toFixed(1)}x`;
     },
     timePlayed() {
-      if (!this.howlerData) return "00:00";
-      const duration = intervalToDuration({
-        start: 0,
-        end: this.podcastProgress * 1000,
-      });
-      const zeroPad = (num) => String(num).padStart(2, "0");
-
-      return formatDuration(duration, {
-        format: ["minutes", "seconds"],
-        // format: ["hours", "minutes", "seconds"],
-        zero: true,
-        delimiter: ":",
-        locale: {
-          formatDistance: (_token, count) => zeroPad(count),
-        },
-      });
+      return getTimePlayed(this.howlerData, this.podcastProgress);
     },
     totalTime() {
-      if (!this.podcastData) return 0;
-
-      const duration = intervalToDuration({
-        start: 0,
-        end: this.podcastData.Duration * 1000,
-      });
-
-      const zeroPad = (num) => String(num).padStart(2, "0");
-
-      return formatDuration(duration, {
-        format: ["minutes", "seconds"],
-        // format: ["hours", "minutes", "seconds"],
-        zero: true,
-        delimiter: ":",
-        locale: {
-          formatDistance: (_token, count) => zeroPad(count),
-        },
-      });
+      return getTotalTime(this.podcastData);
     },
   },
   created() {
