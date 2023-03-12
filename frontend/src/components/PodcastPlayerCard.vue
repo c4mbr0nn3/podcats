@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="8">
-      <podcast-card-base :podcast="props.podcastData"
+      <podcast-card-base :podcast="props.podcastData" :apply-fade="false"
         ><template #other>
           <div>
             <v-col cols="12">
