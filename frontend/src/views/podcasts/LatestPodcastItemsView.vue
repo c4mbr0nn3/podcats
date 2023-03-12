@@ -15,9 +15,9 @@
                   podcastItem.Title
                 }}</v-card-title>
                 <v-card-text
-                  ><Markdown
+                  ><p-markdown
                     class="overflow-hidden fade"
-                    :source="podcastItem.Summary"
+                    :markdown="podcastItem.Summary"
                   />
                   <div class="d-flex align-center mt-2">
                     <v-chip label color="primary" variant="outlined">
@@ -97,12 +97,12 @@ import {
   switchPodcastItemFavouriteStatus,
 } from "@/api";
 import { formatDate } from "@/utils/date";
-import Markdown from "vue3-markdown-it";
+import PMarkdown from "@/components/PMarkdown.vue";
 import PodcastAvatar from "@/components/global/PodcastAvatar.vue";
 
 export default {
   components: {
-    Markdown,
+    PMarkdown,
     PodcastAvatar,
   },
   data: () => ({

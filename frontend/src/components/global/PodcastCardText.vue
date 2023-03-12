@@ -1,23 +1,22 @@
 <template>
   <v-card-text
-    ><Markdown class="overflow-hidden fade" :source="summary" />
+    ><p-markdown class="overflow-hidden fade" :markdown="props.summary" />
     <div class="d-flex align-center mt-2">
       <slot name="actions"></slot>
     </div>
   </v-card-text>
 </template>
 
-<script>
-import Markdown from "vue3-markdown-it";
+<script setup>
+import { defineProps } from "vue";
+import PMarkdown from "@/components/PMarkdown.vue";
 
-export default {
-  components: {
-    Markdown,
+const props = defineProps({
+  summary: {
+    type: String,
+    required: true,
   },
-  props: {
-    summary: { type: String, default: "" },
-  },
-};
+});
 </script>
 
 <style scoped>

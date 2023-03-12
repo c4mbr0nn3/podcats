@@ -16,7 +16,7 @@
               getPodcastItemTitle
             }}</v-card-title>
             <v-card-text
-              ><Markdown :source="podcastData.Summary" />
+              ><p-markdown :markdown="podcastData.Summary" />
             </v-card-text>
           </v-col>
           <v-col cols="2" class="d-flex justify-end ml-2">
@@ -38,13 +38,13 @@
 <script>
 import missingImage from "@/assets/missing_image.png";
 import { getPodcastItemById } from "@/api";
-import Markdown from "vue3-markdown-it";
 import HowlerPlayer from "@/components/HowlerPlayer.vue";
 import PodcastAvatar from "@/components/global/PodcastAvatar.vue";
+import PMarkdown from "@/components/PMarkdown.vue";
 
 export default {
   components: {
-    Markdown,
+    PMarkdown,
     HowlerPlayer,
     PodcastAvatar,
   },

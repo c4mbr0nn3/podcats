@@ -12,11 +12,12 @@
     "@mdi/font": "^7.0.0",
     "axios": "^1.2.0",
     "date-fns": "^2.29.3",
+    "dompurify": "^3.0.1",
     "howler": "^2.2.3",
+    "marked": "^4.2.12",
     "roboto-fontface": "*",
     "vue": "^3.2.38",
     "vue-router": "^4.1.6",
-    "vue3-markdown-it": "^1.0.10",
     "vuetify": "^3.0.0",
     "webfontloader": "^1.0.0"
   },
