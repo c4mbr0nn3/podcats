@@ -349,7 +349,8 @@ func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
 		Summary: utils.ConvertHtmlToMarkdown(feed.Description),
 		Author:  feed.Author.Name,
 		Image:   feed.Image.URL,
-		URL:     feed.FeedLink,
+		ShowURL: feed.Link,
+		FeedURL: feed.FeedLink,
 	}
 
 	var podcastItemsArray []models.PodcastItem

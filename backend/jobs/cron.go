@@ -33,7 +33,7 @@ func updatePodcastItemsList() {
 		}
 
 		fp := gofeed.NewParser()
-		feed, _ := fp.ParseURL(podcast.URL)
+		feed, _ := fp.ParseURL(podcast.FeedURL)
 		var podcastItemsArray []models.PodcastItem
 		for _, item := range feed.Items {
 			if _, guidExist := guidMap[item.GUID]; guidExist {

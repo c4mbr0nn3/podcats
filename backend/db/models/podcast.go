@@ -10,7 +10,8 @@ type Podcast struct {
 	Summary       string `gorm:"type:text"`
 	Author        string
 	Image         string
-	URL           string
+	ShowURL       string
+	FeedURL       string
 	PodcastItems  []PodcastItem
 	UserId        int
 	User          User
