@@ -3,7 +3,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 import { markdownToHtml } from "@/plugins/marked";
 
 const props = defineProps({

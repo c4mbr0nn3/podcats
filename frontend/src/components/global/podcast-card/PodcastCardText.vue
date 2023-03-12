@@ -1,6 +1,6 @@
 <template>
   <v-card-text
-    ><p-markdown class="overflow-hidden fade" :markdown="props.summary" />
+    ><p-markdown :class="getSummaryStyle" :markdown="props.summary" />
     <div class="d-flex align-center mt-2">
       <slot name="actions"></slot>
     </div>
@@ -8,14 +8,25 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-import PMarkdown from "@/components/PMarkdown.vue";
+import { computed } from "vue";
+import PMarkdown from "@/components/global/PMarkdown.vue";
 
 const props = defineProps({
   summary: {
     type: String,
     required: true,
   },
+  applyFade: {
+    type: Boolean,
+    default: true,
+  },
+});
+
+const getSummaryStyle = computed(() => {
+  return {
+    "overflow-hidden": props.applyFade,
+    fade: props.applyFade,
+  };
 });
 </script>
 
