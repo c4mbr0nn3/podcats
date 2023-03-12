@@ -7,7 +7,7 @@ import { markdownToHtml } from "@/plugins/marked";
 
 const props = defineProps({
   markdown: {
-    type: String,
+    type: [String, Number],
     required: true,
   },
 });
