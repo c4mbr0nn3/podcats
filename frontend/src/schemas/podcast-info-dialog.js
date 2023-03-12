@@ -15,6 +15,11 @@ const podcastInfoDialogSchema = [
     type: "text",
   },
   {
+    label: "Latest Episode",
+    key: "LatestEpisode",
+    type: "date",
+  },
+  {
     label: "Show URL",
     key: "ShowURL",
     type: "text",

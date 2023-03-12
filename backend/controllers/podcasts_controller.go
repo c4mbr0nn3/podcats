@@ -3,11 +3,13 @@ package controllers
 import (
 	"example/hello/db"
 	"example/hello/db/models"
+	"example/hello/dto"
 	"example/hello/utils"
 	"math"
 	"net/http"
 	"sort"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -20,21 +22,6 @@ var Converter = md.NewConverter("", true, nil)
 
 type PodcastsController struct{}
 
-type PodcastStats struct {
-	PodcastID uint
-	IsPlayed  bool
-	Count     int
-}
-
-type PodcastStatsKey struct {
-	PodcastID uint
-	IsPlayed  bool
-}
-
-type PodcastImportDto struct {
-	PodcastUrl string `json:"podcastUrl" binding:"required"`
-}
-
 func (c PodcastsController) GetAllPodcasts(ctx *gin.Context) {
 	var podcasts []models.Podcast
 	result := db.GetDb().Find(&podcasts)
@@ -42,14 +29,18 @@ func (c PodcastsController) GetAllPodcasts(ctx *gin.Context) {
 		ctx.AbortWithError(http.StatusBadRequest, result.Error)
 		return
 	}
-	statsMap := getPodcastsStats()
+	podcastStatMap := getPodcastsStats()
 
 	var toReturn []models.Podcast
 	for _, podcast := range podcasts {
-		podcast.PlayedCount = statsMap[PodcastStatsKey{podcast.ID, true}].Count
-		podcast.EpisodesCount = statsMap[PodcastStatsKey{podcast.ID, true}].Count + statsMap[PodcastStatsKey{podcast.ID, false}].Count
+		stats := podcastStatMap[podcast.ID]
+		counters := stats.Counters
+		podcast.PlayedCount = counters[dto.PodcastStatsKey{PodcastID: podcast.ID, IsPlayed: true}].Count
+		podcast.EpisodesCount = counters[dto.PodcastStatsKey{PodcastID: podcast.ID, IsPlayed: true}].Count + counters[dto.PodcastStatsKey{PodcastID: podcast.ID, IsPlayed: false}].Count
+		podcast.LatestEpisode, _ = time.Parse("2006-01-02 15:04:05", strings.Split(stats.PodcastStats.LatestEpisode, "+")[0])
 		toReturn = append(toReturn, podcast)
 	}
+	sort.Slice(toReturn[:], func(i int, j int) bool { return toReturn[i].LatestEpisode.After(toReturn[j].LatestEpisode) })
 
 	ctx.JSON(http.StatusOK, toReturn)
 }
@@ -335,7 +326,7 @@ func (c PodcastsController) SwitchPodcastItemFavouriteStatus(ctx *gin.Context) {
 }
 
 func (c PodcastsController) ImportPodcast(ctx *gin.Context) {
-	body := PodcastImportDto{}
+	body := dto.PodcastImportDto{}
 
 	if err := ctx.BindJSON(&body); err != nil {
 		ctx.AbortWithError(http.StatusBadRequest, err)
@@ -380,23 +371,34 @@ func (c PodcastsController) GetPodcastFake(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, feed)
 }
 
-func getPodcastsStats() map[PodcastStatsKey]PodcastStats {
-	var stats []PodcastStats
+func getPodcastsStats() map[uint]dto.PodcastStatsDetail {
+	var podcastStats []dto.PodcastStats
+	db.GetDb().Model(&models.PodcastItem{}).
+		Select("podcast_id, MAX(publication_date) as latest_episode").
+		Group("podcast_id").
+		Find(&podcastStats)
+
+	var playedStatus []dto.PodcastPlayedStatus
 	db.GetDb().Model(&models.PodcastItem{}).
 		Select("podcast_id, is_played, count(is_played) as count").
 		Group("podcast_id, is_played").
-		Find(&stats)
+		Find(&playedStatus)
 
-	statsMap := map[PodcastStatsKey]PodcastStats{}
-	for _, v := range stats {
-		statsMap[PodcastStatsKey{v.PodcastID, v.IsPlayed}] = v
+	statusMap := map[dto.PodcastStatsKey]dto.PodcastPlayedStatus{}
+	for _, v := range playedStatus {
+		statusMap[dto.PodcastStatsKey{PodcastID: v.PodcastID, IsPlayed: v.IsPlayed}] = v
+	}
+
+	statsMap := map[uint]dto.PodcastStatsDetail{}
+	for _, v := range podcastStats {
+		y := dto.PodcastStatsDetail{PodcastStats: v, Counters: map[dto.PodcastStatsKey]dto.PodcastPlayedStatus{}}
+		statsMap[v.PodcastID] = y
+		if x, found := statusMap[dto.PodcastStatsKey{PodcastID: v.PodcastID, IsPlayed: true}]; found {
+			y.Counters[dto.PodcastStatsKey{PodcastID: v.PodcastID, IsPlayed: true}] = x
+		}
+		if x, found := statusMap[dto.PodcastStatsKey{PodcastID: v.PodcastID, IsPlayed: false}]; found {
+			y.Counters[dto.PodcastStatsKey{PodcastID: v.PodcastID, IsPlayed: false}] = x
+		}
 	}
 	return statsMap
 }
-
-/*func getPodcastLastEpisode(statsMap map[PodcastStatsKey]PodcastStats, podcastID uint) time.Time {
-	if statsMap[PodcastStatsKey{podcastID, true}].LastPippo.After(statsMap[PodcastStatsKey{podcastID, false}].LastPippo) {
-		return statsMap[PodcastStatsKey{podcastID, true}].LastPippo
-	}
-	return statsMap[PodcastStatsKey{podcastID, false}].LastPippo
-}*/
