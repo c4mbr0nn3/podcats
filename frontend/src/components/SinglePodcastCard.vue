@@ -1,10 +1,14 @@
 <template>
-  <podcast-card-base :podcast="props.podcast" :router-link="getRouterLink"
+  <podcast-card-base
+    :podcast="props.podcast"
+    :router-link="getRouterLink"
+    show-info-button
     ><template #actions>
       <single-podcast-actions
         :podcast="props.podcast"
         @mark-all-played="$emit('mark-all-played')"
         @delete-podcast="$emit('delete-podcast')"
+        @show-info-dialog="$emit('show-info-dialog', $event)"
       /> </template
   ></podcast-card-base>
 </template>
@@ -14,7 +18,7 @@ import { computed } from "vue";
 import PodcastCardBase from "@/components/global/podcast-card/PodcastCardBase.vue";
 import SinglePodcastActions from "@/components/global/podcast-card/SinglePodcastActions.vue";
 
-defineEmits(["mark-all-played", "delete-podcast"]);
+defineEmits(["mark-all-played", "delete-podcast", "show-info-dialog"]);
 
 const props = defineProps({
   podcast: {

@@ -9,6 +9,17 @@
     <v-icon start icon="mdi-counter"></v-icon>
     {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
   </v-chip>
+  <v-tooltip text="Show podcast info" location="bottom">
+    <template #activator="{ props }">
+      <v-icon
+        v-bind="props"
+        class="ml-3"
+        color="primary"
+        @click="$emit('show-info-dialog', podcast)"
+        >mdi-information-outline
+      </v-icon>
+    </template>
+  </v-tooltip>
   <v-tooltip
     text="Mark all as played"
     location="bottom"
@@ -45,7 +56,7 @@ export default {
   props: {
     podcast: { type: Object, default: () => {} },
   },
-  emits: ["delete-podcast", "mark-all-played"],
+  emits: ["delete-podcast", "mark-all-played", "show-info-dialog"],
   methods: {
     async deletePodcast(podcast) {
       await deletePodcastById(podcast.ID).then(() =>

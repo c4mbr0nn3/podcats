@@ -21,9 +21,37 @@
             :podcast="podcast"
             @mark-all-played="triggerFetch"
             @delete-podcast="triggerFetch"
+            @show-info-dialog="showInfoDialog"
           />
         </v-card-text>
       </v-card>
+      <v-dialog v-model="infoDialog" width="700">
+        <v-card>
+          <v-card-title>Podcast Info</v-card-title>
+          <v-card-text>
+            <div class="text-h6 font-italic text-primary">Title</div>
+            <p-markdown :markdown="infoDialogData.Title" />
+            <v-divider class="my-1"></v-divider>
+            <div class="text-h6 font-italic text-primary">Author</div>
+            <p-markdown :markdown="infoDialogData.Author" />
+            <v-divider class="my-1"></v-divider>
+            <div class="text-h6 font-italic text-primary">Summary</div>
+            <p-markdown :markdown="infoDialogData.Summary" />
+            <v-divider class="my-1"></v-divider>
+            <div class="text-h6 font-italic text-primary">Show URL</div>
+            <p-markdown :markdown="infoDialogData.ShowURL" />
+            <v-divider class="my-1"></v-divider>
+            <div class="text-h6 font-italic text-primary">Imported At</div>
+            <p-markdown :markdown="formatDate(infoDialogData.CreatedAt)" />
+            <v-divider class="my-1"></v-divider>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" block @click="infoDialog = false"
+              >Close</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>
@@ -31,14 +59,20 @@
 <script>
 import { importPodcast, getAllPodcasts } from "@/api";
 import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
+import PMarkdown from "@/components/global/PMarkdown.vue";
+import { formatDate } from "@/utils/date";
 
 export default {
   components: {
     SinglePodcastCard,
+    PMarkdown,
   },
   data: () => ({
     podcastData: null,
     podcastUrl: "",
+    infoDialog: false,
+    infoDialogData: null,
+    formatDate,
   }),
   created() {
     this.triggerFetch();
@@ -58,6 +92,14 @@ export default {
         this.podcastUrl = null;
         this.fetchData();
       });
+    },
+    showInfoDialog(event) {
+      this.infoDialogData = event;
+      this.infoDialog = true;
+    },
+    closeInfoDialog() {
+      this.infoDialogData = null;
+      this.infoDialog = false;
     },
   },
 };
