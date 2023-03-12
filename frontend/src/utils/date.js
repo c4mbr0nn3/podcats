@@ -6,3 +6,8 @@ export function formatDate(dateString) {
   if (distanceFromNow > 7) return formatISO(date, { representation: "date" });
   return formatDistanceToNow(date) + " ago";
 }
+
+export function formatDateToIso(dateString) {
+  let date = new Date(dateString);
+  return formatISO(date, { representation: "date" });
+}

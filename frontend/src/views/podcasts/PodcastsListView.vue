@@ -27,7 +27,6 @@
       </v-card>
       <v-dialog v-model="infoDialog" width="700">
         <v-card>
-          <v-card-title>Podcast Info</v-card-title>
           <v-card-text>
             <div class="text-h6 font-italic text-primary">Title</div>
             <p-markdown :markdown="infoDialogData.Title" />
@@ -41,8 +40,16 @@
             <div class="text-h6 font-italic text-primary">Show URL</div>
             <p-markdown :markdown="infoDialogData.ShowURL" />
             <v-divider class="my-1"></v-divider>
+            <div class="text-h6 font-italic text-primary">
+              How many episodes?
+            </div>
+            <p-markdown :markdown="infoDialogData.EpisodesCount" />
+            <v-divider class="my-1"></v-divider>
+            <div class="text-h6 font-italic text-primary">How many played?</div>
+            <p-markdown :markdown="infoDialogData.PlayedCount" />
+            <v-divider class="my-1"></v-divider>
             <div class="text-h6 font-italic text-primary">Imported At</div>
-            <p-markdown :markdown="formatDate(infoDialogData.CreatedAt)" />
+            <p-markdown :markdown="formatDateToIso(infoDialogData.CreatedAt)" />
             <v-divider class="my-1"></v-divider>
           </v-card-text>
           <v-card-actions>
@@ -60,7 +67,7 @@
 import { importPodcast, getAllPodcasts } from "@/api";
 import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
 import PMarkdown from "@/components/global/PMarkdown.vue";
-import { formatDate } from "@/utils/date";
+import { formatDateToIso } from "@/utils/date";
 
 export default {
   components: {
@@ -72,7 +79,7 @@ export default {
     podcastUrl: "",
     infoDialog: false,
     infoDialogData: null,
-    formatDate,
+    formatDateToIso,
   }),
   created() {
     this.triggerFetch();

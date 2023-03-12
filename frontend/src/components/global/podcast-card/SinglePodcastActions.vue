@@ -16,7 +16,7 @@
         class="ml-3"
         color="primary"
         @click="$emit('show-info-dialog', podcast)"
-        >mdi-information-outline
+        >mdi-information-variant
       </v-icon>
     </template>
   </v-tooltip>
