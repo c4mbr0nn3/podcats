@@ -6,24 +6,15 @@
           {{ getCardTitle }}
         </v-card-title>
         <v-card-text>
-          <PodcastCard
+          <SinglePodcastItemCard
             v-for="(podcastItem, index) in getPodcastItemsList"
             :key="index"
             class="mt-3"
-            :podcast="podcastItem"
-            :router-link="{
-              name: 'single-item',
-              params: { id: $route.params.id, itemId: podcastItem.ID },
-            }"
-          >
-            <template #actions>
-              <SingleEpisodeActions
-                :podcast-item="podcastItem"
-                @change-played-status="changeStatus($event)"
-                @change-fav-status="changeFavStatus($event)"
-              />
-            </template>
-          </PodcastCard>
+            :podcast-id="$route.params.id"
+            :podcast-item="podcastItem"
+            @change-fav-status="changeFavStatus"
+            @change-played-status="changePlayedStatus"
+          />
         </v-card-text>
       </v-card>
       <v-card v-intersect="onIntersect"></v-card>
@@ -33,14 +24,11 @@
 
 <script>
 import { getPodcastItemsByPodcastId, getPodcastById } from "@/api";
-import { formatDate } from "@/utils/date";
-import PodcastCard from "@/components/PodcastCard.vue";
-import SingleEpisodeActions from "@/components/global/SingleEpisodeActions.vue";
+import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
 
 export default {
   components: {
-    PodcastCard,
-    SingleEpisodeActions,
+    SinglePodcastItemCard,
   },
   data: () => ({
     podcastData: null,
@@ -48,8 +36,6 @@ export default {
     currentPage: 1,
     nextPage: null,
     pageCount: null,
-
-    formatDate,
   }),
   computed: {
     getCardTitle() {
@@ -88,48 +74,14 @@ export default {
       if (this.currentPage == this.pageCount || !this.nextPage) return;
       await this.fetchPodcastItems(this.nextPage);
     },
-    changeStatus(event) {
+    changePlayedStatus(event) {
       let item = this.podcastItemsData.find((el) => el.ID == event);
       item.IsPlayed = !item.IsPlayed;
     },
-    async changeFavStatus(event) {
+    changeFavStatus(event) {
       let item = this.podcastItemsData.find((el) => el.ID == event.id);
       item.BookmarkDate = event.bookmarkDate;
     },
   },
 };
 </script>
-
-<style scoped>
-.v-avatar {
-  transition: opacity 0.4s ease-in-out;
-}
-.v-avatar:not(.on-hover) {
-  opacity: 0.6;
-}
-
-.show-btns {
-  color: rgba(var(--v-theme-primary), 1) !important;
-  opacity: 1 !important;
-}
-
-/* https://css-tricks.com/line-clampin/ */
-.fade {
-  position: relative;
-  height: 6em; /* exactly four lines with line height = 1.5*/
-}
-.fade:after {
-  content: "";
-  text-align: right;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 70%;
-  height: 1.5em;
-  background: linear-gradient(
-    to right,
-    rgba(var(--v-theme-surface), 0),
-    rgba(var(--v-theme-surface), 1) 50%
-  );
-}
-</style>

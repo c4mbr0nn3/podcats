@@ -15,21 +15,13 @@
                 mdi-plus
               </v-icon></template
             ></v-text-field
-          ><PodcastCard
+          ><single-podcast-card
             v-for="(podcast, index) in podcastData"
             :key="index + podcast.UpdatedAt"
             :podcast="podcast"
-            :router-link="{
-              name: 'single-podcast',
-              params: { id: podcast.ID },
-            }"
-            ><template #actions>
-              <SinglePodcastActions
-                :podcast="podcast"
-                @mark-all-played="triggerFetch()"
-                @delete-podcast="triggerFetch()"
-              /> </template
-          ></PodcastCard>
+            @mark-all-played="triggerFetch"
+            @delete-podcast="triggerFetch"
+          />
         </v-card-text>
       </v-card>
     </v-col>
@@ -38,13 +30,11 @@
 
 <script>
 import { importPodcast, getAllPodcasts } from "@/api";
-import PodcastCard from "@/components/PodcastCard.vue";
-import SinglePodcastActions from "@/components/global/SinglePodcastActions.vue";
+import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
 
 export default {
   components: {
-    PodcastCard,
-    SinglePodcastActions,
+    SinglePodcastCard,
   },
   data: () => ({
     podcastData: null,

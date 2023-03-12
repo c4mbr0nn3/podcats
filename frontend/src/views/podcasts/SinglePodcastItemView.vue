@@ -1,74 +1,22 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="8">
-      <v-card v-if="podcastData">
-        <template #loader="{ isActive }">
-          <v-progress-linear
-            :active="isActive"
-            color="primary"
-            height="4"
-            indeterminate
-          ></v-progress-linear>
-        </template>
-        <div class="d-flex flex-no-wrap justify-space-between">
-          <v-col cols="10">
-            <v-card-title class="text-truncate">{{
-              getPodcastItemTitle
-            }}</v-card-title>
-            <v-card-text
-              ><p-markdown :markdown="podcastData.Summary" />
-            </v-card-text>
-          </v-col>
-          <v-col cols="2" class="d-flex justify-end ml-2">
-            <PodcastAvatar :image="podcastData.Image" />
-          </v-col>
-        </div>
-        <div>
-          <v-col cols="12">
-            <v-card-text>
-              <HowlerPlayer v-if="podcastData" :data="podcastData" />
-            </v-card-text>
-          </v-col>
-        </div>
-      </v-card>
-    </v-col>
-  </v-row>
+  <podcast-player-card v-if="podcastData" :podcast-data="podcastData" />
 </template>
 
-<script>
-import missingImage from "@/assets/missing_image.png";
+<script setup>
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { getPodcastItemById } from "@/api";
-import HowlerPlayer from "@/components/HowlerPlayer.vue";
-import PodcastAvatar from "@/components/global/PodcastAvatar.vue";
-import PMarkdown from "@/components/PMarkdown.vue";
+import PodcastPlayerCard from "@/components/PodcastPlayerCard.vue";
 
-export default {
-  components: {
-    PMarkdown,
-    HowlerPlayer,
-    PodcastAvatar,
-  },
-  data: () => ({
-    podcastData: null,
-    missingImage: missingImage,
-  }),
-  computed: {
-    getPodcastItemTitle() {
-      return this.podcastData ? this.podcastData.Title : "";
-    },
-  },
-  async created() {
-    await this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      await getPodcastItemById(
-        this.$route.params.id,
-        this.$route.params.itemId
-      ).then((response) => {
-        this.podcastData = response.data;
-      });
-    },
-  },
-};
+const route = useRoute();
+
+let podcastData = ref(null);
+
+onMounted(async () => {
+  await getPodcastItemById(route.params.id, route.params.itemId).then(
+    (response) => {
+      podcastData.value = response.data;
+    }
+  );
+});
 </script>

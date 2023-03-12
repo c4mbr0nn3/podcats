@@ -13,7 +13,7 @@
           v-bind="props"
           class="mx-3"
           :color="podcastItem.IsPlayed ? 'success' : 'primary'"
-          @click="changeStatus(podcastItem)"
+          @click="changePlayedStatus(podcastItem)"
           >{{
             podcastItem.IsPlayed
               ? "mdi-checkbox-marked-circle-outline"
@@ -57,15 +57,15 @@ export default {
     formatDate,
   }),
   methods: {
-    async changeStatus(podcastItem) {
+    async changePlayedStatus(podcastItem) {
       await switchPodcastItemPlayedStatus(
-        this.$route.params.id,
+        podcastItem.PodcastID,
         podcastItem.ID
       ).then(() => this.$emit("change-played-status", podcastItem.ID));
     },
     async changeFavStatus(podcastItem) {
       await switchPodcastItemFavouriteStatus(
-        this.$route.params.id,
+        podcastItem.PodcastID,
         podcastItem.ID
       ).then((response) =>
         this.$emit("change-fav-status", {
