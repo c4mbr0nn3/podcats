@@ -9,8 +9,7 @@ export function getTimePlayed(howlerData, podcastProgress) {
   const zeroPad = (num) => String(num).padStart(2, "0");
 
   return formatDuration(duration, {
-    format: ["minutes", "seconds"],
-    // format: ["hours", "minutes", "seconds"],
+    format: getFormat(podcastProgress),
     zero: true,
     delimiter: ":",
     locale: {
@@ -30,12 +29,17 @@ export function getTotalTime(podcastData) {
   const zeroPad = (num) => String(num).padStart(2, "0");
 
   return formatDuration(duration, {
-    format: ["minutes", "seconds"],
-    // format: ["hours", "minutes", "seconds"],
+    format: getFormat(podcastData.Duration),
     zero: true,
     delimiter: ":",
     locale: {
       formatDistance: (_token, count) => zeroPad(count),
     },
   });
+}
+
+function getFormat(duration) {
+  return duration > 3600
+    ? ["hours", "minutes", "seconds"]
+    : ["minutes", "seconds"];
 }
