@@ -21,11 +21,7 @@
         />
       </v-col>
     </div>
-    <div>
-      <v-col cols="12">
-        <v-card-text><slot name="other"></slot> </v-card-text>
-      </v-col>
-    </div>
+    <slot name="other"></slot>
   </v-card>
 </template>
 

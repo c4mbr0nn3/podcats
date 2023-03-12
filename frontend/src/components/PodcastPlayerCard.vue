@@ -2,7 +2,14 @@
   <v-row justify="center">
     <v-col cols="8">
       <podcast-card-base :podcast="props.podcastData"
-        ><template #other> <HowlerPlayer :data="props.podcastData" /></template
+        ><template #other>
+          <div>
+            <v-col cols="12">
+              <v-card-text>
+                <HowlerPlayer :data="props.podcastData"
+              /></v-card-text>
+            </v-col>
+          </div> </template
       ></podcast-card-base>
     </v-col>
   </v-row>
