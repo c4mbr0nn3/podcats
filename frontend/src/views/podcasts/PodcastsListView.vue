@@ -97,10 +97,6 @@ export default {
       this.infoDialogData = event;
       this.infoDialog = true;
     },
-    closeInfoDialog() {
-      this.infoDialogData = null;
-      this.infoDialog = false;
-    },
   },
 };
 </script>
