@@ -11,8 +11,8 @@ type PodcastItem struct {
 	Title            string
 	Summary          string `gorm:"type:text"`
 	EpisodeType      string
-	LastPlayPosition int `gorm:"default:0"`
-	PublicationDate  time.Time
+	LastPlayPosition int       `gorm:"default:0"`
+	PublicationDate  time.Time `gorm:"type:datetime"`
 	FileURL          string
 	GUID             string
 	Image            string

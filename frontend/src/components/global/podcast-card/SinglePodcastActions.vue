@@ -9,6 +9,10 @@
     <v-icon start icon="mdi-counter"></v-icon>
     {{ `${podcast.PlayedCount}/${podcast.EpisodesCount}` }}
   </v-chip>
+  <v-chip label color="primary" variant="outlined" class="ml-3">
+    <v-icon start icon="mdi-calendar"></v-icon>
+    {{ formatDateToIso(podcast.LatestEpisode) }}
+  </v-chip>
   <v-tooltip text="Show podcast info" location="bottom">
     <template #activator="{ props }">
       <v-icon
@@ -51,12 +55,18 @@
 
 <script>
 import { deletePodcastById, setPodcastPlayed } from "@/api";
+import { formatDateToIso } from "@/utils/date";
 
 export default {
   props: {
     podcast: { type: Object, default: () => {} },
   },
   emits: ["delete-podcast", "mark-all-played", "show-info-dialog"],
+  data() {
+    return {
+      formatDateToIso,
+    };
+  },
   methods: {
     async deletePodcast(podcast) {
       await deletePodcastById(podcast.ID).then(() =>

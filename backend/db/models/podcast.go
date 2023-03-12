@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -15,6 +17,7 @@ type Podcast struct {
 	PodcastItems  []PodcastItem
 	UserId        int
 	User          User
-	EpisodesCount int `gorm:"-"`
-	PlayedCount   int `gorm:"-"`
+	EpisodesCount int       `gorm:"-"`
+	PlayedCount   int       `gorm:"-"`
+	LatestEpisode time.Time `gorm:"-"`
 }

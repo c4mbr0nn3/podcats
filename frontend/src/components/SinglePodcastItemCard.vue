@@ -18,7 +18,7 @@ import SingleEpisodeActions from "@/components/global/podcast-card/SingleEpisode
 defineEmits(["change-played-status", "change-fav-status"]);
 
 const props = defineProps({
-  podcastId: { type: String, required: true },
+  podcastId: { type: [String, Number], required: true },
   podcastItem: {
     type: Object,
     required: true,
