@@ -155,6 +155,7 @@ export default {
         this.isTrackLoaded = true;
       },
       onend: async () => {
+        this.isPlaying = false;
         await this.updateTrackProgress();
         await setPodcastItemCompleted(
           this.podcastData.PodcastID,
