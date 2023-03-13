@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  podcats:
+    image: j1mm0/podcats:latest
+    container_name: podcats
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - ${PWD}/podcats-db/:/go/src/podcats/db
