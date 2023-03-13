@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "1.0.0",
   "scripts": {
+    "start": "vite build --watch --emptyOutDir --mode development",
     "dev": "vite build --watch --emptyOutDir --mode development",
     "build": "vite build --emptyOutDir",
     "preview": "vite preview",
