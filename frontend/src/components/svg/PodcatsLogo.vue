@@ -2,8 +2,8 @@
   <svg
     id="Layer_1"
     version="1.1"
-    width="256"
-    height="256"
+    :width="props.width"
+    :height="props.height"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     x="0px"
@@ -81,3 +81,16 @@
     <g></g>
   </svg>
 </template>
+
+<script setup>
+const props = defineProps({
+  height: {
+    type: Number,
+    required: true,
+  },
+  width: {
+    type: Number,
+    required: true,
+  },
+});
+</script>
