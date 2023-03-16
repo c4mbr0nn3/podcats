@@ -1,6 +1,6 @@
 <template>
   <v-app
-    ><TheAppBarVue />
+    ><TheAppBar />
     <v-main>
       <v-container :class="getMainContainerClass"
         ><router-view></router-view
@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import TheAppBarVue from "./components/global/TheAppBar.vue";
+import TheAppBar from "./components/global/TheAppBar.vue";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 
