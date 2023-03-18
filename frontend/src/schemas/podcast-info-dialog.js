@@ -1,10 +1,5 @@
 const podcastInfoDialogSchema = [
   {
-    label: "Title",
-    key: "Title",
-    type: "text",
-  },
-  {
     label: "Author",
     key: "Author",
     type: "text",
