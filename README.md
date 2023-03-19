@@ -6,7 +6,7 @@
 
 # Podcats
 
-A podcast player with cats, heavily inspired by [Podgrab](https://github.com/akhilrex/podgrab).
+A podcast player with cats, inspired by [Podgrab](https://github.com/akhilrex/podgrab).
 
 I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some GoLang skill (still very basic, tho), that's why I started this project.
 
@@ -20,11 +20,16 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 
 ## Features
 
-As of now, it just aggregates podcasts from RSS feeds, store them in the SQLite database and reproduces them. 😃
+- Import podcasts RSS feed and store them in the database
+- Cron job keeps podcasts updated
+- Reproduce podcasts (o rly?)
 
 ## Roadmap
 
-- Who knows? 😉
+- Search and import new podcasts from iTunes API
+- Import/Export OPML
+- Multi user
+- Mobile UI
 
 ## Deployment
 
