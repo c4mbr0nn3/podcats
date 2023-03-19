@@ -11,16 +11,16 @@
             variant="underlined"
           >
             <template #append-inner>
-              <v-icon color="primary" @click="importPodcast">
+              <v-icon color="primary" @click="triggerImport">
                 mdi-plus
               </v-icon></template
             ></v-text-field
           ><single-podcast-card
-            v-for="(podcast, index) in podcastData"
+            v-for="(podcast, index) in podcastsStore.getPodcasts"
             :key="index + podcast.UpdatedAt"
             :podcast="podcast"
-            @mark-all-played="triggerFetch"
-            @delete-podcast="triggerFetch"
+            @mark-all-played="refreshPodcastList"
+            @delete-podcast="refreshPodcastList"
             @show-info-dialog="showInfoDialog"
           />
         </v-card-text>
@@ -35,45 +35,34 @@
   </v-row>
 </template>
 
-<script>
-import { importPodcast, getAllPodcasts } from "@/api";
+<script setup>
+import { ref } from "vue";
+import { importPodcast } from "@/api";
 import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
 import PodcastInfoDialog from "@/components/PodcastInfoDialog.vue";
+import { usePodcastsStore } from "@/stores/podcasts";
 
-export default {
-  components: {
-    SinglePodcastCard,
-    PodcastInfoDialog,
-  },
-  data: () => ({
-    podcastData: null,
-    podcastUrl: "",
-    infoDialog: false,
-    infoDialogData: null,
-  }),
-  created() {
-    this.triggerFetch();
-  },
-  methods: {
-    async triggerFetch() {
-      await this.fetchData();
-    },
-    async fetchData() {
-      await getAllPodcasts().then(
-        (response) => (this.podcastData = response.data)
-      );
-    },
-    async importPodcast() {
-      let payload = { podcastUrl: this.podcastUrl };
-      await importPodcast(payload).then(() => {
-        this.podcastUrl = null;
-        this.fetchData();
-      });
-    },
-    showInfoDialog(event) {
-      this.infoDialogData = event;
-      this.infoDialog = true;
-    },
-  },
-};
+const podcastUrl = ref("");
+const infoDialog = ref(false);
+const infoDialogData = ref(null);
+
+const podcastsStore = usePodcastsStore();
+const { fetchPodcasts } = podcastsStore;
+
+function showInfoDialog(event) {
+  infoDialogData.value = event;
+  infoDialog.value = true;
+}
+
+function triggerImport() {
+  let payload = { podcastUrl: podcastUrl.value };
+  importPodcast(payload).then(() => {
+    podcastUrl.value = null;
+    refreshPodcastList();
+  });
+}
+
+function refreshPodcastList() {
+  fetchPodcasts();
+}
 </script>

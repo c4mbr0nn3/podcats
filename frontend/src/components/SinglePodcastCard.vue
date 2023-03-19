@@ -1,8 +1,5 @@
 <template>
-  <podcast-card-base
-    :podcast="props.podcast"
-    :router-link="getRouterLink"
-    show-info-button
+  <podcast-card-base :podcast="props.podcast" :router-link="getRouterLink"
     ><template #actions>
       <single-podcast-actions
         :podcast="props.podcast"

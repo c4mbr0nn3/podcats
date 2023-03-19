@@ -47,32 +47,42 @@ import {
   switchPodcastItemFavouriteStatus,
 } from "@/api";
 import { formatDate } from "@/utils/date";
+import { usePodcastsStore } from "@/stores/podcasts";
 
 export default {
   props: {
     podcastItem: { type: Object, default: () => {} },
   },
   emits: ["change-played-status", "change-fav-status"],
-  data: () => ({
-    formatDate,
-  }),
+  setup() {
+    const podcastsStore = usePodcastsStore();
+    const { fetchPodcasts } = podcastsStore;
+    return {
+      formatDate,
+      fetchPodcasts,
+    };
+  },
   methods: {
     async changePlayedStatus(podcastItem) {
       await switchPodcastItemPlayedStatus(
         podcastItem.PodcastID,
         podcastItem.ID
-      ).then(() => this.$emit("change-played-status", podcastItem.ID));
+      ).then(() => {
+        this.$emit("change-played-status", podcastItem.ID);
+        this.fetchPodcasts();
+      });
     },
     async changeFavStatus(podcastItem) {
       await switchPodcastItemFavouriteStatus(
         podcastItem.PodcastID,
         podcastItem.ID
-      ).then((response) =>
+      ).then((response) => {
         this.$emit("change-fav-status", {
           id: podcastItem.ID,
           bookmarkDate: response.data,
-        })
-      );
+        });
+        this.fetchPodcasts();
+      });
     },
   },
 };

@@ -18,6 +18,7 @@
         <podcast-avatar
           :image="props.podcast.Image"
           :router-link="props.routerLink"
+          :avatar-size="props.avatarSize"
         />
       </v-col>
     </div>
@@ -41,6 +42,10 @@ const props = defineProps({
   applyFade: {
     type: Boolean,
     default: true,
+  },
+  avatarSize: {
+    type: Number,
+    default: 125,
   },
 });
 </script>
