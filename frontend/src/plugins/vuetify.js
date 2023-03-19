@@ -22,6 +22,10 @@ const podcatsDarkTheme = {
 export default createVuetify({
   theme: {
     defaultTheme: "podcatsDarkTheme",
+    variations: {
+      colors: ["surface"],
+      lighten: 1,
+    },
     themes: {
       podcatsDarkTheme,
     },

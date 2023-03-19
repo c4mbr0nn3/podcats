@@ -11,7 +11,7 @@
       /></v-card-title>
       <v-card-text>
         <div v-for="(item, index) in podcastInfoDialogSchema" :key="index">
-          <div class="text-h6 font-italic text-primary">{{ item.label }}</div>
+          <div class="text-h6 text-primary">{{ item.label }}</div>
           <p-markdown :markdown="getItemText(item)" />
           <v-divider class="my-1"></v-divider>
         </div>

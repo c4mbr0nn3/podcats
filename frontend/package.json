@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@mdi/font": "^7.0.0",
+    "@vueuse/core": "^9.13.0",
     "axios": "^1.2.0",
     "date-fns": "^2.29.3",
     "dompurify": "^3.0.1",
     "howler": "^2.2.3",
     "marked": "^4.2.12",
+    "pinia": "^2.0.33",
     "roboto-fontface": "*",
     "vue": "^3.2.38",
     "vue-router": "^4.1.6",
@@ -23,6 +25,7 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@iconify/vue": "^4.1.0",
     "@rushstack/eslint-patch": "^1.2.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",

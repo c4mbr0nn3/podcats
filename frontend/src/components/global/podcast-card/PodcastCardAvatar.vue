@@ -3,7 +3,7 @@
     ><component :is="routerLink ? 'router-link' : 'span'" :to="routerLink">
       <v-avatar
         class="ma-3"
-        size="125"
+        :size="avatarSize"
         rounded="lg"
         :class="{ 'on-hover': isHovering || !routerLink }"
         v-bind="props"
@@ -36,6 +36,7 @@ export default {
   props: {
     image: { type: String, default: "" },
     routerLink: { type: Object, default: null },
+    avatarSize: { type: Number, default: 125 },
   },
   data: () => ({
     missingImage: missingImage,
