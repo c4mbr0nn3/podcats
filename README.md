@@ -30,6 +30,7 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 - Import/Export OPML
 - Multi user
 - Mobile UI
+- Typescript (I had to learn it sooner or later)
 
 ## Deployment
 
