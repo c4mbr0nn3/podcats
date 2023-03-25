@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine3.17 AS go-builder
+FROM golang:1.20-alpine3.17 AS go-builder
 RUN apk update && apk add build-base && rm -rf /var/cache/apk/*
 RUN mkdir -p /go/src/podcats
 WORKDIR /go/src/podcats
