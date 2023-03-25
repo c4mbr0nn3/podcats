@@ -31,6 +31,7 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 - Multi user
 - Mobile UI
 - Typescript (I had to learn it sooner or later)
+- E-mail cron job
 
 ## Deployment
 
