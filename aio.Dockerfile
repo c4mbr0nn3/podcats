@@ -25,7 +25,7 @@ ENV GIN_MODE=release
 RUN apk -U upgrade && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /go/src/podcats/db
 WORKDIR /go/src/podcats
-COPY backend/config config/
+COPY backend/config/*.yaml config/
 COPY --from=go-builder /go/src/podcats/podcats .
 COPY --from=vue-builder /backend/dist/ dist/
 RUN addgroup --gid 2000 podcats-group && adduser --uid 1000 -D "podcats-user" "podcats-group"
