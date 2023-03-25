@@ -39,7 +39,7 @@ build-frontend:
 
 build-backend:
   stage: build
-  image: golang:1.18-alpine3.17
+  image: golang:1.20-alpine3.17
   before_script:
     - apk update && apk add build-base && rm -rf /var/cache/apk/*
     - mkdir -p /go/src/podcats
