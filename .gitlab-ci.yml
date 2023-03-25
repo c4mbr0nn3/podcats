@@ -23,7 +23,7 @@ get-app-version:
 
 build-frontend:
   stage: build
-  image: node:18-alpine3.17
+  image: node:19-alpine3.17
   before_script:
     - cd frontend/
   script:
