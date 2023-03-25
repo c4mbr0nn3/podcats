@@ -1,7 +1,13 @@
+include:
+    - project: 'renovate-bot/renovate-runner'
+      file: '/templates/renovate.gitlab-ci.yml'
+      ref: v12.4.0
+
 stages:
   - get-version
   - build
   - package
+  - deploy
 
 get-app-version:
   stage: get-version
