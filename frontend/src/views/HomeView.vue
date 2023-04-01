@@ -3,7 +3,6 @@
     <PodcatsLogoVue :width="256" :height="256" />
     <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
     <h1 class="text-h2 font-weight-bold">Podcats</h1>
-    <div class="py-14" />
   </v-responsive>
 </template>
 

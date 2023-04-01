@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getPodcastItemsByPodcastId, getPodcastById } from "@/api";
+import { PodcastService } from "@/api";
 import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
 
 export default {
@@ -50,24 +50,25 @@ export default {
   },
   methods: {
     async fetchData() {
-      await getPodcastById(this.$route.params.id).then(
+      await PodcastService.getPodcastById(this.$route.params.id).then(
         (response) => (this.podcastData = response.data)
       );
       await this.fetchPodcastItems(1);
     },
     async fetchPodcastItems(pageId) {
-      await getPodcastItemsByPodcastId(this.$route.params.id, pageId).then(
-        (response) => {
-          if (response.data.podcastItems.length > 0) {
-            response.data.podcastItems.forEach((item) =>
-              this.podcastItemsData.push(item)
-            );
-          }
-          this.currentPage = response.data.thisPage;
-          this.pageCount = response.data.pageCount;
-          this.nextPage = response.data.nextPage;
+      await PodcastService.getPodcastItemsByPodcastId(
+        this.$route.params.id,
+        pageId
+      ).then((response) => {
+        if (response.data.podcastItems.length > 0) {
+          response.data.podcastItems.forEach((item) =>
+            this.podcastItemsData.push(item)
+          );
         }
-      );
+        this.currentPage = response.data.thisPage;
+        this.pageCount = response.data.pageCount;
+        this.nextPage = response.data.nextPage;
+      });
     },
     // TODO: fix doppia chiamata non voluta...
     async onIntersect() {

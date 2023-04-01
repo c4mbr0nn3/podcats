@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getLatestPodcastItems } from "@/api";
+import { PodcastItemsService } from "@/api";
 import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
 
 export default {
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     async fetchData(pageId) {
-      await getLatestPodcastItems(pageId).then((response) => {
+      await PodcastItemsService.getLatestPodcastItems(pageId).then((response) => {
         if (response.data.podcastItems.length > 0) {
           response.data.podcastItems.forEach((item) =>
             this.podcastItemsData.push(item)

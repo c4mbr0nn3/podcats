@@ -16,13 +16,25 @@
           >{{ item.label }}
         </v-btn>
       </v-col>
-      <v-col cols="3"> </v-col>
+      <v-col cols="3" class="d-flex justify-end">
+        <v-btn
+          color="primary"
+          prepend-icon="mdi-logout"
+          class="mr-3"
+          variant="text"
+          @click="logout"
+          >Bye!</v-btn
+        >
+      </v-col>
     </v-row>
   </v-app-bar>
 </template>
 
 <script setup>
+import { onMounted } from "vue";
 import GlobalSearch from "./GlobalSearch.vue";
+import { useAuthStore } from "@/stores/auth";
+import { usePodcastsStore } from "@/stores/podcasts";
 
 const menuList = [
   { label: "Home", route: { name: "home" } },
@@ -34,4 +46,13 @@ const menuList = [
     route: { name: "favourites-podcasts" },
   },
 ];
+const authStore = useAuthStore();
+const { logout } = authStore;
+
+const podcastsStore = usePodcastsStore();
+const { fetchPodcasts } = podcastsStore;
+
+onMounted(() => {
+  fetchPodcasts();
+});
 </script>

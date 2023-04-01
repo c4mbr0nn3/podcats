@@ -37,7 +37,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { importPodcast } from "@/api";
+import { PodcastService } from "@/api";
 import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
 import PodcastInfoDialog from "@/components/PodcastInfoDialog.vue";
 import { usePodcastsStore } from "@/stores/podcasts";
@@ -56,7 +56,7 @@ function showInfoDialog(event) {
 
 function triggerImport() {
   let payload = { podcastUrl: podcastUrl.value };
-  importPodcast(payload).then(() => {
+  PodcastService.importPodcast(payload).then(() => {
     podcastUrl.value = null;
     refreshPodcastList();
   });

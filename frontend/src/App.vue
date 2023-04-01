@@ -1,6 +1,6 @@
 <template>
   <v-app
-    ><TheAppBar />
+    ><TheAppBar v-if="route.meta.requiresNavbar" />
     <v-main>
       <v-container :class="getMainContainerClass"
         ><router-view></router-view
@@ -10,23 +10,15 @@
 </template>
 
 <script setup>
-import TheAppBar from "./components/global/TheAppBar.vue";
-import { computed, onMounted } from "vue";
+import TheAppBar from "@/components/global/TheAppBar.vue";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { usePodcastsStore } from "./stores/podcasts";
 
 const route = useRoute();
 
 const getMainContainerClass = computed(() => {
   return {
-    "fill-height": route.name == "home",
+    "fill-height": route.meta.requiresFillHeight,
   };
-});
-
-const podcastsStore = usePodcastsStore();
-const { fetchPodcasts } = podcastsStore;
-
-onMounted(() => {
-  fetchPodcasts();
 });
 </script>
