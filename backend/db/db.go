@@ -21,16 +21,35 @@ func Init() (*gorm.DB, error) {
 		log.Panic("failed to connect database:", err)
 		return nil, err
 	}
-	//localDb, _ := db.DB()
-	//localDb.SetMaxIdleConns(10)
+
 	database = db
 	return database, nil
 }
 
 func Migrate() {
 	database.AutoMigrate(&models.Podcast{}, &models.PodcastItem{}, &models.User{}, &models.Migration{})
+	createAdminUserIfNotPresent()
 }
 
 func GetDb() *gorm.DB {
 	return database
+}
+
+func createAdminUserIfNotPresent() {
+	var user models.User
+	database.First(&user, "username = ?", "root")
+	if user.ID == 0 {
+		log.Println("Creating admin user.")
+		user = models.User{
+			Email:    "admin@email.com",
+			Name:     "I am",
+			Surname:  "Root",
+			Username: "root",
+			Password: "changeme",
+		}
+		user.HashPassword()
+		database.Create(&user)
+	} else {
+		log.Println("Admin user already present. Skipping creation.")
+	}
 }

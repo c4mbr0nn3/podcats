@@ -15,8 +15,10 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Recovery())
 
 	v1 := router.Group("/api/v1")
+	routes.AddLoginRoutes(v1)
 	routes.AddUsersRoutes(v1)
 	routes.AddPodcastsRoutes(v1)
+	routes.AddPodcastItemsRoutes(v1)
 
 	return router
 }

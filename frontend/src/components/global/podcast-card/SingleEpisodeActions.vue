@@ -42,10 +42,7 @@
 </template>
 
 <script>
-import {
-  switchPodcastItemPlayedStatus,
-  switchPodcastItemFavouriteStatus,
-} from "@/api";
+import { PodcastItemsService } from "@/api";
 import { formatDate } from "@/utils/date";
 import { usePodcastsStore } from "@/stores/podcasts";
 
@@ -64,8 +61,7 @@ export default {
   },
   methods: {
     async changePlayedStatus(podcastItem) {
-      await switchPodcastItemPlayedStatus(
-        podcastItem.PodcastID,
+      await PodcastItemsService.switchPodcastItemPlayedStatus(
         podcastItem.ID
       ).then(() => {
         this.$emit("change-played-status", podcastItem.ID);
@@ -73,8 +69,7 @@ export default {
       });
     },
     async changeFavStatus(podcastItem) {
-      await switchPodcastItemFavouriteStatus(
-        podcastItem.PodcastID,
+      await PodcastItemsService.switchPodcastItemFavouriteStatus(
         podcastItem.ID
       ).then((response) => {
         this.$emit("change-fav-status", {
