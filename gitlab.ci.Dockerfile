@@ -1,4 +1,4 @@
-FROM alpine:3.17
+FROM alpine:3.18
 ENV GIN_MODE=release
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /go/src/podcats/db
