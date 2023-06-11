@@ -46,6 +46,7 @@ func createAdminUserIfNotPresent() {
 			Surname:  "Root",
 			Username: "root",
 			Password: "changeme",
+			IsAdmin:  true,
 		}
 		user.HashPassword()
 		database.Create(&user)

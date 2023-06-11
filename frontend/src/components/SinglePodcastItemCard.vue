@@ -28,7 +28,7 @@ const props = defineProps({
 const getRouterLink = computed(() => {
   return {
     name: "single-item",
-    params: { id: props.podcastId, itemId: props.podcastItem.ID },
+    params: { id: props.podcastItem.PodcastID, itemId: props.podcastItem.ID },
   };
 });
 </script>

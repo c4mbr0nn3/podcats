@@ -1,5 +1,5 @@
 <template>
-  <v-responsive class="d-flex align-center text-center fill-height">
+  <v-responsive class="text-center">
     <PodcatsLogoVue :width="256" :height="256" />
     <div class="text-body-2 font-weight-light mb-n1">Welcome to</div>
     <h1 class="text-h2 font-weight-bold">Podcats</h1>

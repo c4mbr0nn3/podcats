@@ -1,8 +1,12 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
 
+const baseURL = import.meta.env.DEV
+  ? "http://localhost:8000/api/v1"
+  : "/api/v1";
+
 const axiosOptions = {
-  baseURL: `api/v1`,
+  baseURL: baseURL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -13,9 +17,9 @@ const axiosClient = axios.create(axiosOptions);
 
 axiosClient.interceptors.request.use((config) => {
   const authStore = useAuthStore();
-  if (authStore.isAuthenticated) config.headers.Authorization = `Bearer ${authStore.getToken}`;
+  if (authStore.isAuthenticated)
+    config.headers.Authorization = `Bearer ${authStore.getToken}`;
   return config;
 });
-
 
 export default axiosClient;

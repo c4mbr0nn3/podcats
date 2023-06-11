@@ -7,11 +7,13 @@ import (
 
 type User struct {
 	gorm.Model
-	Name     string `json:"name" gorm:"type:text"`
-	Surname  string `json:"surname" gorm:"type:text"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password" gorm:"type:text"`
+	Name               string `json:"name" gorm:"type:text"`
+	Surname            string `json:"surname" gorm:"type:text"`
+	Username           string `json:"username"`
+	Email              string `json:"email"`
+	IsAdmin            bool   `json:"is_admin" gorm:"default:false"`
+	Password           string `json:"password" gorm:"type:text"`
+	NeedPasswordChange bool   `json:"need_password_change" gorm:"default:true"`
 }
 
 func (user *User) HashPassword() error {
