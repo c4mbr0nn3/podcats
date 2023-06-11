@@ -88,6 +88,14 @@ Once you have the image in your server, just run:
   docker container run -d -p 8000:8000 -v ${PWD}/podcats-db/:/go/src/podcats/db --name podcats j1mm0/podcats:latest
 ```
 
+### Credentials
+
+Default credentials are:
+- **Username:** root
+- **Password:** changeme
+
+It is going to ask you to change the password on the first login.
+
 ## Development
 
 To run the project locally you need to have [GoLang](https://go.dev/) and [Node.js](https://nodejs.org/en/) installed on your system.
@@ -113,9 +121,17 @@ Go to backend directory and install backend dependencies:
 Run the server with the makefile:
 
 ```bash
-  make run
+  make dev
 ```
 
 Podcast is going to be exposed at `http://localhost:5173/`.
 
 Client side supports hot reloading, so you can edit the code and see the changes in real time.
+
+### Credentials
+
+Default credentials are:
+- **Username:** root
+- **Password:** changeme
+
+It is going to ask you to change the password on the first login.
