@@ -18,9 +18,6 @@ export default defineConfig({
     }),
   ],
   define: { "process.env": {} },
-  build: {
-    outDir: "../backend/dist",
-  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

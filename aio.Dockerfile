@@ -9,7 +9,6 @@ RUN go build -o podcats
 
 
 FROM node:20-alpine3.17 AS vue-builder
-RUN mkdir -p /backend
 RUN mkdir -p /vue
 WORKDIR /vue
 COPY frontend/ .
@@ -23,6 +22,6 @@ RUN mkdir -p /go/src/podcats/db
 WORKDIR /go/src/podcats
 COPY backend/config/*.yaml config/
 COPY --from=go-builder /go/src/podcats/podcats .
-COPY --from=vue-builder /backend/dist/ dist/
+COPY --from=vue-builder /vue/dist dist/
 EXPOSE 8000
 CMD ["./podcats","-e","prod"]
