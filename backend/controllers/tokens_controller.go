@@ -4,6 +4,7 @@ import (
 	"example/hello/auth"
 	"example/hello/db"
 	"example/hello/db/models"
+	"example/hello/dto"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -37,5 +38,8 @@ func (c TokensController) CreateToken(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"token": token, "user": user})
+
+	userDto := dto.NewUserDto(user)
+
+	ctx.JSON(http.StatusOK, gin.H{"token": token, "user": userDto})
 }

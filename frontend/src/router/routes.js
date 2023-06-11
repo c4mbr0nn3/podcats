@@ -12,6 +12,15 @@ const routes = [
     },
   },
   {
+    path: "/login/change-password",
+    name: "change-password",
+    component: () => import("@/views/ChangePassword"),
+    meta: {
+      requiresFillHeight: true,
+      requiresAuth: true,
+    },
+  },
+  {
     path: "/home",
     name: "home",
     component: () => import("@/views/HomeView"),
@@ -64,6 +73,16 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresNavbar: true,
+    },
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: () => import("@/views/AdminView"),
+    meta: {
+      requiresAuth: true,
+      requiresNavbar: true,
+      requiresRoot: true,
     },
   },
 ];

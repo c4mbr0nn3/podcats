@@ -12,6 +12,10 @@ func AddUsersRoutes(rg *gin.RouterGroup) {
 	usersRouter := rg.Group("/users").Use(middlewares.Auth())
 	{
 		usersRouter.GET("/", controller.GetAllUsers)
-		usersRouter.POST("/register", controller.RegisterUser)
+		usersRouter.POST("/create", controller.CreateUser)
+		usersRouter.POST("/:id/update", controller.UpdateUser)
+		usersRouter.GET("/:id/reset-password", controller.ResetUserPassword)
+		usersRouter.POST("/:id/set-password", controller.SetUserPassword)
+		usersRouter.DELETE("/:id/delete", controller.DeleteUser)
 	}
 }

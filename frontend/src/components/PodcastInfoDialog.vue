@@ -1,13 +1,16 @@
 <template>
-  <v-dialog height="700" width="600" scrollable>
+  <v-dialog v-model="dialog" height="700" width="600" scrollable>
     <v-card>
-      <v-card-title class="bg-primary d-flex"
-        >{{ props.infoDialogData.Title }}<v-spacer />
+      <v-card-title class="bg-primary d-flex align-center">
+        <div class="text-truncate" style="width: 85%">
+          {{ props.infoDialogData.Title }}
+        </div>
+        <v-spacer />
         <v-btn
           icon="mdi-close"
-          size="x-small"
+          density="compact"
           variant="text"
-          @click="$emit('close-info-dialog')"
+          @click="dialog = false"
       /></v-card-title>
       <v-card-text>
         <div v-for="(item, index) in podcastInfoDialogSchema" :key="index">
@@ -24,14 +27,24 @@
 import PMarkdown from "@/components/global/PMarkdown.vue";
 import { formatDateToIso } from "@/utils/date";
 import { podcastInfoDialogSchema } from "@/schemas/podcast-info-dialog";
-
-defineEmits(["close-info-dialog"]);
+import { computed } from "vue";
 
 const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true,
+  },
   infoDialogData: {
     type: Object,
     required: true,
   },
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
+const dialog = computed({
+  get: () => props.modelValue,
+  set: (val) => emit("update:modelValue", val),
 });
 
 const getItemText = (item) => {

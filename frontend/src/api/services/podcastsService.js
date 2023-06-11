@@ -1,7 +1,7 @@
 import axiosClient from "../axios";
 
 export function getAllPodcasts() {
-  return axiosClient.get("/podcasts");
+  return axiosClient.get("/podcasts/");
 }
 
 export function getPodcastById(podcastId) {

@@ -8,7 +8,7 @@
             v-for="(podcastItem, index) in podcastItemsData"
             :key="index"
             class="mt-3"
-            :podcast-id="podcastItem.ID"
+            :podcast-id="podcastItem.PodcastID"
             :podcast-item="podcastItem"
             @change-fav-status="changeFavStatus"
             @change-played-status="changePlayedStatus"
@@ -37,16 +37,18 @@ export default {
   },
   methods: {
     async fetchData(pageId) {
-      await PodcastItemsService.getLatestPodcastItems(pageId).then((response) => {
-        if (response.data.podcastItems.length > 0) {
-          response.data.podcastItems.forEach((item) =>
-            this.podcastItemsData.push(item)
-          );
+      await PodcastItemsService.getLatestPodcastItems(pageId).then(
+        (response) => {
+          if (response.data.podcastItems.length > 0) {
+            response.data.podcastItems.forEach((item) =>
+              this.podcastItemsData.push(item)
+            );
+          }
+          this.currentPage = response.data.thisPage;
+          this.pageCount = response.data.pageCount;
+          this.nextPage = response.data.nextPage;
         }
-        this.currentPage = response.data.thisPage;
-        this.pageCount = response.data.pageCount;
-        this.nextPage = response.data.nextPage;
-      });
+      );
     },
     // TODO: fix doppia chiamata non voluta...
     async onIntersect() {

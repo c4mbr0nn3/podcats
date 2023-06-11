@@ -1,3 +1,4 @@
+app_env: "prod"
 server:
   port: :8000
 database:

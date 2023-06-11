@@ -18,13 +18,22 @@
       </v-col>
       <v-col cols="3" class="d-flex justify-end">
         <v-btn
+          v-if="authStore.isRoot"
+          size="small"
+          icon="mdi-cog"
           color="primary"
-          prepend-icon="mdi-logout"
-          class="mr-3"
-          variant="text"
-          @click="logout"
-          >Bye!</v-btn
+          class="mx-3"
+          :to="{ name: 'admin' }"
         >
+        </v-btn>
+        <v-divider v-if="authStore.isRoot" vertical></v-divider>
+        <v-btn
+          color="primary"
+          icon="mdi-logout"
+          size="small"
+          class="mx-3"
+          @click="logout"
+        ></v-btn>
       </v-col>
     </v-row>
   </v-app-bar>

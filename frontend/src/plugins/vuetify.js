@@ -12,10 +12,10 @@ const podcatsDarkTheme = {
     "primary-darken-1": "#3700B3",
     secondary: "#FFFFFF",
     "secondary-darken-1": "#A5AC8C",
-    error: "#B00020",
-    info: "#2196F3",
-    success: "#4CAF50",
-    warning: "#FB8C00",
+    error: "#ff1744",
+    info: "#4dd0e1",
+    success: "#76ff03",
+    warning: "#ffd600",
   },
 };
 

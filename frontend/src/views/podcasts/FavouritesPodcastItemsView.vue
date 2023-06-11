@@ -8,7 +8,7 @@
             v-for="(podcastItem, index) in getFilteredFavs"
             :key="index"
             class="mt-3"
-            :podcast-id="podcastItem.ID"
+            :podcast-id="podcastItem.PodcastID"
             :podcast-item="podcastItem"
             @change-fav-status="changeFavStatus"
             @change-played-status="changePlayedStatus" />

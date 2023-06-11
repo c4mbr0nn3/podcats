@@ -6,6 +6,6 @@ golang:
 vuejs:
 	bash -c "cd frontend && npm start"
 
-run: 
+dev:
 	make golang & make vuejs
 

@@ -14,8 +14,10 @@
           <v-text-field
             v-model="password"
             label="Password"
-            type="password"
+            :append-inner-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
             variant="underlined"
+            @click:append-inner="showPassword = !showPassword"
           />
         </v-card-text>
         <v-card-actions
@@ -34,6 +36,7 @@ import { useAuthStore } from "@/stores/auth";
 
 const username = ref("");
 const password = ref("");
+const showPassword = ref(false);
 const isLoginOngoing = ref(false);
 
 const authStore = useAuthStore();
@@ -45,6 +48,8 @@ async function submit() {
     username: username.value,
     password: password.value,
   };
-  await login(payload);
+  await login(payload).finally(() => {
+    isLoginOngoing.value = false;
+  });
 }
 </script>

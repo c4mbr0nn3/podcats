@@ -6,7 +6,7 @@
 
 # Podcats
 
-A podcast player with cats, inspired by [Podgrab](https://github.com/akhilrex/podgrab).
+A podcast manager with cats, inspired by [Podgrab](https://github.com/akhilrex/podgrab).
 
 I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some GoLang skill (still very basic, tho), that's why I started this project.
 
@@ -20,15 +20,15 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 
 ## Features
 
+- ✅ Reproduce podcasts (o rly?)
+- ✅ Multi user support
 - ✅ Import podcasts RSS feed and store them in SQLite database
 - ✅ Cron job keeps podcasts updated
 - ✅ Search imported podcasts from anywhere in the app by pressing `Ctrl+K`
-- ✅ Reproduce podcasts (o rly?)
 
 ## Roadmap
 
-- Multi user 👷
-- Search and import new podcasts from iTunes API
+- Search and import new podcasts from iTunes API 👷
 - Import/Export OPML
 - E-mail cron job
 - Mobile UI
@@ -88,7 +88,7 @@ Once you have the image in your server, just run:
   docker container run -d -p 8000:8000 -v ${PWD}/podcats-db/:/go/src/podcats/db --name podcats j1mm0/podcats:latest
 ```
 
-## Run Locally
+## Development
 
 To run the project locally you need to have [GoLang](https://go.dev/) and [Node.js](https://nodejs.org/en/) installed on your system.
 
@@ -116,4 +116,6 @@ Run the server with the makefile:
   make run
 ```
 
-Podcast is going to be exposed at `http://localhost:8000/`.
+Podcast is going to be exposed at `http://localhost:5173/`.
+
+Client side supports hot reloading, so you can edit the code and see the changes in real time.

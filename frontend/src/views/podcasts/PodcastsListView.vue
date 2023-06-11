@@ -27,9 +27,8 @@
       </v-card>
       <podcast-info-dialog
         v-if="infoDialogData"
-        v-model="infoDialog"
+        v-model:model-value="infoDialog"
         :info-dialog-data="infoDialogData"
-        @close-info-dialog="infoDialog = false"
       />
     </v-col>
   </v-row>
