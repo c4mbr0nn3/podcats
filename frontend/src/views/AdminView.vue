@@ -52,11 +52,11 @@
 
 <script setup>
 import { UsersService } from "@/api";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
+import { useQuery } from "@tanstack/vue-query";
 import DialogUserEdit from "@/components/admin/DialogUserEdit.vue";
 import SingleUserCard from "@/components/admin/SingleUserCard.vue";
 
-const users = ref([]);
 const dialog = ref(false);
 const dialogUser = ref({});
 const isEdit = ref(false);
@@ -64,15 +64,14 @@ const alert = ref(false);
 const alertTitle = ref("");
 const alertText = ref("");
 
-onMounted(async () => {
-  await fetchUsers();
-});
-
 const fetchUsers = async () => {
-  await UsersService.getAll().then((response) => {
-    users.value = response.data;
-  });
+  return await UsersService.getAll().then((response) => response.data);
 };
+
+const { data: users } = useQuery({
+  queryKey: ["users"],
+  queryFn: fetchUsers,
+});
 
 const addUser = () => {
   isEdit.value = false;
