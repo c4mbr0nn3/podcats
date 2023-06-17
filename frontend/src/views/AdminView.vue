@@ -77,7 +77,8 @@
                 <v-col cols="3"> Username: {{ user.Username }} </v-col>
                 <v-col cols="3"> E-mail: {{ user.Email }} </v-col>
                 <v-col cols="3">
-                  Created At: {{ formatDateToIso(user.CreatedAt) }}
+                  Created At:
+                  {{ formatDateToIso(user.CreatedAt.split(" ")[0]) }}
                 </v-col>
               </v-row>
             </v-card-text>
