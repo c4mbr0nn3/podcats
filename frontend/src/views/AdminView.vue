@@ -29,60 +29,15 @@
           >
         </v-card-title>
         <v-card-text>
-          <v-card
+          <SingleUserCard
             v-for="(user, index) in users"
             :key="index"
-            color="background"
-            rounded="lg"
+            :user="user"
             class="mb-2"
-          >
-            <v-card-title class="d-flex align-center">
-              {{ user.Name }} {{ user.Surname }}
-              <v-icon
-                v-if="user.IsAdmin"
-                size="xsmall"
-                color="primary"
-                class="ml-2"
-                >mdi-shield-crown-outline</v-icon
-              >
-              <v-spacer></v-spacer>
-              <v-btn
-                variant="text"
-                density="comfortable"
-                color="primary"
-                icon="mdi-pencil"
-                @click="editUser(user)"
-              />
-              <v-btn
-                variant="text"
-                density="comfortable"
-                color="info"
-                icon="mdi-lock-reset"
-                class="ml-1"
-                @click="resetPassword(user)"
-              />
-              <v-btn
-                variant="text"
-                density="comfortable"
-                color="error"
-                icon="mdi-delete"
-                class="ml-1"
-                :disabled="user.ID === 1"
-                @click="deleteUser(user)"
-              />
-            </v-card-title>
-            <v-card-text>
-              <v-row>
-                <v-col cols="3"> ID: {{ user.ID }} </v-col>
-                <v-col cols="3"> Username: {{ user.Username }} </v-col>
-                <v-col cols="3"> E-mail: {{ user.Email }} </v-col>
-                <v-col cols="3">
-                  Created At:
-                  {{ formatDateToIso(user.CreatedAt.split(" ")[0]) }}
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+            @edit="editUser"
+            @reset-password="resetPassword"
+            @delete="deleteUser"
+          />
         </v-card-text>
       </v-card>
     </v-col>
@@ -98,8 +53,8 @@
 <script setup>
 import { UsersService } from "@/api";
 import { ref, onMounted } from "vue";
-import { formatDateToIso } from "@/utils/date";
 import DialogUserEdit from "@/components/admin/DialogUserEdit.vue";
+import SingleUserCard from "@/components/admin/SingleUserCard.vue";
 
 const users = ref([]);
 const dialog = ref(false);
