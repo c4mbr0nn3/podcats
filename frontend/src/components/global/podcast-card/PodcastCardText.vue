@@ -1,6 +1,6 @@
 <template>
   <v-card-text
-    ><p-markdown :class="getSummaryStyle" :markdown="props.summary" />
+    ><p-markdown :class="getSummaryStyle" :markdown="shortenedSummary" />
     <div class="d-flex align-center mt-2">
       <slot name="actions"></slot>
     </div>
@@ -27,6 +27,12 @@ const getSummaryStyle = computed(() => {
     "overflow-hidden": props.applyFade,
     fade: props.applyFade,
   };
+});
+
+const shortenedSummary = computed(() => {
+  if (props.applyFade && props.summary.length > 280)
+    return props.summary.substring(0, 250) + "...";
+  return props.summary;
 });
 </script>
 
