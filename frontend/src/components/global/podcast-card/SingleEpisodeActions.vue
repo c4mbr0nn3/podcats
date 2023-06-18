@@ -50,7 +50,7 @@ export default {
   props: {
     podcastItem: { type: Object, default: () => {} },
   },
-  emits: ["change-played-status", "change-fav-status"],
+  emits: ["change-status"],
   setup() {
     const podcastsStore = usePodcastsStore();
     const { fetchPodcasts } = podcastsStore;
@@ -64,18 +64,15 @@ export default {
       await PodcastItemsService.switchPodcastItemPlayedStatus(
         podcastItem.ID
       ).then(() => {
-        this.$emit("change-played-status", podcastItem.ID);
+        this.$emit("change-status", podcastItem.ID);
         this.fetchPodcasts();
       });
     },
     async changeFavStatus(podcastItem) {
       await PodcastItemsService.switchPodcastItemFavouriteStatus(
         podcastItem.ID
-      ).then((response) => {
-        this.$emit("change-fav-status", {
-          id: podcastItem.ID,
-          bookmarkDate: response.data,
-        });
+      ).then(() => {
+        this.$emit("change-status", podcastItem.ID);
         this.fetchPodcasts();
       });
     },

@@ -16,8 +16,7 @@
               <SinglePodcastItemCard
                 :podcast-id="podcastItem.PodcastID"
                 :podcast-item="podcastItem"
-                @change-fav-status="changeFavStatus"
-                @change-played-status="changePlayedStatus"
+                @change-status="changeStatus"
               />
             </v-lazy>
           </div>
@@ -41,14 +40,20 @@ import { useIntersectionObserver, watchDebounced } from "@vueuse/core";
 const sentinel = ref(null);
 const sentinelVisible = ref(false);
 
-const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
-  useInfiniteQuery({
-    queryKey: ["latest-podcast-items"],
-    queryFn: fetchData,
-    getNextPageParam: (lastPage) => {
-      return lastPage.nextCursor;
-    },
-  });
+const {
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isLoading,
+  isFetchingNextPage,
+  refetch,
+} = useInfiniteQuery({
+  queryKey: ["latest-podcast-items"],
+  queryFn: fetchData,
+  getNextPageParam: (lastPage) => {
+    return lastPage.nextCursor;
+  },
+});
 
 useIntersectionObserver(sentinel, ([{ isIntersecting }]) => {
   sentinelVisible.value = isIntersecting;
@@ -85,16 +90,16 @@ async function onIntersect() {
   fetchNextPage();
 }
 
-function changePlayedStatus(event) {
-  console.log("changePlayedStatus", event);
-  // let item = podcastItemsData.value.find((el) => el.ID == event);
-  // item.IsPlayed = !item.IsPlayed;
+function changeStatus(event) {
+  refetch({
+    refetchPage: (page, index) => index == getPodcastItemPage(event),
+  });
 }
 
-function changeFavStatus(event) {
-  console.log("changeFavStatus", event);
-
-  // let item = podcastItemsData.value.find((el) => el.ID == event.id);
-  // item.BookmarkDate = event.bookmarkDate;
+function getPodcastItemPage(podcastItemId) {
+  return data.value.pages.findIndex(
+    (page) =>
+      page.data.findIndex((podcastItem) => podcastItem.ID == podcastItemId) > -1
+  );
 }
 </script>

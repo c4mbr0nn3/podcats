@@ -3,8 +3,7 @@
     <template #actions>
       <single-episode-actions
         :podcast-item="props.podcastItem"
-        @change-played-status="$emit('change-played-status', $event)"
-        @change-fav-status="$emit('change-fav-status', $event)"
+        @change-status="$emit('change-status', $event)"
       />
     </template>
   </podcast-card-base>
@@ -15,7 +14,7 @@ import { computed } from "vue";
 import PodcastCardBase from "@/components/global/podcast-card/PodcastCardBase.vue";
 import SingleEpisodeActions from "@/components/global/podcast-card/SingleEpisodeActions.vue";
 
-defineEmits(["change-played-status", "change-fav-status"]);
+defineEmits(["change-status"]);
 
 const props = defineProps({
   podcastId: { type: [String, Number], required: true },
