@@ -31,7 +31,7 @@
               isRequiredRule,
               confirmPasswordRule(password, confirmPassword),
             ]"
-            :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            :append-inner-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showConfirmPassword ? 'text' : 'password'"
             @click:append-inner="
               () => (showConfirmPassword = !showConfirmPassword)
