@@ -1,9 +1,8 @@
 <template>
   <v-row justify="center">
     <v-col cols="9">
-      <v-card>
+      <v-card class="mb-5">
         <v-card-title>Latest Episodes</v-card-title>
-
         <v-card-text v-if="podcastItemList.length > 0">
           <div v-for="(podcastItem, id) in podcastItemList" :key="id">
             <v-lazy
@@ -24,13 +23,10 @@
           </div>
         </v-card-text>
       </v-card>
-      <v-card
+      <div
         v-if="!isLoading || !isFetchingNextPage || !hasNextPage"
         ref="sentinel"
-      />
-      <v-row v-if="isLoading || isFetchingNextPage" justify="center">
-        <v-col class="d-flex justify-center"> Loading... </v-col>
-      </v-row>
+      ></div>
     </v-col>
   </v-row>
 </template>
@@ -40,8 +36,7 @@ import { PodcastItemsService } from "@/api";
 import { useInfiniteQuery } from "@tanstack/vue-query";
 import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
 import { computed, ref } from "vue";
-import { useIntersectionObserver } from "@vueuse/core";
-import { watch } from "vue";
+import { useIntersectionObserver, watchDebounced } from "@vueuse/core";
 
 const sentinel = ref(null);
 const sentinelVisible = ref(false);
@@ -55,13 +50,16 @@ const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } =
     },
   });
 
-watch(
-  () => sentinelVisible.value,
+useIntersectionObserver(sentinel, ([{ isIntersecting }]) => {
+  sentinelVisible.value = isIntersecting;
+});
+
+watchDebounced(
+  sentinelVisible,
   (value) => {
-    if (value) {
-      onIntersect();
-    }
-  }
+    if (value) onIntersect();
+  },
+  { debounce: 500, maxWait: 1000 }
 );
 
 const podcastItemList = computed(() => {
@@ -83,7 +81,6 @@ async function fetchData({ pageParam = 1 }) {
 }
 
 async function onIntersect() {
-  console.log("onIntersect");
   if (!hasNextPage.value) return;
   fetchNextPage();
 }
@@ -100,8 +97,4 @@ function changeFavStatus(event) {
   // let item = podcastItemsData.value.find((el) => el.ID == event.id);
   // item.BookmarkDate = event.bookmarkDate;
 }
-
-useIntersectionObserver(sentinel, ([{ isIntersecting }]) => {
-  sentinelVisible.value = isIntersecting;
-});
 </script>
