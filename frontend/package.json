@@ -14,7 +14,7 @@
     "@vueuse/core": "^10.2.1",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
-    "dompurify": "^3.0.4",
+    "dompurify": "^3.0.5",
     "howler": "^2.2.3",
     "marked": "^5.1.1",
     "pinia": "^2.1.4",
@@ -22,7 +22,7 @@
     "validator": "^13.9.0",
     "vue": "^3.2.38",
     "vue-router": "^4.2.4",
-    "vuetify": "^3.3.7",
+    "vuetify": "^3.3.8",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
@@ -33,7 +33,7 @@
     "eslint": "^8.44.0",
     "eslint-plugin-vue": "^9.15.1",
     "prettier": "^2.8.8",
-    "vite": "^4.4.2",
+    "vite": "^4.4.3",
     "vite-plugin-vuetify": "^1.0.2"
   }
 }
