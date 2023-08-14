@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { UsersService } from "@/api";
+import { UserService } from "@/services";
 import { ref, onMounted } from "vue";
 import DialogUserEdit from "@/components/admin/DialogUserEdit.vue";
 import SingleUserCard from "@/components/admin/SingleUserCard.vue";
@@ -69,9 +69,7 @@ onMounted(async () => {
 });
 
 const fetchUsers = async () => {
-  await UsersService.getAll().then((response) => {
-    users.value = response.data;
-  });
+  users.value = await UserService.getAll();
 };
 
 const addUser = () => {
@@ -94,28 +92,27 @@ const editUser = (user) => {
 };
 
 const resetPassword = async (user) => {
-  await UsersService.resetPassword(user.ID).then((response) => {
-    alertTitle.value = response.data.message;
-    alertText.value = response.data.password;
-    alert.value = true;
-  });
+  const data = await UserService.resetPassword(user.ID);
+  alertTitle.value = data.message;
+  alertText.value = data.password;
+  alert.value = true;
 };
 
 const deleteUser = async (user) => {
-  await UsersService.remove(user.ID).then(() => fetchUsers());
+  await UserService.remove(user.ID);
+  fetchUsers();
 };
 
 const saveUser = async (user) => {
   const promise = isEdit.value
-    ? UsersService.update(user.ID, user)
-    : UsersService.create(user);
+    ? UserService.update(user.ID, user)
+    : UserService.create(user);
 
-  await promise.then((response) => {
-    fetchUsers();
-    if (isEdit.value) return;
-    alertTitle.value = response.data.message;
-    alertText.value = response.data.password;
-    alert.value = true;
-  });
+  const data = await promise;
+  fetchUsers();
+  if (isEdit.value) return;
+  alertTitle.value = data.message;
+  alertText.value = data.password;
+  alert.value = true;
 };
 </script>

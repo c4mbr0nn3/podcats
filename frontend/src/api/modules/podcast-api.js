@@ -1,22 +1,22 @@
 import axiosClient from "../axios";
 
-export function getAllPodcasts() {
+export function getAll() {
   return axiosClient.get("/podcasts/");
 }
 
-export function getPodcastById(podcastId) {
+export function getById(podcastId) {
   return axiosClient.get(`/podcasts/${podcastId}`);
 }
 
-export function getPodcastItemsByPodcastId(podcastId, pageId) {
+export function getItemsById(podcastId, pageId) {
   return axiosClient.get(`/podcasts/${podcastId}/items?page=${pageId}`);
 }
 
-export function deletePodcastById(podcastId) {
+export function deleteById(podcastId) {
   return axiosClient.delete(`/podcasts/${podcastId}/remove`);
 }
 
-export function setPodcastPlayed(podcastId) {
+export function setPlayed(podcastId) {
   return axiosClient.post(`/podcasts/${podcastId}/set-all-played`);
 }
 

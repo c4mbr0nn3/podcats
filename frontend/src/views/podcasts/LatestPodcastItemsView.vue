@@ -1,8 +1,8 @@
 <template>
   <v-row justify="center">
     <v-col cols="9">
-      <v-card
-        ><v-card-title>Latest Episodes</v-card-title>
+      <v-card>
+        <v-card-title>Latest Episodes</v-card-title>
         <v-card-text v-if="podcastItemsData.length > 0">
           <SinglePodcastItemCard
             v-for="(podcastItem, index) in podcastItemsData"
@@ -12,14 +12,16 @@
             :podcast-item="podcastItem"
             @change-fav-status="changeFavStatus"
             @change-played-status="changePlayedStatus"
-          /> </v-card-text></v-card
-      ><v-card v-intersect="onIntersect"></v-card>
+          />
+        </v-card-text>
+      </v-card>
+      <v-card v-intersect="onIntersect"></v-card>
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { PodcastItemsService } from "@/api";
+import { PodcastItemService } from "@/services";
 import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
 
 export default {
@@ -37,18 +39,13 @@ export default {
   },
   methods: {
     async fetchData(pageId) {
-      await PodcastItemsService.getLatestPodcastItems(pageId).then(
-        (response) => {
-          if (response.data.podcastItems.length > 0) {
-            response.data.podcastItems.forEach((item) =>
-              this.podcastItemsData.push(item)
-            );
-          }
-          this.currentPage = response.data.thisPage;
-          this.pageCount = response.data.pageCount;
-          this.nextPage = response.data.nextPage;
-        }
-      );
+      const data = await PodcastItemService.getLatest(pageId);
+      if (data.podcastItems.length > 0) {
+        data.podcastItems.forEach((item) => this.podcastItemsData.push(item));
+      }
+      this.currentPage = data.thisPage;
+      this.pageCount = data.pageCount;
+      this.nextPage = data.nextPage;
     },
     // TODO: fix doppia chiamata non voluta...
     async onIntersect() {

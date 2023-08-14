@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { PodcastService } from "@/api";
+import { PodcastService } from "@/services";
 import { formatDateToIso } from "@/utils/date";
 
 export default {
@@ -69,14 +69,12 @@ export default {
   },
   methods: {
     async deletePodcast(podcast) {
-      await PodcastService.deletePodcastById(podcast.ID).then(() =>
-        this.$emit("delete-podcast")
-      );
+      await PodcastService.deleteById(podcast.ID);
+      this.$emit("delete-podcast");
     },
     async markAllPlayed(podcast) {
-      await PodcastService.setPodcastPlayed(podcast.ID).then(() =>
-        this.$emit("mark-all-played")
-      );
+      await PodcastService.setPlayed(podcast.ID);
+      this.$emit("mark-all-played");
     },
   },
 };

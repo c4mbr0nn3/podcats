@@ -22,4 +22,12 @@ axiosClient.interceptors.request.use((config) => {
   return config;
 });
 
+axiosClient.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    console.error("Api Error:", err);
+    return Promise.reject(err);
+  }
+);
+
 export default axiosClient;

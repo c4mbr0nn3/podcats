@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { PodcastItemsService } from "@/api";
+import { PodcastItemService } from "@/services";
 import { Howl, Howler } from "howler";
 import { getTotalTime, getTimePlayed } from "@/utils/player";
 export default {
@@ -157,7 +157,7 @@ export default {
       onend: async () => {
         this.isPlaying = false;
         await this.updateTrackProgress();
-        await PodcastItemsService.setPodcastItemCompleted(this.podcastData.ID);
+        await PodcastItemService.setPodcastItemCompleted(this.podcastData.ID);
       },
     };
     this.howlerData = new Howl(howlerConfig);
@@ -172,7 +172,7 @@ export default {
   },
   methods: {
     async updateTrackProgress() {
-      await PodcastItemsService.updatePodcastItemPlayedTime(
+      await PodcastItemService.updatePodcastItemPlayedTime(
         this.podcastData.ID,
         Math.floor(this.podcastProgress)
       );
@@ -225,5 +225,3 @@ export default {
   },
 };
 </script>
-
-<style></style>

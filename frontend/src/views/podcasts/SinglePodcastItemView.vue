@@ -1,22 +1,18 @@
 <template>
-  <podcast-player-card v-if="podcastData" :podcast-data="podcastData" />
+  <podcast-player-card v-if="item" :podcast-data="item" />
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import { PodcastItemsService } from "@/api";
+import { PodcastItemService } from "@/services";
 import PodcastPlayerCard from "@/components/PodcastPlayerCard.vue";
+
+const item = ref(null);
 
 const route = useRoute();
 
-let podcastData = ref(null);
-
 onMounted(async () => {
-  await PodcastItemsService.getPodcastItemById(route.params.itemId).then(
-    (response) => {
-      podcastData.value = response.data;
-    }
-  );
+  item.value = await PodcastItemService.getById(route.params.itemId);
 });
 </script>

@@ -16,7 +16,7 @@
               </v-icon></template
             ></v-text-field
           ><single-podcast-card
-            v-for="(podcast, index) in podcastsStore.getPodcasts"
+            v-for="(podcast, index) in podcastsStore.podcasts"
             :key="index + podcast.UpdatedAt"
             :podcast="podcast"
             @mark-all-played="refreshPodcastList"
@@ -36,7 +36,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { PodcastService } from "@/api";
+import { PodcastService } from "@/services";
 import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
 import PodcastInfoDialog from "@/components/PodcastInfoDialog.vue";
 import { usePodcastsStore } from "@/stores/podcasts";
@@ -53,12 +53,11 @@ function showInfoDialog(event) {
   infoDialog.value = true;
 }
 
-function triggerImport() {
+async function triggerImport() {
   let payload = { podcastUrl: podcastUrl.value };
-  PodcastService.importPodcast(payload).then(() => {
-    podcastUrl.value = null;
-    refreshPodcastList();
-  });
+  await PodcastService.importPodcast(payload);
+  podcastUrl.value = null;
+  refreshPodcastList();
 }
 
 function refreshPodcastList() {
