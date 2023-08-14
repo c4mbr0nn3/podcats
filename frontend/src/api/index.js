@@ -1,4 +1,4 @@
-export * as PodcastService from "./services/podcastsService";
-export * as PodcastItemsService from "./services/podcastItemsService";
-export * as AuthService from "./services/authService";
-export * as UsersService from "./services/users-service";
+export * as PodcastApi from "./modules/podcast-api";
+export * as PodcastItemApi from "./modules/podcast-item-api";
+export * as AuthApi from "./modules/auth-api";
+export * as UserApi from "./modules/user-api";

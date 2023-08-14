@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { AuthService, UsersService } from "@/api";
+import { AuthService, UserService } from "@/services";
 import { useLocalStorage } from "@vueuse/core";
 import { computed } from "vue";
 
@@ -14,17 +14,17 @@ export const useAuthStore = defineStore("auth", () => {
   const getToken = computed(() => token.value);
 
   async function login(payload) {
-    await AuthService.login(payload).then((response) => {
-      user.value = response.data.user;
-      token.value = response.data.token;
-      if (needPasswordChange.value)
-        this.$router.push({ name: "change-password" });
-      else this.$router.push({ name: "home" });
-    });
+    const data = await AuthService.login(payload);
+    user.value = data.user;
+    token.value = data.token;
+    if (needPasswordChange.value)
+      this.$router.push({ name: "change-password" });
+    else this.$router.push({ name: "home" });
   }
 
   async function setPassword(payload) {
-    await UsersService.setPassword(user.value.ID, payload).then(() => {
+    // TODO: check if still working
+    await UserService.setPassword(user.value.ID, payload).then(() => {
       user.value.NeedPasswordChange = false;
       this.$router.push({ name: "home" });
     });

@@ -83,6 +83,7 @@ const userDialog = ref(props.user);
 watch(
   () => props.modelValue,
   () => {
+    userDialog.value = {};
     // assign all key from props.user to userDialog
     Object.keys(props.user).forEach((key) => {
       userDialog.value[key] = props.user[key];

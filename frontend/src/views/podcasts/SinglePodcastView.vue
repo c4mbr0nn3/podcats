@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { PodcastService } from "@/api";
+import { PodcastService } from "@/services";
 import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
 
 export default {
@@ -50,25 +50,20 @@ export default {
   },
   methods: {
     async fetchData() {
-      await PodcastService.getPodcastById(this.$route.params.id).then(
-        (response) => (this.podcastData = response.data)
-      );
+      this.podcastData = await PodcastService.getById(this.$route.params.id);
       await this.fetchPodcastItems(1);
     },
     async fetchPodcastItems(pageId) {
-      await PodcastService.getPodcastItemsByPodcastId(
+      const data = await PodcastService.getItemsById(
         this.$route.params.id,
         pageId
-      ).then((response) => {
-        if (response.data.podcastItems.length > 0) {
-          response.data.podcastItems.forEach((item) =>
-            this.podcastItemsData.push(item)
-          );
-        }
-        this.currentPage = response.data.thisPage;
-        this.pageCount = response.data.pageCount;
-        this.nextPage = response.data.nextPage;
-      });
+      );
+      if (data.podcastItems.length > 0) {
+        data.podcastItems.forEach((item) => this.podcastItemsData.push(item));
+      }
+      this.currentPage = data.thisPage;
+      this.pageCount = data.pageCount;
+      this.nextPage = data.nextPage;
     },
     // TODO: fix doppia chiamata non voluta...
     async onIntersect() {

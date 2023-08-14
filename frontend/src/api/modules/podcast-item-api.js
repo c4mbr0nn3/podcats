@@ -1,14 +1,14 @@
 import axiosClient from "../axios";
 
-export function getLatestPodcastItems(pageId) {
+export function getLatest(pageId) {
   return axiosClient.get(`/podcast-items/latest?page=${pageId}`);
 }
 
-export function getFavouritesPodcastItems(pageId) {
+export function getFavourites(pageId) {
   return axiosClient.get(`/podcast-items/favourites?page=${pageId}`);
 }
 
-export function getPodcastItemById(itemId) {
+export function getById(itemId) {
   return axiosClient.get(`/podcast-items/${itemId}`);
 }
 
@@ -22,10 +22,10 @@ export function setPodcastItemCompleted(itemId) {
   return axiosClient.post(`/podcast-items/${itemId}/set-completed`);
 }
 
-export function switchPodcastItemPlayedStatus(itemId) {
+export function switchStatus(itemId) {
   return axiosClient.post(`/podcast-items/${itemId}/switch-played-status`);
 }
 
-export function switchPodcastItemFavouriteStatus(itemId) {
+export function switchFavourite(itemId) {
   return axiosClient.post(`/podcast-items/${itemId}/switch-fav-status`);
 }
