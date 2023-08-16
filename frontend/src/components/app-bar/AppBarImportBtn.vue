@@ -8,6 +8,7 @@
       <v-card-text>
         <v-text-field
           v-model="podcastSearch"
+          autofocus
           label="Start typing to search in Apple Podcasts"
           append-inner-icon="mdi-magnify"
           color="primary"
