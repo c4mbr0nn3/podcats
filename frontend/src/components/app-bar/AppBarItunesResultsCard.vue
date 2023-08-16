@@ -37,6 +37,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["imported"]);
+
 const isImporting = ref(false);
 
 const podcastsStore = usePodcastsStore();
@@ -46,5 +48,6 @@ const onClick = async () => {
   isImporting.value = true;
   await importPodcast(props.podcast.feedUrl);
   isImporting.value = false;
+  emit("imported");
 };
 </script>

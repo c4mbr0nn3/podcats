@@ -36,7 +36,8 @@
         class="ml-3"
         color="primary"
         @click="markAllPlayed(podcast)"
-        >mdi-check-all
+      >
+        mdi-check-all
       </v-icon>
     </template>
   </v-tooltip>
@@ -47,35 +48,37 @@
         class="ml-3"
         color="red"
         @click="deletePodcast(podcast)"
-        >mdi-delete-outline
+      >
+        mdi-delete-outline
       </v-icon>
     </template>
   </v-tooltip>
 </template>
 
-<script>
+<script setup>
 import { PodcastService } from "@/services";
 import { formatDateToIso } from "@/utils/date";
 
-export default {
-  props: {
-    podcast: { type: Object, default: () => {} },
+defineProps({
+  podcast: {
+    type: Object,
+    required: true,
   },
-  emits: ["delete-podcast", "mark-all-played", "show-info-dialog"],
-  data() {
-    return {
-      formatDateToIso,
-    };
-  },
-  methods: {
-    async deletePodcast(podcast) {
-      await PodcastService.deleteById(podcast.ID);
-      this.$emit("delete-podcast");
-    },
-    async markAllPlayed(podcast) {
-      await PodcastService.setPlayed(podcast.ID);
-      this.$emit("mark-all-played");
-    },
-  },
-};
+});
+
+const emit = defineEmits([
+  "delete-podcast",
+  "mark-all-played",
+  "show-info-dialog",
+]);
+
+async function deletePodcast(podcast) {
+  await PodcastService.deleteById(podcast.ID);
+  emit("delete-podcast");
+}
+
+async function markAllPlayed(podcast) {
+  await PodcastService.setPlayed(podcast.ID);
+  emit("mark-all-played");
+}
 </script>
