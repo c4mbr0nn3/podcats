@@ -37,8 +37,9 @@
               variant="outlined"
               @input="onInputChange"
             />
-          </v-card-title> </v-card
-      ></v-col>
+          </v-card-title>
+        </v-card>
+      </v-col>
     </v-row>
     <v-card height="100%">
       <v-card-text>
@@ -65,8 +66,7 @@
           <v-col
             cols="12"
             align-self="center"
-            class="d-flex flex-column align-center"
-            style="opacity: 0.5"
+            class="d-flex flex-column align-center text-disabled"
           >
             <Icon icon="mdi:emoticon-dead-outline" width="100" />
             <div class="mt-1">No results found</div>
@@ -76,8 +76,7 @@
           <v-col
             cols="12"
             align-self="center"
-            class="d-flex flex-column align-center"
-            style="opacity: 0.5"
+            class="d-flex flex-column align-center text-disabled"
           >
             <Icon icon="mdi:selection-search" width="100" />
             <div class="mt-1">Your search result will appear here</div>
@@ -126,7 +125,7 @@ const onInputChange = () => {
 
 const debounceSearch = useDebounceFn(() => {
   const joinedSearchTerm = searchString.value.split(" ");
-  searchResults.value = podcastsStore.getPodcasts.filter((podcast) => {
+  searchResults.value = podcastsStore.podcasts.filter((podcast) => {
     return stringContainsAnyOf(podcast.Title, joinedSearchTerm);
   });
   searchLoading.value = false;

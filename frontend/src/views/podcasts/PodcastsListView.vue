@@ -3,19 +3,8 @@
     <v-col cols="9">
       <v-card
         ><v-card-title>My Podcasts</v-card-title>
-        <v-card-text
-          ><v-text-field
-            v-model="podcastUrl"
-            label="Import Podcast"
-            color="primary"
-            variant="underlined"
-          >
-            <template #append-inner>
-              <v-icon color="primary" @click="triggerImport">
-                mdi-plus
-              </v-icon></template
-            ></v-text-field
-          ><single-podcast-card
+        <v-card-text>
+          <single-podcast-card
             v-for="(podcast, index) in podcastsStore.podcasts"
             :key="index + podcast.UpdatedAt"
             :podcast="podcast"
@@ -36,12 +25,10 @@
 
 <script setup>
 import { ref } from "vue";
-import { PodcastService } from "@/services";
 import SinglePodcastCard from "@/components/SinglePodcastCard.vue";
 import PodcastInfoDialog from "@/components/PodcastInfoDialog.vue";
 import { usePodcastsStore } from "@/stores/podcasts";
 
-const podcastUrl = ref("");
 const infoDialog = ref(false);
 const infoDialogData = ref(null);
 
@@ -51,13 +38,6 @@ const { fetchPodcasts } = podcastsStore;
 function showInfoDialog(event) {
   infoDialogData.value = event;
   infoDialog.value = true;
-}
-
-async function triggerImport() {
-  let payload = { podcastUrl: podcastUrl.value };
-  await PodcastService.importPodcast(payload);
-  podcastUrl.value = null;
-  refreshPodcastList();
 }
 
 function refreshPodcastList() {
