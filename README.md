@@ -25,10 +25,10 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 - ✅ Import podcasts RSS feed and store them in SQLite database
 - ✅ Cron job keeps podcasts updated
 - ✅ Search imported podcasts from anywhere in the app by pressing `Ctrl+K`
+- ✅ Search and import new podcasts from iTunes API
 
 ## Roadmap
 
-- Search and import new podcasts from iTunes API 👷
 - Import/Export OPML
 - E-mail cron job
 - Mobile UI
