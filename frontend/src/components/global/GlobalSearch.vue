@@ -90,8 +90,8 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import SearchResultCard from "@/components/SearchResultCard.vue";
-import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useDebounceFn } from "@vueuse/core";
+import { ref } from "vue";
+import { useDebounceFn, onKeyStroke } from "@vueuse/core";
 import { usePodcastsStore } from "@/stores/podcasts";
 import { stringContainsAnyOf } from "@/utils/string";
 
@@ -99,22 +99,15 @@ const dialog = ref(false);
 const searchString = ref("");
 const searchResults = ref([]);
 const searchLoading = ref(false);
+
 const podcastsStore = usePodcastsStore();
 
-onMounted(() => {
-  document.addEventListener("keydown", onDocumentKeydown);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("keydown", onDocumentKeydown);
-});
-
-function onDocumentKeydown(e) {
+onKeyStroke(["ctrl", "k"], (e) => {
+  e.preventDefault();
   if (!dialog.value && e.ctrlKey && e.key === "k") {
-    e.preventDefault();
     dialog.value = true;
   }
-}
+});
 
 const onInputChange = () => {
   if (searchString.value.length === 0) return;
