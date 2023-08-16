@@ -61,12 +61,19 @@ export default {
   },
   methods: {
     async changePlayedStatus(podcastItem) {
-      await PodcastItemService.switchStatus(podcastItem.ID);
+      await PodcastItemService.switchStatus(
+        podcastItem.ID,
+        podcastItem.IsPlayed
+      );
       this.$emit("change-played-status", podcastItem.ID);
       this.fetchPodcasts();
     },
     async changeFavStatus(podcastItem) {
-      const data = await PodcastItemService.switchFavourite(podcastItem.ID);
+      const data = await PodcastItemService.switchFavourite(
+        podcastItem.ID,
+        !!podcastItem.BookmarkDate
+      );
+      console.log("changeFavStatus", data);
       this.$emit("change-fav-status", {
         id: podcastItem.ID,
         bookmarkDate: data,

@@ -12,13 +12,13 @@ export function getById(itemId) {
   return axiosClient.get(`/podcast-items/${itemId}`);
 }
 
-export function updatePodcastItemPlayedTime(itemId, timePlayed) {
+export function updatePlayedTime(itemId, timePlayed) {
   return axiosClient.post(
     `/podcast-items/${itemId}/update-played-time?time=${timePlayed}`
   );
 }
 
-export function setPodcastItemCompleted(itemId) {
+export function setCompleted(itemId) {
   return axiosClient.post(`/podcast-items/${itemId}/set-completed`);
 }
 

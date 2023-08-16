@@ -157,7 +157,7 @@ export default {
       onend: async () => {
         this.isPlaying = false;
         await this.updateTrackProgress();
-        await PodcastItemService.setPodcastItemCompleted(this.podcastData.ID);
+        await PodcastItemService.setCompleted(this.podcastData.ID);
       },
     };
     this.howlerData = new Howl(howlerConfig);
@@ -172,7 +172,7 @@ export default {
   },
   methods: {
     async updateTrackProgress() {
-      await PodcastItemService.updatePodcastItemPlayedTime(
+      await PodcastItemService.updatePlayedTime(
         this.podcastData.ID,
         Math.floor(this.podcastProgress)
       );

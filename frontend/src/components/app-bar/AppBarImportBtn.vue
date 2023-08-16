@@ -35,6 +35,7 @@
               :key="podcast.collectionId"
               :podcast="podcast"
               :class="{ 'mb-2': i !== searchResults.length - 1 }"
+              @imported="clearResults"
             />
           </div>
           <div
@@ -96,11 +97,13 @@ const { importPodcast } = podcastsStore;
 
 const isMenuClosed = computed(() => !menu.value);
 
-whenever(isMenuClosed, () => {
+whenever(isMenuClosed, () => clearResults);
+
+const clearResults = () => {
   podcastSearch.value = "";
   podcastUrl.value = "";
   searchResults.value = [];
-});
+};
 
 const onImport = async () => {
   isImporting.value = true;
