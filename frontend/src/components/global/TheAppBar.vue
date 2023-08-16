@@ -17,6 +17,7 @@
         </v-btn>
       </v-col>
       <v-col cols="3" class="d-flex justify-end">
+        <ImportBtn />
         <v-btn
           v-if="authStore.isRoot"
           size="small"
@@ -42,6 +43,7 @@
 <script setup>
 import { onMounted } from "vue";
 import GlobalSearch from "./GlobalSearch.vue";
+import ImportBtn from "@/components/app-bar/AppBarImportBtn.vue";
 import { useAuthStore } from "@/stores/auth";
 import { usePodcastsStore } from "@/stores/podcasts";
 
@@ -55,6 +57,7 @@ const menuList = [
     route: { name: "favourites-podcasts" },
   },
 ];
+
 const authStore = useAuthStore();
 const { logout } = authStore;
 
