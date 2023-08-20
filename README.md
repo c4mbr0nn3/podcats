@@ -30,7 +30,7 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 ## Roadmap
 
 - Import/Export OPML
-- E-mail cron job
+- Notification for cron job
 - Mobile UI
 - Typescript (I had to learn it sooner or later)
 
