@@ -1,16 +1,17 @@
 <template>
   <v-row justify="center">
     <v-col cols="8">
-      <podcast-card-base :podcast="props.podcastData" :apply-fade="false"
-        ><template #other>
+      <podcast-card-base :podcast="props.podcastData" :apply-fade="false">
+        <template #other>
           <div>
             <v-col cols="12">
               <v-card-text>
-                <HowlerPlayer :data="props.podcastData"
-              /></v-card-text>
+                <HowlerPlayer :data="props.podcastData" />
+              </v-card-text>
             </v-col>
-          </div> </template
-      ></podcast-card-base>
+          </div>
+        </template>
+      </podcast-card-base>
     </v-col>
   </v-row>
 </template>

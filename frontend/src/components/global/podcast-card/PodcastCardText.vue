@@ -1,6 +1,6 @@
 <template>
-  <v-card-text
-    ><p-markdown :class="getSummaryStyle" :markdown="shortenedSummary" />
+  <v-card-text>
+    <p-markdown :class="getSummaryStyle" :markdown="shortenedSummary" />
     <div class="d-flex align-center mt-2">
       <slot name="actions"></slot>
     </div>

@@ -3,7 +3,7 @@
     :podcast="props.podcast"
     :avatar-size="80"
     :to="getRouterLink"
-  ></podcast-card-base>
+  />
 </template>
 
 <script setup>

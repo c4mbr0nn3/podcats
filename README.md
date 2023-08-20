@@ -24,7 +24,7 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 - ✅ Multi user support
 - ✅ Import podcasts RSS feed and store them in SQLite database
 - ✅ Cron job keeps podcasts updated
-- ✅ Search imported podcasts from anywhere in the app by pressing `Ctrl+K`
+- ✅ Search imported podcasts from anywhere in the app by pressing `Ctrl+K`, with fuzzy search (fuse.js)
 - ✅ Search and import new podcasts from iTunes API
 
 ## Roadmap
