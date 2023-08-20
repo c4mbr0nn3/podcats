@@ -93,7 +93,7 @@ import SearchResultCard from "@/components/SearchResultCard.vue";
 import { ref } from "vue";
 import { useDebounceFn, onKeyStroke } from "@vueuse/core";
 import { usePodcastsStore } from "@/stores/podcasts";
-import { stringContainsAnyOf } from "@/utils/string";
+import Fuse from "fuse.js";
 
 const dialog = ref(false);
 const searchString = ref("");
@@ -117,10 +117,11 @@ const onInputChange = () => {
 };
 
 const debounceSearch = useDebounceFn(() => {
-  const joinedSearchTerm = searchString.value.split(" ");
-  searchResults.value = podcastsStore.podcasts.filter((podcast) => {
-    return stringContainsAnyOf(podcast.Title, joinedSearchTerm);
+  const fuse = new Fuse(podcastsStore.podcasts, {
+    keys: ["Title"],
+    threshold: 0.3,
   });
+  searchResults.value = fuse.search(searchString.value).map((r) => r.item);
   searchLoading.value = false;
 }, 1000);
 
