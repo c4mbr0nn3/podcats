@@ -16,7 +16,7 @@
     "date-fns": "^2.30.0",
     "dompurify": "^3.0.5",
     "howler": "^2.2.3",
-    "marked": "^7.0.3",
+    "marked": "^7.0.4",
     "pinia": "^2.1.6",
     "roboto-fontface": "^0.10.0",
     "validator": "^13.11.0",
