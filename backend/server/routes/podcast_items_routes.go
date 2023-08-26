@@ -9,14 +9,14 @@ import (
 
 func AddPodcastItemsRoutes(rg *gin.RouterGroup) {
 	itemsController := new(controllers.PodcastItemsController)
-	usersRouter := rg.Group("/podcast-items").Use(middlewares.Auth())
+	routes := rg.Group("/podcast-items").Use(middlewares.Auth())
 	{
-		usersRouter.GET("/latest", itemsController.GetLatestPodcastItems)
-		usersRouter.GET("/favourites", itemsController.GetFavouritesPodcastItems)
-		usersRouter.GET("/:itemId", itemsController.GetPodcastItemById)
-		usersRouter.POST("/:itemId/update-played-time", itemsController.UpdatePodcastItemPlayedTime)
-		usersRouter.POST("/:itemId/set-completed", itemsController.SetPodcastItemCompleted)
-		usersRouter.POST("/:itemId/switch-played-status", itemsController.SwitchPodcastItemPlayedStatus)
-		usersRouter.POST("/:itemId/switch-fav-status", itemsController.SwitchPodcastItemFavouriteStatus)
+		routes.GET("/latest", itemsController.GetLatestPodcastItems)
+		routes.GET("/favourites", itemsController.GetFavouritesPodcastItems)
+		routes.GET("/:itemId", itemsController.GetPodcastItemById)
+		routes.POST("/:itemId/update-played-time", itemsController.UpdatePodcastItemPlayedTime)
+		routes.POST("/:itemId/set-completed", itemsController.SetPodcastItemCompleted)
+		routes.POST("/:itemId/switch-played-status", itemsController.SwitchPodcastItemPlayedStatus)
+		routes.POST("/:itemId/switch-fav-status", itemsController.SwitchPodcastItemFavouriteStatus)
 	}
 }

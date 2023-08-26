@@ -25,6 +25,7 @@ func NewRouter() *gin.Engine {
 	routes.AddUsersRoutes(v1)
 	routes.AddPodcastsRoutes(v1)
 	routes.AddPodcastItemsRoutes(v1)
+	routes.AddNotificationsRoutes(v1)
 
 	return router
 }

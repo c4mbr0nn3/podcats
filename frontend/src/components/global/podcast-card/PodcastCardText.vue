@@ -30,7 +30,7 @@ const getSummaryStyle = computed(() => {
 });
 
 const shortenedSummary = computed(() => {
-  if (props.applyFade && props.summary.length > 280)
+  if (props.applyFade && props.summary.length > 250)
     return props.summary.substring(0, 250) + "...";
   return props.summary;
 });

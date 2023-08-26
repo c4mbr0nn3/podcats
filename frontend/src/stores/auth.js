@@ -10,8 +10,8 @@ export const useAuthStore = defineStore("auth", () => {
   const isAuthenticated = computed(() => !!token.value);
   const needPasswordChange = computed(() => user.value.NeedPasswordChange);
   const isRoot = computed(() => user.value.ID === 1);
-  const getUser = computed(() => user.value);
-  const getToken = computed(() => token.value);
+  const isAdmin = computed(() => user.value.IsAdmin);
+  const fullName = computed(() => `${user.value.Name} ${user.value.Surname}`);
 
   async function login(payload) {
     const data = await AuthService.login(payload);
@@ -42,8 +42,8 @@ export const useAuthStore = defineStore("auth", () => {
     isAuthenticated,
     needPasswordChange,
     isRoot,
-    getUser,
-    getToken,
+    isAdmin,
+    fullName,
     login,
     logout,
     setPassword,

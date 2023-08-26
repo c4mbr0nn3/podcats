@@ -23,14 +23,14 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 - ✅ Reproduce podcasts (o rly?)
 - ✅ Multi user support
 - ✅ Import podcasts RSS feed and store them in SQLite database
-- ✅ Cron job keeps podcasts updated
+- ✅ Cron job search for new episodes every 5 minutes
+- ✅ In app notification for cron job
 - ✅ Search imported podcasts from anywhere in the app by pressing `Ctrl+K`, with fuzzy search (fuse.js)
 - ✅ Search and import new podcasts from iTunes API
 
 ## Roadmap
 
 - Import/Export OPML
-- Notification for cron job
 - Mobile UI
 - Typescript (I had to learn it sooner or later)
 
