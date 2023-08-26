@@ -47,6 +47,7 @@ func updatePodcastItemsList() {
 				GUID:            item.GUID,
 				Image:           utils.GetSafeImageURL(item),
 				PodcastID:       int(podcast.ID),
+				UserID:          int(podcast.UserId),
 			})
 		}
 		if len(podcastItemsArray) > 0 {
