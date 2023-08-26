@@ -18,23 +18,8 @@
       </v-col>
       <v-col cols="3" class="d-flex justify-end">
         <ImportBtn />
-        <v-btn
-          v-if="authStore.isRoot"
-          size="small"
-          icon="mdi-cog"
-          color="primary"
-          class="mx-3"
-          :to="{ name: 'admin' }"
-        >
-        </v-btn>
-        <v-divider v-if="authStore.isRoot" vertical></v-divider>
-        <v-btn
-          color="primary"
-          icon="mdi-logout"
-          size="small"
-          class="mx-3"
-          @click="logout"
-        ></v-btn>
+        <NotificationBtn />
+        <UserMenuBtn />
       </v-col>
     </v-row>
   </v-app-bar>
@@ -44,8 +29,12 @@
 import { onMounted } from "vue";
 import GlobalSearch from "./GlobalSearch.vue";
 import ImportBtn from "@/components/app-bar/AppBarImportBtn.vue";
-import { useAuthStore } from "@/stores/auth";
+import UserMenuBtn from "@/components/app-bar/AppBarUserMenuBtn.vue";
+import NotificationBtn from "@/components/app-bar/AppBarNotificationBtn.vue";
 import { usePodcastsStore } from "@/stores/podcasts";
+
+const podcastsStore = usePodcastsStore();
+const { fetchPodcasts } = podcastsStore;
 
 const menuList = [
   { label: "Home", route: { name: "home" } },
@@ -57,12 +46,6 @@ const menuList = [
     route: { name: "favourites-podcasts" },
   },
 ];
-
-const authStore = useAuthStore();
-const { logout } = authStore;
-
-const podcastsStore = usePodcastsStore();
-const { fetchPodcasts } = podcastsStore;
 
 onMounted(() => {
   fetchPodcasts();

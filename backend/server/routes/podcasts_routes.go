@@ -9,13 +9,13 @@ import (
 
 func AddPodcastsRoutes(rg *gin.RouterGroup) {
 	podcastsController := new(controllers.PodcastsController)
-	usersRouter := rg.Group("/podcasts").Use(middlewares.Auth())
+	routes := rg.Group("/podcasts").Use(middlewares.Auth())
 	{
-		usersRouter.GET("/", podcastsController.GetAllPodcasts)
-		usersRouter.GET("/:id", podcastsController.GetPodcastById)
-		usersRouter.GET("/:id/items", podcastsController.GetPodcastItemsByPodcastId)
-		usersRouter.DELETE("/:id/remove", podcastsController.DeletePodcastById)
-		usersRouter.POST("/:id/set-all-played", podcastsController.SetAllPlayed)
-		usersRouter.POST("/import", podcastsController.ImportPodcast)
+		routes.GET("/", podcastsController.GetAllPodcasts)
+		routes.GET("/:id", podcastsController.GetPodcastById)
+		routes.GET("/:id/items", podcastsController.GetPodcastItemsByPodcastId)
+		routes.DELETE("/:id/remove", podcastsController.DeletePodcastById)
+		routes.POST("/:id/set-all-played", podcastsController.SetAllPlayed)
+		routes.POST("/import", podcastsController.ImportPodcast)
 	}
 }

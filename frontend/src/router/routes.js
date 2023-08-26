@@ -76,8 +76,8 @@ const routes = [
     },
   },
   {
-    path: "/admin",
-    name: "admin",
+    path: "/settings",
+    name: "settings",
     component: () => import("@/views/AdminView"),
     meta: {
       requiresAuth: true,

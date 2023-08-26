@@ -49,10 +49,24 @@ func updatePodcastItemsList() {
 				PodcastID:       int(podcast.ID),
 				UserID:          int(podcast.UserId),
 			})
+
 		}
 		if len(podcastItemsArray) > 0 {
 			result := db.GetDb().Create(&podcastItemsArray)
-			log.Println("Podcast_ID: ", podcast.ID, "\tNew records: ", result.RowsAffected)
+			if result.Error != nil {
+				log.Println("Error: ", result.Error)
+			}
+			for _, item := range podcastItemsArray {
+				notification := models.Notification{
+					UserId:          int(podcast.UserId),
+					PodcastId:       int(podcast.ID),
+					PodcastItemId:   int(item.ID),
+					PublicationDate: item.PublicationDate,
+					Message:         item.Title,
+					IsRead:          false,
+				}
+				db.GetDb().Create(&notification)
+			}
 		}
 	}
 }

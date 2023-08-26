@@ -9,13 +9,13 @@ import (
 
 func AddUsersRoutes(rg *gin.RouterGroup) {
 	controller := new(controllers.UsersController)
-	usersRouter := rg.Group("/users").Use(middlewares.Auth())
+	routes := rg.Group("/users").Use(middlewares.Auth())
 	{
-		usersRouter.GET("/", controller.GetAllUsers)
-		usersRouter.POST("/create", controller.CreateUser)
-		usersRouter.POST("/:id/update", controller.UpdateUser)
-		usersRouter.GET("/:id/reset-password", controller.ResetUserPassword)
-		usersRouter.POST("/:id/set-password", controller.SetUserPassword)
-		usersRouter.DELETE("/:id/delete", controller.DeleteUser)
+		routes.GET("/", controller.GetAllUsers)
+		routes.POST("/create", controller.CreateUser)
+		routes.POST("/:id/update", controller.UpdateUser)
+		routes.GET("/:id/reset-password", controller.ResetUserPassword)
+		routes.POST("/:id/set-password", controller.SetUserPassword)
+		routes.DELETE("/:id/delete", controller.DeleteUser)
 	}
 }

@@ -27,7 +27,7 @@ func Init() (*gorm.DB, error) {
 }
 
 func Migrate() {
-	database.AutoMigrate(&models.Podcast{}, &models.PodcastItem{}, &models.User{}, &models.Migration{})
+	database.AutoMigrate(&models.Podcast{}, &models.PodcastItem{}, &models.User{}, &models.Migration{}, &models.Notification{})
 	createAdminUserIfNotPresent()
 }
 
