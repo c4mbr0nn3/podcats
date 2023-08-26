@@ -8,6 +8,9 @@ export const useNotificationsStore = defineStore("notifications", () => {
   const anyUnread = computed(() => {
     return notifications.value.length > 0;
   });
+  const unreadCount = computed(() => {
+    return notifications.value.length;
+  });
 
   async function fetchNotifications() {
     notifications.value = await NotificationService.getAll();
@@ -23,11 +26,17 @@ export const useNotificationsStore = defineStore("notifications", () => {
     fetchNotifications();
   }
 
+  function $reset() {
+    notifications.value = [];
+  }
+
   return {
     notifications,
     anyUnread,
+    unreadCount,
     fetchNotifications,
     setAllRead,
     setRead,
+    $reset,
   };
 });

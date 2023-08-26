@@ -2,6 +2,8 @@ import { defineStore } from "pinia";
 import { AuthService, UserService } from "@/services";
 import { useLocalStorage } from "@vueuse/core";
 import { computed } from "vue";
+import { usePodcastsStore } from "./podcasts";
+import { useNotificationsStore } from "./notifications";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = useLocalStorage("vueUseUser", {});
@@ -32,6 +34,12 @@ export const useAuthStore = defineStore("auth", () => {
 
   async function logout() {
     await this.$router.push({ name: "login" });
+    $reset();
+    usePodcastsStore().$reset();
+    useNotificationsStore().$reset();
+  }
+
+  function $reset() {
     user.value = null;
     token.value = null;
   }
@@ -47,5 +55,6 @@ export const useAuthStore = defineStore("auth", () => {
     login,
     logout,
     setPassword,
+    $reset,
   };
 });

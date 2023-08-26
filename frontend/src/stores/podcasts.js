@@ -15,9 +15,14 @@ export const usePodcastsStore = defineStore("podcasts", () => {
     fetchPodcasts();
   }
 
+  function $reset() {
+    podcasts.value = [];
+  }
+
   return {
     podcasts,
     fetchPodcasts,
     importPodcast,
+    $reset,
   };
 });
