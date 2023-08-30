@@ -24,3 +24,5 @@ go.work
 temp/
 
 dist/
+
+**/node_modules

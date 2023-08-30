@@ -1,0 +1,29 @@
+{
+  "name": "podcats",
+  "version": "1.2.1",
+  "description": "A podcast manager with cats",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c4mbr0nn3/podcats.git"
+  },
+  "author": "Francesco Zorzi",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/c4mbr0nn3/podcats/issues"
+  },
+  "homepage": "https://github.com/c4mbr0nn3/podcats#readme",
+  "scripts": {
+    "bumpp": "bumpp",
+    "prepare": "husky install",
+    "commitmsg": "commitlint --edit $1"
+  },
+  "dependencies": {
+    "bumpp": "^9.2.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1"
+  }
+}
