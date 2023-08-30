@@ -43,6 +43,8 @@ I just wanted to have some fun with Vue.js 3 and Vuetify 3 while learning some G
 - [ ] Mobile UI design
 - [ ] Light Theme
 - [ ] Configurable interval for the new episode cron job
+- [ ] Email notifications for the cron job with configurable SMTP server
+- [ ] Basic user settings page
 
 ## Deployment
 
