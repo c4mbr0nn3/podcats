@@ -12,8 +12,9 @@ FROM node:20-alpine3.17 AS vue-builder
 RUN mkdir -p /vue
 WORKDIR /vue
 COPY frontend/ .
-RUN npm ci
-RUN npm run build
+RUN npm i -g pnpm
+RUN pnpm install
+RUN pnpm build
 
 FROM alpine:3.18
 ENV GIN_MODE=release
