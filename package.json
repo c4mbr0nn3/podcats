@@ -18,8 +18,8 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.2",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/cli": "^17.8.0",
+    "@commitlint/config-conventional": "^17.8.0",
     "@release-it/conventional-changelog": "^7.0.2",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
