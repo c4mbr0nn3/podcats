@@ -10,7 +10,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
-    "@mdi/font": "^7.2.96",
+    "@mdi/font": "^7.3.67",
     "@vueuse/core": "^10.5.0",
     "axios": "^1.5.1",
     "date-fns": "^2.30.0",
@@ -18,12 +18,12 @@
     "fuse.js": "^6.6.2",
     "howler": "^2.2.4",
     "marked": "^7.0.5",
-    "pinia": "^2.1.6",
+    "pinia": "^2.1.7",
     "roboto-fontface": "^0.10.0",
     "validator": "^13.11.0",
     "vue": "^3.2.38",
     "vue-router": "^4.2.5",
-    "vuetify": "^3.3.20",
+    "vuetify": "^3.3.21",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
