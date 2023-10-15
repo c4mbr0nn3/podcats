@@ -3,11 +3,11 @@
     <v-col cols="9">
       <v-card>
         <v-card-title>
-          {{ getCardTitle }}
+          {{ cardTitle }}
         </v-card-title>
         <v-card-text>
           <SinglePodcastItemCard
-            v-for="(podcastItem, index) in getPodcastItemsList"
+            v-for="(podcastItem, index) in podcastItems"
             :key="index"
             class="mt-3"
             :podcast-id="$route.params.id"
@@ -22,62 +22,66 @@
   </v-row>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { PodcastService } from "@/services";
 import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
+import { useTitle } from "@vueuse/core";
 
-export default {
-  components: {
-    SinglePodcastItemCard,
-  },
-  data: () => ({
-    podcastData: null,
-    podcastItemsData: [],
-    currentPage: 1,
-    nextPage: null,
-    pageCount: null,
-  }),
-  computed: {
-    getCardTitle() {
-      return this.podcastData ? this.podcastData.Title : "";
-    },
-    getPodcastItemsList() {
-      return this.podcastItemsData ? this.podcastItemsData : [];
-    },
-  },
-  async created() {
-    await this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      this.podcastData = await PodcastService.getById(this.$route.params.id);
-      await this.fetchPodcastItems(1);
-    },
-    async fetchPodcastItems(pageId) {
-      const data = await PodcastService.getItemsById(
-        this.$route.params.id,
-        pageId
-      );
-      if (data.podcastItems.length > 0) {
-        data.podcastItems.forEach((item) => this.podcastItemsData.push(item));
-      }
-      this.currentPage = data.thisPage;
-      this.pageCount = data.pageCount;
-      this.nextPage = data.nextPage;
-    },
-    // TODO: fix doppia chiamata non voluta...
-    async onIntersect() {
-      if (this.currentPage == this.pageCount || !this.nextPage) return;
-      await this.fetchPodcastItems(this.nextPage);
-    },
-    changePlayedStatus(event) {
-      let item = this.podcastItemsData.find((el) => el.ID == event);
-      item.IsPlayed = !item.IsPlayed;
-    },
-    changeFavStatus(event) {
-      let item = this.podcastItemsData.find((el) => el.ID == event.id);
-      item.BookmarkDate = event.bookmarkDate;
-    },
-  },
+const podcastData = ref(null);
+const podcastItemsData = ref([]);
+const currentPage = ref(1);
+const nextPage = ref(null);
+const pageCount = ref(null);
+
+const route = useRoute();
+
+const cardTitle = computed(() => {
+  return podcastData.value ? podcastData.value.Title : "";
+});
+
+const podcastItems = computed(() => {
+  return podcastItemsData.value ? podcastItemsData.value : [];
+});
+
+const title = computed(() => {
+  return podcastData.value ? `PodCats | ${cardTitle.value}` : "PodCats";
+});
+
+useTitle(title);
+
+onMounted(async () => {
+  await fetchData();
+});
+
+const fetchData = async () => {
+  podcastData.value = await PodcastService.getById(route.params.id);
+  await fetchPodcastItems(1);
+};
+
+const fetchPodcastItems = async (pageId) => {
+  const data = await PodcastService.getItemsById(route.params.id, pageId);
+  if (data.podcastItems.length > 0) {
+    data.podcastItems.forEach((item) => podcastItemsData.value.push(item));
+  }
+  currentPage.value = data.thisPage;
+  pageCount.value = data.pageCount;
+  nextPage.value = data.nextPage;
+};
+
+const onIntersect = async () => {
+  if (currentPage.value == pageCount.value || !nextPage.value) return;
+  await fetchPodcastItems(nextPage.value);
+};
+
+const changePlayedStatus = (event) => {
+  let item = podcastItemsData.value.find((el) => el.ID == event);
+  item.IsPlayed = !item.IsPlayed;
+};
+
+const changeFavStatus = (event) => {
+  let item = podcastItemsData.value.find((el) => el.ID == event.id);
+  item.BookmarkDate = event.bookmarkDate;
 };
 </script>

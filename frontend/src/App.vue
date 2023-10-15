@@ -28,11 +28,13 @@ const getMainContainerClass = computed(() => {
 });
 
 const title = computed(() => {
+  let title = route.meta.name ? `PodCats | ${route.meta.name}` : "PodCats";
+
   if (notificationsStore.anyUnread) {
-    return `(${notificationsStore.unreadCount}) PodCats`;
+    return `(${notificationsStore.unreadCount}) ${title}`;
   }
 
-  return "PodCats";
+  return title;
 });
 
 useTitle(title);
