@@ -2,7 +2,7 @@
   <v-row justify="center">
     <v-col cols="9">
       <v-card
-        ><v-card-title>Favourites Episodes</v-card-title>
+        ><v-card-title>Favorites Episodes</v-card-title>
         <v-card-text v-if="podcastItemsData.length > 0">
           <SinglePodcastItemCard
             v-for="(podcastItem, index) in getFilteredFavs"

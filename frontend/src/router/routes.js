@@ -6,7 +6,7 @@ const routes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("@/views/LoginView"),
+    component: () => import("@/views/login/LoginView"),
     meta: {
       requiresFillHeight: true,
     },
@@ -14,7 +14,7 @@ const routes = [
   {
     path: "/login/change-password",
     name: "change-password",
-    component: () => import("@/views/ChangePassword"),
+    component: () => import("@/views/login/LoginChangePassword"),
     meta: {
       requiresFillHeight: true,
       requiresAuth: true,
@@ -37,6 +37,7 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresNavbar: true,
+      name: "My Podcasts",
     },
   },
   {
@@ -46,15 +47,17 @@ const routes = [
     meta: {
       requiresAuth: true,
       requiresNavbar: true,
+      name: "Latest Podcasts",
     },
   },
   {
-    path: "/podcasts/favourites",
-    name: "favourites-podcasts",
+    path: "/podcasts/favorites",
+    name: "favorites-podcasts",
     component: () => import("@/views/podcasts/FavouritesPodcastItemsView"),
     meta: {
       requiresAuth: true,
       requiresNavbar: true,
+      name: "Favorites Podcasts",
     },
   },
   {
@@ -76,13 +79,14 @@ const routes = [
     },
   },
   {
-    path: "/settings",
-    name: "settings",
-    component: () => import("@/views/AdminView"),
+    path: "/admin/settings",
+    name: "settings-admin",
+    component: () => import("@/views/settings/SettingsAdminView"),
     meta: {
       requiresAuth: true,
       requiresNavbar: true,
       requiresRoot: true,
+      name: "Settings",
     },
   },
 ];

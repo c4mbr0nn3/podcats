@@ -37,7 +37,7 @@ const dropdownMenu = [
     title: "Settings",
     icon: "mdi-cog",
     onClick: () => {
-      router.push({ name: "settings" });
+      router.push({ name: "settings-admin" });
     },
     onlyAdmin: true,
   },

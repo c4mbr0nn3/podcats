@@ -38,12 +38,12 @@ const { fetchPodcasts } = podcastsStore;
 
 const menuList = [
   { label: "Home", route: { name: "home" } },
-  { label: "Podcasts", route: { name: "podcasts" } },
+  { label: "My Podcasts", route: { name: "podcasts" } },
   { label: "Latest", route: { name: "latest-podcasts" } },
   {
     label: "Favs",
     icon: "mdi-heart",
-    route: { name: "favourites-podcasts" },
+    route: { name: "favorites-podcasts" },
   },
 ];
 
