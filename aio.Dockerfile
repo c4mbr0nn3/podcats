@@ -8,7 +8,7 @@ RUN go mod verify
 RUN go build -o podcats
 
 
-FROM node:20-alpine3.17 AS vue-builder
+FROM node:21-alpine3.17 AS vue-builder
 RUN mkdir -p /vue
 WORKDIR /vue
 COPY frontend/ .
