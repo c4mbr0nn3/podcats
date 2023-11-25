@@ -30,7 +30,6 @@ export default {
         podcastItem.ID,
         !!podcastItem.BookmarkDate,
       )
-      console.log('changeFavStatus', data)
       this.$emit('change-fav-status', {
         id: podcastItem.ID,
         bookmarkDate: data,
