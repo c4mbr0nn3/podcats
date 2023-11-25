@@ -1,6 +1,21 @@
+<script>
+import missingImage from '@/assets/missing_image.png'
+
+export default {
+  props: {
+    image: { type: String, default: '' },
+    routerLink: { type: Object, default: null },
+    avatarSize: { type: Number, default: 125 },
+  },
+  data: () => ({
+    missingImage,
+  }),
+}
+</script>
+
 <template>
-  <v-hover v-slot="{ isHovering, props }" :disabled="!routerLink"
-    ><component :is="routerLink ? 'router-link' : 'span'" :to="routerLink">
+  <v-hover v-slot="{ isHovering, props }" :disabled="!routerLink">
+    <component :is="routerLink ? 'router-link' : 'span'" :to="routerLink">
       <v-avatar
         class="ma-3"
         :size="avatarSize"
@@ -14,35 +29,23 @@
               <v-progress-circular
                 indeterminate
                 color="primary"
-              ></v-progress-circular></div
-          ></template>
+              />
+            </div>
+          </template>
           <div class="fill-height d-flex justify-center align-center">
             <v-icon
               color="transparent"
               size="x-large"
               :class="{ 'show-btns': isHovering }"
-              >mdi-play-circle</v-icon
             >
-          </div></v-img
-        >
-      </v-avatar></component
-    >
+              mdi-play-circle
+            </v-icon>
+          </div>
+        </v-img>
+      </v-avatar>
+    </component>
   </v-hover>
 </template>
-
-<script>
-import missingImage from "@/assets/missing_image.png";
-export default {
-  props: {
-    image: { type: String, default: "" },
-    routerLink: { type: Object, default: null },
-    avatarSize: { type: Number, default: 125 },
-  },
-  data: () => ({
-    missingImage: missingImage,
-  }),
-};
-</script>
 
 <style scoped>
 .v-avatar {

@@ -1,3 +1,29 @@
+<script setup>
+import { ref } from 'vue'
+import { usePodcastsStore } from '@/stores/podcasts'
+
+const props = defineProps({
+  podcast: {
+    type: Object,
+    required: true,
+  },
+})
+
+const emit = defineEmits(['imported'])
+
+const isImporting = ref(false)
+
+const podcastsStore = usePodcastsStore()
+const { importPodcast } = podcastsStore
+
+async function onClick() {
+  isImporting.value = true
+  await importPodcast(props.podcast.feedUrl)
+  isImporting.value = false
+  emit('imported')
+}
+</script>
+
 <template>
   <v-card variant="tonal" :loading="isImporting" @click="onClick">
     <template #loader="{ isActive }">
@@ -25,29 +51,3 @@
     </v-row>
   </v-card>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import { usePodcastsStore } from "@/stores/podcasts";
-
-const props = defineProps({
-  podcast: {
-    type: Object,
-    required: true,
-  },
-});
-
-const emit = defineEmits(["imported"]);
-
-const isImporting = ref(false);
-
-const podcastsStore = usePodcastsStore();
-const { importPodcast } = podcastsStore;
-
-const onClick = async () => {
-  isImporting.value = true;
-  await importPodcast(props.podcast.feedUrl);
-  isImporting.value = false;
-  emit("imported");
-};
-</script>

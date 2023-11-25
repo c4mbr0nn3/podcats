@@ -1,3 +1,57 @@
+<script setup>
+import { computed, ref } from 'vue'
+import { useDebounceFn, whenever } from '@vueuse/core'
+import { Icon } from '@iconify/vue'
+import ItunesResultsCard from './AppBarItunesResultsCard.vue'
+import { usePodcastsStore } from '@/stores/podcasts'
+import { ItunesService } from '@/services'
+
+const podcastSearch = ref('')
+const podcastUrl = ref('')
+const isImporting = ref(false)
+const isSearching = ref(false)
+const isDelayElapsed = ref(true)
+const searchResults = ref([])
+const menu = ref(false)
+
+const podcastsStore = usePodcastsStore()
+const { importPodcast } = podcastsStore
+
+const isMenuClosed = computed(() => !menu.value)
+
+whenever(isMenuClosed, () => clearResults)
+
+const debouncedSearch = useDebounceFn(async () => {
+  searchResults.value = await ItunesService.search(podcastSearch)
+  isSearching.value = false
+  setTimeout(() => {
+    isDelayElapsed.value = true
+  }, 200)
+}, 1000)
+
+function clearResults() {
+  podcastSearch.value = ''
+  podcastUrl.value = ''
+  searchResults.value = []
+}
+
+async function onImport() {
+  isImporting.value = true
+  importPodcast(podcastUrl)
+  podcastUrl.value = ''
+  isImporting.value = false
+}
+
+async function onSearch() {
+  isSearching.value = true
+  isDelayElapsed.value = false
+  searchResults.value = []
+  if (!podcastSearch.value)
+    return
+  debouncedSearch()
+}
+</script>
+
 <template>
   <v-menu v-model="menu" :close-on-content-click="false">
     <template #activator="{ props }">
@@ -44,7 +98,9 @@
             class="d-flex flex-column align-center justify-center h-100 text-disabled"
           >
             <Icon icon="mdi:emoticon-dead-outline" width="100" />
-            <div class="mt-1">No results found</div>
+            <div class="mt-1">
+              No results found
+            </div>
           </div>
         </v-responsive>
         <v-card-title
@@ -76,56 +132,3 @@
     </v-card>
   </v-menu>
 </template>
-
-<script setup>
-import { ref, computed } from "vue";
-import { usePodcastsStore } from "@/stores/podcasts";
-import { ItunesService } from "@/services";
-import { useDebounceFn, whenever } from "@vueuse/core";
-import ItunesResultsCard from "./AppBarItunesResultsCard.vue";
-import { Icon } from "@iconify/vue";
-
-const podcastSearch = ref("");
-const podcastUrl = ref("");
-const isImporting = ref(false);
-const isSearching = ref(false);
-const isDelayElapsed = ref(true);
-const searchResults = ref([]);
-const menu = ref(false);
-
-const podcastsStore = usePodcastsStore();
-const { importPodcast } = podcastsStore;
-
-const isMenuClosed = computed(() => !menu.value);
-
-whenever(isMenuClosed, () => clearResults);
-
-const clearResults = () => {
-  podcastSearch.value = "";
-  podcastUrl.value = "";
-  searchResults.value = [];
-};
-
-const onImport = async () => {
-  isImporting.value = true;
-  importPodcast(podcastUrl);
-  podcastUrl.value = "";
-  isImporting.value = false;
-};
-
-const onSearch = async () => {
-  isSearching.value = true;
-  isDelayElapsed.value = false;
-  searchResults.value = [];
-  if (!podcastSearch.value) return;
-  debouncedSearch();
-};
-
-const debouncedSearch = useDebounceFn(async () => {
-  searchResults.value = await ItunesService.search(podcastSearch);
-  isSearching.value = false;
-  setTimeout(() => {
-    isDelayElapsed.value = true;
-  }, 200);
-}, 1000);
-</script>

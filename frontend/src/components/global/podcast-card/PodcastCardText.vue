@@ -1,15 +1,6 @@
-<template>
-  <v-card-text>
-    <p-markdown :class="getSummaryStyle" :markdown="shortenedSummary" />
-    <div class="d-flex align-center mt-2">
-      <slot name="actions"></slot>
-    </div>
-  </v-card-text>
-</template>
-
 <script setup>
-import { computed } from "vue";
-import PMarkdown from "@/components/global/PMarkdown.vue";
+import { computed } from 'vue'
+import PMarkdown from '@/components/global/PMarkdown.vue'
 
 const props = defineProps({
   summary: {
@@ -20,21 +11,30 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-});
+})
 
 const getSummaryStyle = computed(() => {
   return {
-    "overflow-hidden": props.applyFade,
-    fade: props.applyFade,
-  };
-});
+    'overflow-hidden': props.applyFade,
+    'fade': props.applyFade,
+  }
+})
 
 const shortenedSummary = computed(() => {
   if (props.applyFade && props.summary.length > 250)
-    return props.summary.substring(0, 250) + "...";
-  return props.summary;
-});
+    return `${props.summary.substring(0, 250)}...`
+  return props.summary
+})
 </script>
+
+<template>
+  <v-card-text>
+    <PMarkdown :class="getSummaryStyle" :markdown="shortenedSummary" />
+    <div class="d-flex align-center mt-2">
+      <slot name="actions" />
+    </div>
+  </v-card-text>
+</template>
 
 <style scoped>
 /* https://css-tricks.com/line-clampin/ */

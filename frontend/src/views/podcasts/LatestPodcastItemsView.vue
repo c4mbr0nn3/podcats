@@ -1,3 +1,48 @@
+<script>
+import { PodcastItemService } from '@/services'
+import SinglePodcastItemCard from '@/components/SinglePodcastItemCard.vue'
+
+export default {
+  components: {
+    SinglePodcastItemCard,
+  },
+  data: () => ({
+    podcastItemsData: [],
+    currentPage: 1,
+    nextPage: null,
+    pageCount: null,
+  }),
+  async mounted() {
+    await this.fetchData(1)
+  },
+  methods: {
+    async fetchData(pageId) {
+      const data = await PodcastItemService.getLatest(pageId)
+      if (data.podcastItems.length > 0)
+        data.podcastItems.forEach(item => this.podcastItemsData.push(item))
+
+      this.currentPage = data.thisPage
+      this.pageCount = data.pageCount
+      this.nextPage = data.nextPage
+    },
+    // TODO: fix doppia chiamata non voluta...
+    async onIntersect() {
+      if (this.currentPage === this.pageCount || !this.nextPage)
+        return
+      await this.fetchData(this.nextPage)
+    },
+    changePlayedStatus(event) {
+      const item = this.podcastItemsData.find(el => el.ID === event)
+      item.IsPlayed = !item.IsPlayed
+    },
+    changeFavStatus(event) {
+      const item = this.podcastItemsData.find(el => el.ID === event.id)
+      item.BookmarkDate = event.bookmarkDate
+    },
+  },
+}
+</script>
+
 <template>
   <v-row justify="center">
     <v-col cols="9">
@@ -15,54 +60,10 @@
           />
         </v-card-text>
       </v-card>
-      <v-card v-intersect="onIntersect"></v-card>
+      <v-card v-intersect="onIntersect" />
     </v-col>
   </v-row>
 </template>
-
-<script>
-import { PodcastItemService } from "@/services";
-import SinglePodcastItemCard from "@/components/SinglePodcastItemCard.vue";
-
-export default {
-  components: {
-    SinglePodcastItemCard,
-  },
-  data: () => ({
-    podcastItemsData: [],
-    currentPage: 1,
-    nextPage: null,
-    pageCount: null,
-  }),
-  async mounted() {
-    await this.fetchData(1);
-  },
-  methods: {
-    async fetchData(pageId) {
-      const data = await PodcastItemService.getLatest(pageId);
-      if (data.podcastItems.length > 0) {
-        data.podcastItems.forEach((item) => this.podcastItemsData.push(item));
-      }
-      this.currentPage = data.thisPage;
-      this.pageCount = data.pageCount;
-      this.nextPage = data.nextPage;
-    },
-    // TODO: fix doppia chiamata non voluta...
-    async onIntersect() {
-      if (this.currentPage == this.pageCount || !this.nextPage) return;
-      await this.fetchData(this.nextPage);
-    },
-    changePlayedStatus(event) {
-      let item = this.podcastItemsData.find((el) => el.ID == event);
-      item.IsPlayed = !item.IsPlayed;
-    },
-    changeFavStatus(event) {
-      let item = this.podcastItemsData.find((el) => el.ID == event.id);
-      item.BookmarkDate = event.bookmarkDate;
-    },
-  },
-};
-</script>
 
 <style scoped>
 .v-avatar {

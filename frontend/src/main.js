@@ -5,24 +5,24 @@
  */
 
 // Components
-import App from "./App.vue";
 
 // Composables
-import { createApp, markRaw } from "vue";
-import { createPinia } from "pinia";
+import { createApp, markRaw } from 'vue'
+import { createPinia } from 'pinia'
+import App from './App.vue'
 
 // Plugins
-import { registerPlugins } from "@/plugins";
-import vuetify from "./plugins/vuetify";
-import router from "./router";
+import vuetify from './plugins/vuetify'
+import router from './router'
+import { registerPlugins } from '@/plugins'
 
-const pinia = createPinia();
+const pinia = createPinia()
 pinia.use(({ store }) => {
-  store.$router = markRaw(router);
-});
+  store.$router = markRaw(router)
+})
 
-const app = createApp(App);
+const app = createApp(App)
 
-registerPlugins(app);
+registerPlugins(app)
 
-app.use(pinia).use(vuetify).use(router).mount("#app");
+app.use(pinia).use(vuetify).use(router).mount('#app')

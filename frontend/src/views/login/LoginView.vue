@@ -1,3 +1,27 @@
+<script setup>
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+
+const username = ref('')
+const password = ref('')
+const showPassword = ref(false)
+const isLoginOngoing = ref(false)
+
+const authStore = useAuthStore()
+const { login } = authStore
+
+async function submit() {
+  isLoginOngoing.value = true
+  const payload = {
+    username: username.value,
+    password: password.value,
+  }
+  await login(payload).finally(() => {
+    isLoginOngoing.value = false
+  })
+}
+</script>
+
 <template>
   <v-responsive>
     <v-card width="500px" class="mx-auto">
@@ -20,36 +44,12 @@
             @click:append-inner="showPassword = !showPassword"
           />
         </v-card-text>
-        <v-card-actions
-          ><v-btn block type="submit" color="primary" :loading="isLoginOngoing"
-            >Login</v-btn
-          ></v-card-actions
-        >
+        <v-card-actions>
+          <v-btn block type="submit" color="primary" :loading="isLoginOngoing">
+            Login
+          </v-btn>
+        </v-card-actions>
       </v-form>
     </v-card>
   </v-responsive>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import { useAuthStore } from "@/stores/auth";
-
-const username = ref("");
-const password = ref("");
-const showPassword = ref(false);
-const isLoginOngoing = ref(false);
-
-const authStore = useAuthStore();
-const { login } = authStore;
-
-async function submit() {
-  isLoginOngoing.value = true;
-  const payload = {
-    username: username.value,
-    password: password.value,
-  };
-  await login(payload).finally(() => {
-    isLoginOngoing.value = false;
-  });
-}
-</script>

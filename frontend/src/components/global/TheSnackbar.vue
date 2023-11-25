@@ -1,3 +1,11 @@
+<script setup>
+import { storeToRefs } from 'pinia'
+import { useSnackbarStore } from '@/stores/snackbar'
+
+const snackbarStore = useSnackbarStore()
+const { show, message, color, timeout } = storeToRefs(snackbarStore)
+</script>
+
 <template>
   <v-snackbar v-model="show" :timeout="timeout" :color="color" variant="tonal">
     {{ message }}
@@ -12,11 +20,3 @@
     </template>
   </v-snackbar>
 </template>
-
-<script setup>
-import { useSnackbarStore } from "@/stores/snackbar";
-import { storeToRefs } from "pinia";
-
-const snackbarStore = useSnackbarStore();
-const { show, message, color, timeout } = storeToRefs(snackbarStore);
-</script>

@@ -1,25 +1,25 @@
-import axiosClient from "../axios";
+import axiosClient from '../axios'
 
 export function getAll() {
-  return axiosClient.get("/podcasts/");
+  return axiosClient.get('/podcasts/')
 }
 
 export function getById(podcastId) {
-  return axiosClient.get(`/podcasts/${podcastId}`);
+  return axiosClient.get(`/podcasts/${podcastId}`)
 }
 
 export function getItemsById(podcastId, pageId) {
-  return axiosClient.get(`/podcasts/${podcastId}/items?page=${pageId}`);
+  return axiosClient.get(`/podcasts/${podcastId}/items?page=${pageId}`)
 }
 
 export function deleteById(podcastId) {
-  return axiosClient.delete(`/podcasts/${podcastId}/remove`);
+  return axiosClient.delete(`/podcasts/${podcastId}/remove`)
 }
 
 export function setPlayed(podcastId) {
-  return axiosClient.post(`/podcasts/${podcastId}/set-all-played`);
+  return axiosClient.post(`/podcasts/${podcastId}/set-all-played`)
 }
 
 export function importPodcast(payload) {
-  return axiosClient.post("/podcasts/import", payload);
+  return axiosClient.post('/podcasts/import', payload)
 }

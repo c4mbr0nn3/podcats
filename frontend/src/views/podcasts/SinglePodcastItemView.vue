@@ -1,25 +1,25 @@
-<template>
-  <podcast-player-card v-if="item" :podcast-data="item" />
-</template>
-
 <script setup>
-import { ref, onMounted, computed } from "vue";
-import { useRoute } from "vue-router";
-import { useTitle } from "@vueuse/core";
-import { PodcastItemService } from "@/services";
-import PodcastPlayerCard from "@/components/PodcastPlayerCard.vue";
+import { computed, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
+import { useTitle } from '@vueuse/core'
+import { PodcastItemService } from '@/services'
+import PodcastPlayerCard from '@/components/PodcastPlayerCard.vue'
 
-const item = ref(null);
+const item = ref(null)
 
-const route = useRoute();
+const route = useRoute()
 
 const title = computed(() => {
-  return item.value ? `PodCats | ${item.value.Title}` : "PodCats";
-});
+  return item.value ? `PodCats | ${item.value.Title}` : 'PodCats'
+})
 
-useTitle(title);
+useTitle(title)
 
 onMounted(async () => {
-  item.value = await PodcastItemService.getById(route.params.itemId);
-});
+  item.value = await PodcastItemService.getById(route.params.itemId)
+})
 </script>
+
+<template>
+  <PodcastPlayerCard v-if="item" :podcast-data="item" />
+</template>

@@ -1,22 +1,22 @@
-import { defineStore } from "pinia";
-import { PodcastService } from "@/services";
-import { ref, unref } from "vue";
+import { defineStore } from 'pinia'
+import { ref, unref } from 'vue'
+import { PodcastService } from '@/services'
 
-export const usePodcastsStore = defineStore("podcasts", () => {
-  const podcasts = ref([]);
+export const usePodcastsStore = defineStore('podcasts', () => {
+  const podcasts = ref([])
 
   async function fetchPodcasts() {
-    podcasts.value = await PodcastService.getAll();
+    podcasts.value = await PodcastService.getAll()
   }
 
   async function importPodcast(podcastUrl) {
-    let payload = { podcastUrl: unref(podcastUrl) };
-    await PodcastService.importPodcast(payload);
-    fetchPodcasts();
+    const payload = { podcastUrl: unref(podcastUrl) }
+    await PodcastService.importPodcast(payload)
+    fetchPodcasts()
   }
 
   function $reset() {
-    podcasts.value = [];
+    podcasts.value = []
   }
 
   return {
@@ -24,5 +24,5 @@ export const usePodcastsStore = defineStore("podcasts", () => {
     fetchPodcasts,
     importPodcast,
     $reset,
-  };
-});
+  }
+})

@@ -1,3 +1,18 @@
+<script setup>
+import { onMounted } from 'vue'
+import { useIntervalFn } from '@vueuse/core'
+import { useNotificationsStore } from '@/stores/notifications'
+import NotificationCard from '@/components/app-bar/AppBarNotificationCard.vue'
+
+const notificationsStore = useNotificationsStore()
+const { fetchNotifications, setAllRead } = notificationsStore
+
+onMounted(() => {
+  fetchNotifications()
+  useIntervalFn(fetchNotifications, 1000 * 60)
+})
+</script>
+
 <template>
   <v-menu :close-on-content-click="false">
     <template #activator="{ props }">
@@ -26,8 +41,7 @@
           density="comfortable"
           icon="mdi-notification-clear-all"
           @click="setAllRead"
-        >
-        </v-btn>
+        />
       </v-card-title>
       <v-card-text>
         <div v-if="notificationsStore.anyUnread">
@@ -37,23 +51,10 @@
             :notification="item"
           />
         </div>
-        <div v-else>No new notifications</div>
+        <div v-else>
+          No new notifications
+        </div>
       </v-card-text>
     </v-card>
   </v-menu>
 </template>
-
-<script setup>
-import { useNotificationsStore } from "@/stores/notifications";
-import NotificationCard from "@/components/app-bar/AppBarNotificationCard.vue";
-import { onMounted } from "vue";
-import { useIntervalFn } from "@vueuse/core";
-
-const notificationsStore = useNotificationsStore();
-const { fetchNotifications, setAllRead } = notificationsStore;
-
-onMounted(() => {
-  fetchNotifications();
-  useIntervalFn(fetchNotifications, 1000 * 60);
-});
-</script>

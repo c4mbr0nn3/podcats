@@ -1,3 +1,42 @@
+<script setup>
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import {
+  confirmPasswordRule,
+  isRequiredRule,
+  validPasswordRule,
+} from '@/utils/validation'
+import { useAuthStore } from '@/stores/auth'
+
+const formValidation = ref(false)
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
+const password = ref('')
+const confirmPassword = ref('')
+const isLoading = ref(false)
+
+const authStore = useAuthStore()
+const { setPassword } = authStore
+const router = useRouter()
+
+onMounted(() => {
+  if (!authStore.needPasswordChange)
+    router.push({ name: 'home' })
+})
+
+async function submit() {
+  isLoading.value = true
+
+  const payload = {
+    password: password.value,
+  }
+
+  await setPassword(payload).finally(() => {
+    isLoading.value = false
+  })
+}
+</script>
+
 <template>
   <v-responsive>
     <v-card width="500px" class="mx-auto">
@@ -5,11 +44,7 @@
       <v-card-subtitle>
         You need to change your password before you can continue
       </v-card-subtitle>
-      <v-form
-        ref="change_password_form"
-        v-model="formValidation"
-        @submit.prevent="submit"
-      >
+      <v-form v-model="formValidation" @submit.prevent="submit">
         <v-card-text>
           <v-text-field
             v-model="password"
@@ -56,44 +91,3 @@
     </v-card>
   </v-responsive>
 </template>
-
-<script setup>
-import { ref } from "vue";
-import {
-  confirmPasswordRule,
-  isRequiredRule,
-  validPasswordRule,
-} from "@/utils/validation";
-import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "vue-router";
-import { onMounted } from "vue";
-
-const formValidation = ref(false);
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
-const password = ref("");
-const confirmPassword = ref("");
-const isLoading = ref(false);
-
-const authStore = useAuthStore();
-const { setPassword } = authStore;
-const router = useRouter();
-
-onMounted(() => {
-  if (!authStore.needPasswordChange) {
-    router.push({ name: "home" });
-  }
-});
-
-async function submit() {
-  isLoading.value = true;
-
-  const payload = {
-    password: password.value,
-  };
-
-  await setPassword(payload).finally(() => {
-    isLoading.value = false;
-  });
-}
-</script>

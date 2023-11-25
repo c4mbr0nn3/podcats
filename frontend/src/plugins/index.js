@@ -4,8 +4,8 @@
  * Automatically included in `./src/main.js`
  */
 
-import { loadFonts } from "./webfontloader";
+import { loadFonts } from './webfontloader'
 
 export function registerPlugins() {
-  loadFonts();
+  loadFonts()
 }
