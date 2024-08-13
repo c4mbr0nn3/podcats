@@ -13,15 +13,15 @@
   },
   "homepage": "https://github.com/c4mbr0nn3/podcats#readme",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "commitmsg": "commitlint --edit $1",
     "release": "release-it"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.4",
-    "@commitlint/config-conventional": "^18.4.4",
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@release-it/conventional-changelog": "^8.0.1",
-    "husky": "^8.0.3",
-    "release-it": "^17.0.1"
+    "husky": "^9.1.4",
+    "release-it": "^17.6.0"
   }
 }
