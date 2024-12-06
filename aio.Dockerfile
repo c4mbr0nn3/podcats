@@ -16,7 +16,7 @@ RUN npm i -g pnpm
 RUN pnpm install
 RUN pnpm build
 
-FROM alpine:3.19
+FROM alpine:3.21
 ENV GIN_MODE=release
 RUN apk -U upgrade && apk add ca-certificates && rm -rf /var/cache/apk/*
 RUN mkdir -p /go/src/podcats/db
