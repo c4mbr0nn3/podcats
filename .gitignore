@@ -26,3 +26,6 @@ temp/
 dist/
 
 **/node_modules
+**/docs
+**/CLAUDE.md
+**/.serena
