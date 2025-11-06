@@ -52,7 +52,7 @@
       "matchManagers": [
         "npm"
       ],
-      "matchPaths": [
+      "matchFileNames": [
         "frontend/**"
       ],
       "groupName": "Frontend npm dependencies"
@@ -62,7 +62,7 @@
       "matchManagers": [
         "npm"
       ],
-      "matchPaths": [
+      "matchFileNames": [
         "package.json"
       ],
       "groupName": "Root npm dependencies"
@@ -83,6 +83,5 @@
   },
   "prConcurrentLimit": 10,
   "prHourlyLimit": 0,
-  "platformAutomerge": true,
-  "gitLabAutomerge": true
+  "platformAutomerge": true
 }
