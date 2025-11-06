@@ -6,9 +6,6 @@
   image:
     name: renovate/renovate:latest
     entrypoint: [""]
-  only:
-    - schedules
-    - web
   script:
     - renovate --platform=gitlab --token=${RENOVATE_TOKEN} ${CI_PROJECT_PATH}
 
