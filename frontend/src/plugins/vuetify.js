@@ -1,7 +1,7 @@
-import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-
 import { createVuetify } from 'vuetify'
+import '@mdi/font/css/materialdesignicons.css'
+
+import 'vuetify/styles'
 
 const podcatsDarkTheme = {
   dark: true,

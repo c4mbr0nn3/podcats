@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted } from 'vue'
-import GlobalSearch from './GlobalSearch.vue'
 import ImportBtn from '@/components/app-bar/AppBarImportBtn.vue'
-import UserMenuBtn from '@/components/app-bar/AppBarUserMenuBtn.vue'
 import NotificationBtn from '@/components/app-bar/AppBarNotificationBtn.vue'
+import UserMenuBtn from '@/components/app-bar/AppBarUserMenuBtn.vue'
 import { usePodcastsStore } from '@/stores/podcasts'
+import GlobalSearch from './GlobalSearch.vue'
 
 const podcastsStore = usePodcastsStore()
 const { fetchPodcasts } = podcastsStore

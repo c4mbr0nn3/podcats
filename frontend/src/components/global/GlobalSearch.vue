@@ -1,10 +1,10 @@
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
 import { onKeyStroke, useDebounceFn } from '@vueuse/core'
 import Fuse from 'fuse.js'
-import { usePodcastsStore } from '@/stores/podcasts'
+import { ref } from 'vue'
 import SearchResultCard from '@/components/SearchResultCard.vue'
+import { usePodcastsStore } from '@/stores/podcasts'
 
 const dialog = ref(false)
 const searchString = ref('')

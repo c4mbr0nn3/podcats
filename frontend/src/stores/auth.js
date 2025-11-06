@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia'
 import { useLocalStorage } from '@vueuse/core'
+import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import { usePodcastsStore } from './podcasts'
-import { useNotificationsStore } from './notifications'
 import { AuthService, UserService } from '@/services'
+import { useNotificationsStore } from './notifications'
+import { usePodcastsStore } from './podcasts'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = useLocalStorage('vueUseUser', {})
@@ -20,9 +20,9 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = data.user
     token.value = data.token
     if (needPasswordChange.value)
-    // eslint-disable-next-line no-invalid-this
+
       this.$router.push({ name: 'change-password' })
-    // eslint-disable-next-line no-invalid-this
+
     else this.$router.push({ name: 'home' })
   }
 
@@ -30,13 +30,12 @@ export const useAuthStore = defineStore('auth', () => {
     // TODO: check if still working
     await UserService.setPassword(user.value.ID, payload).then(() => {
       user.value.NeedPasswordChange = false
-      // eslint-disable-next-line no-invalid-this
+
       this.$router.push({ name: 'home' })
     })
   }
 
   async function logout() {
-    // eslint-disable-next-line no-invalid-this
     await this.$router.push({ name: 'login' })
     $reset()
     usePodcastsStore().$reset()

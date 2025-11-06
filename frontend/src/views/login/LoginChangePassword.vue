@@ -1,12 +1,12 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 import {
   confirmPasswordRule,
   isRequiredRule,
   validPasswordRule,
 } from '@/utils/validation'
-import { useAuthStore } from '@/stores/auth'
 
 const formValidation = ref(false)
 const showPassword = ref(false)

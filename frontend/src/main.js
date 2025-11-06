@@ -6,15 +6,15 @@
 
 // Components
 
+import { createPinia } from 'pinia'
 // Composables
 import { createApp, markRaw } from 'vue'
-import { createPinia } from 'pinia'
-import App from './App.vue'
+import { registerPlugins } from '@/plugins'
 
+import App from './App.vue'
 // Plugins
 import vuetify from './plugins/vuetify'
 import router from './router'
-import { registerPlugins } from '@/plugins'
 
 const pinia = createPinia()
 pinia.use(({ store }) => {

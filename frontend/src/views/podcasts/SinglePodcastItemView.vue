@@ -1,9 +1,9 @@
 <script setup>
+import { useTitle } from '@vueuse/core'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useTitle } from '@vueuse/core'
-import { PodcastItemService } from '@/services'
 import PodcastPlayerCard from '@/components/PodcastPlayerCard.vue'
+import { PodcastItemService } from '@/services'
 
 const item = ref(null)
 

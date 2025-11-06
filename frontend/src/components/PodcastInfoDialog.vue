@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 import PMarkdown from '@/components/global/PMarkdown.vue'
-import { formatDateToIso } from '@/utils/date'
 import { podcastInfoDialogSchema } from '@/schemas/podcast-info-dialog'
+import { formatDateToIso } from '@/utils/date'
 
 const props = defineProps({
   modelValue: {

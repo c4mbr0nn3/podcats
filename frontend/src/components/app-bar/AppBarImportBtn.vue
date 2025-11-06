@@ -1,10 +1,10 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { useDebounceFn, whenever } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
-import ItunesResultsCard from './AppBarItunesResultsCard.vue'
-import { usePodcastsStore } from '@/stores/podcasts'
+import { useDebounceFn, whenever } from '@vueuse/core'
+import { computed, ref } from 'vue'
 import { ItunesService } from '@/services'
+import { usePodcastsStore } from '@/stores/podcasts'
+import ItunesResultsCard from './AppBarItunesResultsCard.vue'
 
 const podcastSearch = ref('')
 const podcastUrl = ref('')

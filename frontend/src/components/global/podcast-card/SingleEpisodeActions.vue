@@ -1,7 +1,7 @@
 <script>
 import { PodcastItemService } from '@/services'
-import { formatDate } from '@/utils/date'
 import { usePodcastsStore } from '@/stores/podcasts'
+import { formatDate } from '@/utils/date'
 
 export default {
   props: {

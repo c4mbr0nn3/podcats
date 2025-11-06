@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted } from 'vue'
 import { useIntervalFn } from '@vueuse/core'
-import { useNotificationsStore } from '@/stores/notifications'
+import { onMounted } from 'vue'
 import NotificationCard from '@/components/app-bar/AppBarNotificationCard.vue'
+import { useNotificationsStore } from '@/stores/notifications'
 
 const notificationsStore = useNotificationsStore()
 const { fetchNotifications, setAllRead } = notificationsStore

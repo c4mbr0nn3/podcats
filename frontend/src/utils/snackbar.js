@@ -21,4 +21,4 @@ function showErrorSnackbar(message, timeout = defaultTimeout) {
   show(message, timeout)
 }
 
-export { showSuccessSnackbar, showErrorSnackbar }
+export { showErrorSnackbar, showSuccessSnackbar }

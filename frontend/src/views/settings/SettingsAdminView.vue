@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { UserService } from '@/services'
 import DialogUserEdit from '@/components/admin/DialogUserEdit.vue'
 import SingleUserCard from '@/components/admin/SingleUserCard.vue'
+import { UserService } from '@/services'
 
 const users = ref([])
 const dialog = ref(false)

@@ -1,10 +1,10 @@
 <script setup>
+import { useTitle } from '@vueuse/core'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useTitle } from '@vueuse/core'
-import { useNotificationsStore } from './stores/notifications'
-import TheSnackbar from '@/components/global/TheSnackbar.vue'
 import TheAppBar from '@/components/global/TheAppBar.vue'
+import TheSnackbar from '@/components/global/TheSnackbar.vue'
+import { useNotificationsStore } from './stores/notifications'
 
 const route = useRoute()
 const notificationsStore = useNotificationsStore()

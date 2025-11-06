@@ -1,6 +1,6 @@
 <script>
-import { PodcastItemService } from '@/services'
 import SinglePodcastItemCard from '@/components/SinglePodcastItemCard.vue'
+import { PodcastItemService } from '@/services'
 
 export default {
   components: {

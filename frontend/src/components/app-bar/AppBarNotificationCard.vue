@@ -1,8 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { usePodcastsStore } from '@/stores/podcasts'
 import { useNotificationsStore } from '@/stores/notifications'
+import { usePodcastsStore } from '@/stores/podcasts'
 import { formatDate } from '@/utils/date'
 
 const props = defineProps({

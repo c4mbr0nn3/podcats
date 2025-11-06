@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
-import SinglePodcastCard from '@/components/SinglePodcastCard.vue'
 import PodcastInfoDialog from '@/components/PodcastInfoDialog.vue'
+import SinglePodcastCard from '@/components/SinglePodcastCard.vue'
 import { usePodcastsStore } from '@/stores/podcasts'
 
 const infoDialog = ref(false)
