@@ -18,7 +18,7 @@
     "dompurify": "^3.3.0",
     "fuse.js": "^7.1.0",
     "howler": "^2.2.4",
-    "marked": "^16.4.1",
+    "marked": "^17.0.0",
     "pinia": "^3.0.4",
     "roboto-fontface": "^0.10.0",
     "validator": "^13.15.20",
